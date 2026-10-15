@@ -39,5 +39,4 @@ lab:
 **Note:** Without a license with Intune and Entra ID P1, auto-enrollment does not run later – even with the MDM user scope set.
 
 **Why:** The sync server is a Tier 0 system: whoever controls it controls your identities. Treat SRV1 like a domain controller.
-<!-- VERIFY: SRV1 OS and Entra Connect Sync version supported on it; whether ETC uses Connect Sync (handbook) or Cloud Sync (SCMI). Hybrid join config in Lab 2.1 needs Connect Sync. -->
-<!-- VERIFY: OU=Cloud content in the MDDMI pod (SCMI pod: User1, User2, CL1, CL2). -->
+<!-- Confirmed by Michael 2026-10-15: pod identical to SCMI, Entra Connect Sync. VERIFY: SRV1 OS supported by the current Entra Connect Sync version. -->

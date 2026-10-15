@@ -7,17 +7,15 @@ lab:
 
 # Lab 4.4 – Corporate-owned work profile
 
-**Estimated time:** 45 minutes (optional)
+**Estimated time:** 45 minutes
 <!-- VERIFY: duration -->
 
 > **Draft:** This lab is new and not yet tested in this course. If a step behaves differently, tell the trainer.
 
-**Optional:** This lab needs an Android device you can factory reset. Without one, the trainer shows it as demo.
-
 **Goal:** Enroll a corporate-owned device with a work profile (COPE) by QR code and compare what you can manage with the BYOD device from Lab 4.2.
 
 1. Intune admin center → Devices → Enrollment → Android → **Corporate-owned devices with work profile** → Create profile: profile `COPE`, note the QR code.
-2. Factory reset the device. On the welcome screen, tap the same spot several times until the QR code reader opens.
+2. Factory reset your Android test device from Lab 4.3. On the welcome screen, tap the same spot several times until the QR code reader opens.
 3. Scan the QR code, connect to Wi-Fi and sign in as User2.
 4. Intune admin center → Devices → Configuration → Create → Android Enterprise → **Fully Managed, Dedicated, and Corporate-Owned Work Profile** → Device restrictions: profile `COPE Restrictions` that blocks the camera in the work profile, assigned to a group with User2.
 5. Compare the device actions and the available configuration settings with the BYOD device from Lab 4.2.

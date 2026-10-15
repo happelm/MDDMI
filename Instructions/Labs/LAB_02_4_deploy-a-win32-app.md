@@ -14,7 +14,7 @@ lab:
 
 **Goal:** Package CMTrace as Win32 app, deploy it from Intune and follow it in the Company Portal and the logs.
 
-1. CL3: create `C:\Source\CMTrace` and copy `cmtrace.exe`, `CmtraceInstall.ps1` and `CmtraceRemove.ps1` from the [Labfiles](https://github.com/happelm/MDDMI/tree/main/Labfiles) into it.
+1. CL3: create `C:\Source\CMTrace` and copy `cmtrace.exe`, `CmtraceInstall.ps1` and `CmtraceRemove.ps1` from `\\dc1\labfiles` into it. If Windows asks for credentials, sign in as `SMART\User1`.
 2. CL3: download the Microsoft Win32 Content Prep Tool (`IntuneWinAppUtil.exe`) from GitHub and package the folder:
 
    ```powershell
@@ -43,5 +43,5 @@ lab:
 **Note:** The Intune Management Extension installs itself the first time a Win32 app, script or remediation targets the device or user – the first install takes longer.
 
 **Why:** The detection rule decides **Installed** – not the exit code alone.
-<!-- VERIFY: source of cmtrace.exe for participants (handbook: script copies cmtrace.exe to C:\Windows; redistribution license unchecked – do not put cmtrace.exe in the public repo). -->
+<!-- Confirmed 2026-10-15: all lab files on \\dc1\labfiles. cmtrace.exe stays out of the public repo. -->
 <!-- VERIFY: Company Portal install – auto-installed in pod or part of this lab (handbook: "Installation des Company Portals")? -->

@@ -17,8 +17,8 @@ lab:
 1. Sign in to the Microsoft 365 admin center (admin.microsoft.com) with the tenant admin account from your lab hoster. Register MFA with the Microsoft Authenticator app when you are asked.
 2. Microsoft 365 admin center → Billing → Your products: note which licenses your tenant has and how many are free.
 3. Open the Intune admin center (intune.microsoft.com) and the Entra admin center (entra.microsoft.com) in the same browser profile and check that both load with your admin account.
-4. Entra admin center → Identity → Settings → Domain names → Add custom domain: add the third-level domain the trainer assigned to you.
-5. Create the TXT record shown by Entra ID at the DNS provider the trainer gives you, then select **Verify**.
+4. Entra admin center → Identity → Settings → Domain names → Add custom domain: add the third-level domain the trainer assigned to you (for example `i37.mslab.live`).
+5. Create the TXT record shown by Entra ID in the DNS zone of your third-level domain, as the trainer shows you, then select **Verify**.
 
 ### Checkpoint
 
@@ -29,4 +29,4 @@ lab:
 **Note:** DNS changes can take a few minutes. If verification fails, wait and verify again – do not delete and re-add the domain.
 
 **Why:** In real projects you almost always use a custom domain for UPNs. The `onmicrosoft.com` domain works for every lab in this course – if the custom domain cannot be verified in class, continue with it.
-<!-- VERIFY: does the ETC course use a trainer DNS zone with one third-level subdomain per participant (handbook: ClouDNS)? If not, make steps 4-5 optional. -->
+<!-- Trainer: mslab.live is delegated in third-level zones, counter at i37 (2026-10-15). VERIFY: DNS provider/self-service portal for the delegated zones. -->

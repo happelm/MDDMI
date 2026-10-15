@@ -16,7 +16,7 @@ lab:
 
 1. Apps → Android → Create → Managed Google Play app: approve **Microsoft Teams** and **Microsoft Authenticator**.
 2. Assign Teams as **Required** and Authenticator as **Available for enrolled devices** to `Android Users`.
-3. Android device: check the work profile – one app arrives on its own, the other one is in the work profile's Play Store.
+3. Android test device: check the work profile – one app arrives on its own, the other one is in the work profile's Play Store.
 4. Intune admin center → Devices → Android → your device: go through the device actions with the trainer (sync, restart, remove passcode, retire, wipe) – which do you have on a personally owned work profile device?
 5. Run **Retire** on your device.
 

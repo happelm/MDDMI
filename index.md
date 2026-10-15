@@ -52,7 +52,7 @@ Managed Google Play, personally owned work profile with compliance and Condition
 | 4.1 | [Connect Managed Google Play](Instructions/Labs/LAB_04_1_connect-managed-google-play.html) | 20 min |
 | 4.2 | [BYOD with a work profile](Instructions/Labs/LAB_04_2_byod-with-a-work-profile.html) | 60 min |
 | 4.3 | [Apps and retire](Instructions/Labs/LAB_04_3_apps-and-retire.html) | 30 min |
-| 4.4 | [Corporate-owned work profile](Instructions/Labs/LAB_04_4_corporate-owned-work-profile.html) | 45 min (optional) |
+| 4.4 | [Corporate-owned work profile](Instructions/Labs/LAB_04_4_corporate-owned-work-profile.html) | 45 min |
 
 ### Day 5 – iOS/iPadOS
 
@@ -86,13 +86,14 @@ One pod and one Microsoft 365 tenant per participant – nothing is shared, you 
 |---|---|---|
 | DC1 | AD DS and DNS, domain `smart.etc` | `OU=Cloud` is the sync scope (User1, User2, CL1, CL2) |
 | SRV1 | Windows Server, domain joined | Becomes your Microsoft Entra Connect Sync server on Day 1 |
+| PKI | Smart PKI, root CA | Root certificate for Lab 2.2 and 5.2 |
 | CL1 | Windows 11, domain joined | User1 – hybrid joined on Day 2 |
 | CL2 | Windows 11, domain joined | User2 – hybrid joined on Day 2 |
 | CL3 | Windows 11, no domain | In OOBE – you join it to Entra ID on Day 1 |
 | CL4 | Windows 11, no domain | In OOBE – you deploy it with Windows Autopilot on Day 2 |
 | Tenant | Microsoft 365 E3 or E5 | Your tenant admin account from your lab hoster |
 
-On Day 4 and 5 you work with an Android device and an iPhone or iPad – the trainer tells you which devices to use.
+On Day 4 you get an Android test device from the trainer. For Day 5 the trainer tells you which iPhone or iPad to use.
 
 ### Accounts
 
@@ -107,7 +108,7 @@ Passwords are on the pod card from the trainer.
 
 ### Tools
 
+- Lab files: `\\dc1\labfiles`
 - CMTrace for all .log files – Intune Management Extension logs in `C:\ProgramData\Microsoft\IntuneManagementExtension\Logs`
 - Microsoft 365 admin center: admin.microsoft.com · Intune admin center: intune.microsoft.com · Entra admin center: entra.microsoft.com
 - Lab files: [Labfiles folder in this repository](https://github.com/happelm/MDDMI/tree/main/Labfiles)
-<!-- VERIFY: pod table taken from the SCMI pod (same ETC pod for all courses) – OS versions, OU content, SRV1 role, number of clients in MDDMI. -->
