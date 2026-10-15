@@ -65,6 +65,10 @@ Apple MDM push certificate, device enrollment with the Company Portal, profiles 
 
 [Log map, join types, collecting logs](Instructions/Appendix.md)
 
+### Resources
+
+[MDDMI link collection](https://github.com/happelm/Intune-Resources/blob/main/Intune1Links.md) – Learn articles, blogs and tools for this workshop.
+
 ## About this guide
 
 > **Draft:** This lab guide is new. Every lab is marked as draft until it has been tested in this course.
