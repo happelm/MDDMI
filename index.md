@@ -113,6 +113,7 @@ Passwords are on the pod card from the trainer.
 ### Tools
 
 - Lab files: `\\dc1\labfiles`
+- Full screen in the lab portal (Guacamole): press `F11`, move the mouse to the top edge to bring back the address bar and click **Reload** (inside the session `F5` goes to the VM) – the connection to the VM reconnects at full screen size without black borders.
 - CMTrace for all .log files – Intune Management Extension logs in `C:\ProgramData\Microsoft\IntuneManagementExtension\Logs`
 - Microsoft 365 admin center: admin.microsoft.com · Intune admin center: intune.microsoft.com · Entra admin center: entra.microsoft.com
 - Lab files: [Labfiles folder in this repository](https://github.com/happelm/MDDMI/tree/main/Labfiles)
