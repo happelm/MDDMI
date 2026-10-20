@@ -127,7 +127,7 @@ Lab: [2.7 Group Policy analytics](../Labs/LAB_02_7_group-policy-analytics.html)
 
 ## 10. Baselines and tools
 
-- [Microsoft Intune – What's new](https://learn.microsoft.com/intune/fundamentals/whats-new): read it at least once a month – Intune changes fast.
+- [Microsoft Intune – What's new](https://learn.microsoft.com/intune/fundamentals/whats-new): read it at least every two weeks – Intune changes fast.
 - [CIS Benchmarks](https://www.cisecurity.org/cis-benchmarks): hardening recommendations, also available for Intune.
 - [OpenIntuneBaseline](https://github.com/SkipToTheEndpoint/OpenIntuneBaseline) (community): ready-made baseline policies to import.
 - [IntuneManagement](https://github.com/Micke-K/IntuneManagement) (community): backup, export and import of Intune policies.
