@@ -53,7 +53,7 @@ Sources: [Authentication methods](https://learn.microsoft.com/entra/identity/aut
 ## 3. Licensing
 
 - Intune Plan 1 is included in Microsoft 365 E3/E5, EMS E3/E5 and Business Premium. Entra ID P1 (needed for automatic enrollment, dynamic groups and Conditional Access) comes with the same bundles.
-- **From July 2026:** Microsoft 365 E3 includes Intune Plan 2, Remote Help and Advanced Analytics. E5/E7 additionally include Endpoint Privilege Management, Cloud PKI and Enterprise App Management. Business Premium gets none of these; other plans buy them separately.
+- **From July 2026:** Microsoft 365 E3 includes Intune Plan 2, Remote Help and Advanced Analytics. E5/E7 additionally include Endpoint Privilege Management, Cloud PKI and Enterprise App Management. All other plans, including Business Premium, get the Intune Suite only as a separate subscription.
 - Frontline licenses limit the Microsoft 365 apps, not Intune management. F3 allows the Microsoft 365 mobile apps only on devices with a screen of 10.9 inches or less. F1 has no desktop apps and read-only web and mobile apps.
 - Security Copilot: since November 2025, Microsoft 365 E5/E7 include 400 SCU per month per 1,000 user licenses (up to 10,000). Without E5, a provisioned SCU costs $4 per hour. *Trainer's assessment:* the included amount (0.4 SCU per user per month) is too small for real use.
 - Remote Help supports Windows, macOS and Android, not iOS/iPadOS. Unattended mode exists for Windows (corporate, physical, Entra or hybrid joined devices) and for Android dedicated devices.
@@ -130,7 +130,7 @@ Lab: [1.3 Sync your users](../Labs/LAB_01_3_sync-your-users.html)
 ## 6. Device management options
 
 - Ownership and management depth go together: the more strictly a device is managed, the more sensitive the data it may access – and the less freedom the user has. Conditional Access weighs the device's compliance from Intune together with other signals such as location and risk.
-- Each platform has several enrollment methods; Android alone has six variants, from a personally owned work profile to fully managed and dedicated devices. Choose carefully – changing the method later requires a device reset.
+- Each platform has several enrollment methods; Android alone has several: personally owned work profile, corporate-owned work profile, fully managed, dedicated, and AOSP for devices without Google Mobile Services. Choose carefully – changing the method later requires a device reset.
 - Windows supports MDM enrollment and app protection for Microsoft Edge on unmanaged devices. Windows Information Protection is retired.
 - Intune doesn't manage Windows Server through MDM. Defender for Endpoint security settings management can still apply endpoint security policies to servers.
 - **Recommendation:** use Entra join for new Windows devices. Hybrid join only for existing domain-joined devices.
