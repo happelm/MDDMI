@@ -1,11 +1,11 @@
 ---
-title: 'Lab 2.7 – Deploy CL4 with Windows Autopilot'
+title: 'Lab 3.2 – Deploy CL4 with Windows Autopilot'
 lab:
-    title: 'Lab 2.7 – Deploy CL4 with Windows Autopilot'
-    module: 'Day 2 – Windows management'
+    title: 'Lab 3.2 – Deploy CL4 with Windows Autopilot'
+    module: 'Day 3 – Windows apps and security'
 ---
 
-# Lab 2.7 – Deploy CL4 with Windows Autopilot
+# Lab 3.2 – Deploy CL4 with Windows Autopilot
 
 **Estimated time:** 60 minutes
 <!-- VERIFY: duration -->

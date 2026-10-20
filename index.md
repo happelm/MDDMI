@@ -13,6 +13,8 @@ Lab instructions for the five-day MDDMI workshop: three days Windows, one day An
 
 Lab tenant and licenses, custom domain and DNS records, hybrid identity with Microsoft Entra Connect Sync, dynamic groups, Company Portal.
 
+**Day notes:** [Day 1 – Foundation and hybrid identity](Instructions/Notes/DAY_01_notes.html) (draft)
+
 | Lab | Title | Time |
 |---|---|---|
 | 1.1 | [Set up your tenant](Instructions/Labs/LAB_01_1_set-up-your-tenant.html) | 30 min |
@@ -22,26 +24,28 @@ Lab tenant and licenses, custom domain and DNS records, hybrid identity with Mic
 
 ### Day 2 – Windows management
 
-MDM auto-enrollment, Entra join vs. registration, Microsoft Entra hybrid join by GPO, roles and permissions, configuration profiles and CSPs, Group Policy analytics, Win32 and Store apps, Windows Autopilot.
+Enrollment restrictions, roles and permissions, Entra join and single sign-on, Microsoft Entra hybrid join by GPO, co-management with Configuration Manager, configuration profiles, assignment filters and CSPs, Group Policy analytics.
 
 | Lab | Title | Time |
 |---|---|---|
-| 2.1 | [Join CL3 to Entra ID](Instructions/Labs/LAB_02_1_join-cl3-to-entra-id.html) | 30 min |
-| 2.2 | [Hybrid join CL1 and CL2](Instructions/Labs/LAB_02_2_hybrid-join-cl1-and-cl2.html) | 60 min |
-| 2.3 | [Roles and permissions](Instructions/Labs/LAB_02_3_roles-and-permissions.html) | 20 min |
-| 2.4 | [Configuration profiles](Instructions/Labs/LAB_02_4_configuration-profiles.html) | 45 min |
-| 2.5 | [Migrate a GPO](Instructions/Labs/LAB_02_5_migrate-a-gpo.html) | 30 min |
-| 2.6 | [Deploy a Win32 app](Instructions/Labs/LAB_02_6_deploy-a-win32-app.html) | 45 min |
-| 2.7 | [Deploy CL4 with Windows Autopilot](Instructions/Labs/LAB_02_7_deploy-cl4-with-autopilot.html) | 60 min |
+| 2.1 | [Enrollment restrictions](Instructions/Labs/LAB_02_1_enrollment-restrictions.html) | 15 min |
+| 2.2 | [Roles and permissions](Instructions/Labs/LAB_02_2_roles-and-permissions.html) | 15 min |
+| 2.3 | [Join CL3 to Entra ID](Instructions/Labs/LAB_02_3_join-cl3-to-entra-id.html) | 45 min |
+| 2.4 | [Hybrid join CL1 and CL2](Instructions/Labs/LAB_02_4_hybrid-join-cl1-and-cl2.html) | 60 min |
+| 2.5 | [Co-management with Configuration Manager](Instructions/Labs/LAB_02_5_co-management.html) | 30 min |
+| 2.6 | [Configuration profiles](Instructions/Labs/LAB_02_6_configuration-profiles.html) | 60 min |
+| 2.7 | [Group Policy analytics](Instructions/Labs/LAB_02_7_group-policy-analytics.html) | 30 min |
 
-### Day 3 – Windows security
+### Day 3 – Windows apps and security
 
-Endpoint security policies, compliance and Conditional Access, Microsoft Defender for Endpoint (demo).
+Win32 and Store apps, Windows Autopilot, Endpoint security policies, compliance and Conditional Access, Microsoft Defender for Endpoint (demo).
 
 | Lab | Title | Time |
 |---|---|---|
-| 3.1 | [Endpoint security policies](Instructions/Labs/LAB_03_1_endpoint-security-policies.html) | 60 min |
-| 3.2 | [Compliance and Conditional Access](Instructions/Labs/LAB_03_2_compliance-and-conditional-access.html) | 45 min |
+| 3.1 | [Deploy a Win32 app](Instructions/Labs/LAB_03_1_deploy-a-win32-app.html) | 45 min |
+| 3.2 | [Deploy CL4 with Windows Autopilot](Instructions/Labs/LAB_03_2_deploy-cl4-with-autopilot.html) | 60 min |
+| 3.3 | [Endpoint security policies](Instructions/Labs/LAB_03_3_endpoint-security-policies.html) | 60 min |
+| 3.4 | [Compliance and Conditional Access](Instructions/Labs/LAB_03_4_compliance-and-conditional-access.html) | 45 min |
 
 ### Day 4 – Android
 
@@ -98,12 +102,12 @@ One pod and one Microsoft 365 tenant per participant – nothing is shared, you 
 |---|---|---|
 | DC1 | AD DS and DNS, domain `smart.etc` | `OU=Cloud` is the sync scope (User1, User2, CL1, CL2) |
 | SRV1 | Windows Server, domain joined | Becomes your Microsoft Entra Connect Sync server on Day 1 |
-| PKI | One-tier Enterprise CA (Hyper-V VM on your lab host) | Switched off – not needed. Its root certificate is already distributed in `smart.etc` through AD (Lab 2.4, 5.2) |
+| PKI | One-tier Enterprise CA (Hyper-V VM on your lab host) | Switched off – not needed. Its root certificate is already distributed in `smart.etc` through AD (Lab 2.6, 5.2) |
 | SCCM | Configuration Manager (Hyper-V VM on your lab host) | CL1 and CL2 have the ConfigMgr client |
 | CL1 | Windows 11, domain joined | Signs in automatically as User1 – hybrid joined on Day 2 |
 | CL2 | Windows 11, domain joined | Signs in automatically as User2 – hybrid joined on Day 2 |
 | CL3 | Windows 11, no domain | In OOBE – you join it to Entra ID on Day 2 |
-| CL4 | Windows 11, no domain | In OOBE – you deploy it with Windows Autopilot on Day 2 |
+| CL4 | Windows 11, no domain | In OOBE – you deploy it with Windows Autopilot on Day 3 |
 | Tenant | Microsoft 365 E5 (GoDeploy, 20 licenses) | You launch it in Lab 1.1; it expires after two weeks |
 
 On Day 4 you get an Android test device from the trainer. For Day 5 the trainer tells you which iPhone or iPad to use.

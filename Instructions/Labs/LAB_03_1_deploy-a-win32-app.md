@@ -1,11 +1,11 @@
 ---
-title: 'Lab 2.6 – Deploy a Win32 app'
+title: 'Lab 3.1 – Deploy a Win32 app'
 lab:
-    title: 'Lab 2.6 – Deploy a Win32 app'
-    module: 'Day 2 – Windows management'
+    title: 'Lab 3.1 – Deploy a Win32 app'
+    module: 'Day 3 – Windows apps and security'
 ---
 
-# Lab 2.6 – Deploy a Win32 app
+# Lab 3.1 – Deploy a Win32 app
 
 **Estimated time:** 45 minutes
 <!-- VERIFY: duration -->

@@ -1,11 +1,11 @@
 ---
-title: 'Lab 3.1 – Endpoint security policies'
+title: 'Lab 3.3 – Endpoint security policies'
 lab:
-    title: 'Lab 3.1 – Endpoint security policies'
-    module: 'Day 3 – Windows security'
+    title: 'Lab 3.3 – Endpoint security policies'
+    module: 'Day 3 – Windows apps and security'
 ---
 
-# Lab 3.1 – Endpoint security policies
+# Lab 3.3 – Endpoint security policies
 
 **Estimated time:** 60 minutes
 <!-- VERIFY: duration -->

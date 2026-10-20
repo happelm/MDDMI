@@ -16,7 +16,7 @@ title: 'Day 1 notes – Foundation and hybrid identity'
 | SCCM | Configuration Manager, Hyper-V VM on the lab host |
 | PKI | One-tier Enterprise CA, Hyper-V VM on the lab host – switched off, its root certificate is distributed in `smart.etc` through AD |
 | CL1, CL2 | Domain joined, ConfigMgr client, User1/User2 – hybrid joined on Day 2 |
-| CL3, CL4 | In OOBE – Entra join (Day 2) and Windows Autopilot (Day 2) |
+| CL3, CL4 | In OOBE – Entra join (Day 2) and Windows Autopilot (Day 3) |
 
 Online participants find the vLab link in the ETC customer portal. Lab files are in `C:\Scripts` on your vLab host.
 
@@ -169,7 +169,7 @@ Lab: [1.4 Groups and Company Portal](../Labs/LAB_01_4_groups-and-company-portal.
 
 ## Tomorrow (Day 2)
 
-MDM auto-enrollment and joining CL3 to Entra ID, hybrid join of CL1 and CL2, roles and permissions, configuration profiles, Group Policy migration, Win32 apps and Windows Autopilot.
+Enrollment restrictions, roles and permissions, joining CL3 to Entra ID, hybrid join of CL1 and CL2, co-management, configuration profiles and Group Policy analytics.
 
 ## Links
 

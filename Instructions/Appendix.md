@@ -14,7 +14,7 @@ lab:
 | Typical owner | User (BYOD) | Organization | Organization |
 | Sign-in to Windows with | Local or Microsoft account | Entra ID account | AD DS account |
 | Joined to AD DS | No | No | Yes |
-| In this course | Trainer demo on CL2 (Lab 2.1) | CL3 (Lab 2.1), CL4 (Lab 2.7) | CL1, CL2 (Lab 2.2) |
+| In this course | – | CL3 (Lab 2.3), CL4 (Lab 3.2) | CL1, CL2 (Lab 2.4) |
 
 ## Log map – Windows
 
