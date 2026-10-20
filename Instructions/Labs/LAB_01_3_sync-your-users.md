@@ -17,8 +17,7 @@ lab:
 1. DC1: Active Directory Domains and Trusts → right-click the top node **Active Directory Domains and Trusts** (not the domain) → Properties → add your custom domain from Lab 1.2 as UPN suffix.
 2. DC1: Active Directory Users and Computers → `OU=Cloud`: change the UPN suffix of User1 and User2 to your custom domain.
 3. SRV1 (`SMART\Administrator`): sign in to the Entra admin center in Microsoft Edge. If you are asked to create a passkey, choose **Not now**.
-4. Entra admin center → Entra ID → Entra Connect → Connect Sync: download the Microsoft Entra Connect Sync agent and start the installation.
-   <!-- VERIFY: exact menu labels for the download -->
+4. Entra admin center → Entra ID → Entra Connect → **Get started** → **Manage** → **Download Connect Sync Agent**, then start the installation.
 5. Choose **Customize**. Leave the required components unchanged.
 6. User sign-in: **Password Hash Synchronization**. Leave **Enable single sign-on** cleared. Sign in with your tenant admin; if Windows offers to register the device, choose **No, sign in to this app only**.
 7. Connect your directories: add `smart.etc`, keep **Create new AD account** and enter `SMART\Administrator`.
@@ -26,13 +25,14 @@ lab:
 9. Domain and OU filtering: select only `OU=Cloud`. Don't use group filtering.
 10. Optional features: turn on **Password writeback**. Finish the wizard with an initial synchronization.
 11. Microsoft 365 admin center → Users → Active users: select User1 and User2 → **Manage product licenses** → **Assign more** → **Microsoft 365 E5**.
-    <!-- VERIFY: usage location needed for synced users? Not shown in class. -->
 
 ### Checkpoint
 
 - [ ] User1 and User2 are listed in Entra ID with **On-premises sync enabled** = Yes and the UPN of your custom domain
 - [ ] The group `Cloud Users` is synced with User1 and User2 as members
 - [ ] Both users have a Microsoft 365 E5 license
+
+**Note:** Synced users get the usage location United States automatically – that is fine for the lab.
 
 **Note:** The wizard shows a TPM warning on SRV1 – that is expected. If password writeback fails at the end, go **Previous** and **Next** once. The Health agent warning clears after **Exit**.
 

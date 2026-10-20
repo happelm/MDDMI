@@ -61,6 +61,14 @@ Apple MDM push certificate, device enrollment with the Company Portal, profiles 
 | 5.2 | [Enroll an iPhone](Instructions/Labs/LAB_05_2_enroll-an-iphone.md) | 45 min |
 | 5.3 | [Protect Outlook with app protection](Instructions/Labs/LAB_05_3_protect-outlook-with-app-protection.md) | 30 min |
 
+### Day notes
+
+Summary of each day with sources, for after the course.
+
+| Day | Notes |
+|---|---|
+| 1 | [Foundation and hybrid identity](Instructions/Notes/DAY_01_notes.md) (draft) |
+
 ### Appendix
 
 [Log map, join types, collecting logs](Instructions/Appendix.md)
@@ -88,7 +96,7 @@ One pod and one Microsoft 365 tenant per participant – nothing is shared, you 
 | DC1 | AD DS and DNS, domain `smart.etc` | `OU=Cloud` is the sync scope (User1, User2, CL1, CL2) |
 | SRV1 | Windows Server, domain joined | Becomes your Microsoft Entra Connect Sync server on Day 1 |
 | PKI | One-tier Enterprise CA (Hyper-V VM on your lab host) | Switched off – not needed. Its root certificate is already distributed in `smart.etc` through AD (Lab 2.4, 5.2) |
-| ConfigMgr server | Configuration Manager (Hyper-V VM on your lab host) | CL1 and CL2 have the ConfigMgr client |
+| SCCM | Configuration Manager (Hyper-V VM on your lab host) | CL1 and CL2 have the ConfigMgr client |
 | CL1 | Windows 11, domain joined | Signs in automatically as User1 – hybrid joined on Day 2 |
 | CL2 | Windows 11, domain joined | Signs in automatically as User2 – hybrid joined on Day 2 |
 | CL3 | Windows 11, no domain | In OOBE – you join it to Entra ID on Day 2 |
@@ -110,7 +118,7 @@ Passwords are on the pod card from the trainer.
 
 ### Tools
 
-- Lab files: the trainer gives you a link to the course share; copy its `Scripts` folder to `C:\Scripts`. Later the lab files come as a ZIP download from this repository.
+- Lab files: the trainer gives you a link to the course share; copy its `Scripts` folder to `C:\Scripts` on your vLab host. Later the lab files come as a ZIP download from this repository.
 - Online participants open the vLab host with the link from the ETC customer portal; in the classroom you sit in front of your lab host. Work on your lab host, never on your own notebook. Use Remote Desktop Connection Manager on the lab host to reach the VMs. If one client misbehaves, continue on the other one and tell the trainer.
 - Full screen in the lab portal (Guacamole): press `F11`, move the mouse to the top edge to bring back the address bar and click **Reload** (inside the session `F5` goes to the VM) – the connection to the VM reconnects at full screen size without black borders.
 - CMTrace for all .log files – Intune Management Extension logs in `C:\ProgramData\Microsoft\IntuneManagementExtension\Logs`

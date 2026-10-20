@@ -42,4 +42,4 @@ lab:
 **Note:** CNAME auto-discovery is only used for MDM-only enrollment, where the user types an email address and Windows has to find the enrollment server. Microsoft is ending support for it for Windows MDM-only enrollment. Entra join with automatic enrollment doesn't need the record.
 
 **Note:** DNS changes can take a few minutes. If verification fails, wait and verify again – don't delete and re-add the domain.
-<!-- Source: Day 1 recording 2026-10-19 (PM 00:16–00:44). CNAME values: Learn "Enable auto-discovery of Intune enrollment server". CNAME end of support: Intune Customer Success blog (Tech Community), date VERIFY. -->
+<!-- Source: Day 1 recording 2026-10-19 (PM 00:16–00:44). CNAME values: Learn "Enable auto-discovery of Intune enrollment server". CNAME end of support: https://techcommunity.microsoft.com/blog/intunecustomersuccess/preparing-for-end-of-support-for-cname-auto-discovery-in-windows-mdm-only-enroll/4564973/ (date VERIFY). -->
