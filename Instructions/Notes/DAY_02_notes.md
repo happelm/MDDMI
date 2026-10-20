@@ -133,7 +133,7 @@ Lab: [2.7 Group Policy analytics](../Labs/LAB_02_7_group-policy-analytics.html)
 - [IntuneManagement](https://github.com/Micke-K/IntuneManagement) (community): backup, export and import of Intune policies.
 - [awesomeintune.com](https://awesomeintune.com) (community): curated list of Intune tools and blogs.
 - [intunesettings.app](https://intunesettings.app) (community): search all settings catalog settings.
-- [Intune Hydration Kit](https://www.intunehydrationkit.com/) (community): builds a baseline Intune configuration in a tenant.
+- [Intune Hydration Kit](https://www.intunehydrationkit.com/) (community): builds a baseline Intune configuration in a tenant. *Trainer recommendation:* use it in test tenants, not in production.
 
 <!-- VERIFY: intunesettings.app and awesomeintune.com URLs before publishing. Hydration Kit description from trainer mention, check wording. -->
 
