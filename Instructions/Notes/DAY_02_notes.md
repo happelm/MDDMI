@@ -13,8 +13,9 @@ title: 'Day 2 notes – Windows management'
 - On Windows, the Company Portal isn't needed for enrollment. An Entra join with automatic enrollment, GPO auto-enrollment or Windows Autopilot enrolls the device without it. You still need the Company Portal to install **Available** apps.
 - The Intune Management Extension (IME) installs itself when the first Win32 app, PowerShell script or remediation targets the device.
 - Device cleanup rules hide Intune devices that haven't checked in for 30 to 270 days. They don't wipe or retire the device and don't remove it from Entra ID.
+- Devices deleted in Entra ID go to a soft-deleted state (preview) and can be restored for 30 days – BitLocker recovery keys and LAPS passwords are kept. During the preview, restore works only with Microsoft Graph or PowerShell.
 
-Sources: [Device enrollment guide](https://learn.microsoft.com/intune/device-enrollment/guide) · [Corporate identifiers and ownership](https://learn.microsoft.com/intune/device-enrollment/add-corporate-identifiers) · [Device cleanup rules](https://learn.microsoft.com/intune/governance/configure-cleanup-rules)
+Sources: [Device enrollment guide](https://learn.microsoft.com/intune/device-enrollment/guide) · [Corporate identifiers and ownership](https://learn.microsoft.com/intune/device-enrollment/add-corporate-identifiers) · [Device cleanup rules](https://learn.microsoft.com/intune/governance/configure-cleanup-rules) · [Device soft delete (preview)](https://learn.microsoft.com/entra/identity/devices/concept-soft-delete-devices)
 
 ## 2. Enrollment restrictions
 
@@ -132,8 +133,9 @@ Lab: [2.7 Group Policy analytics](../Labs/LAB_02_7_group-policy-analytics.html)
 - [IntuneManagement](https://github.com/Micke-K/IntuneManagement) (community): backup, export and import of Intune policies.
 - [awesomeintune.com](https://awesomeintune.com) (community): curated list of Intune tools and blogs.
 - [intunesettings.app](https://intunesettings.app) (community): search all settings catalog settings.
+- [Intune Hydration Kit](https://www.intunehydrationkit.com/) (community): builds a baseline Intune configuration in a tenant.
 
-<!-- VERIFY: Intune Hydration Kit (mentioned in class) – author/URL. intunesettings.app and awesomeintune.com URLs before publishing. -->
+<!-- VERIFY: intunesettings.app and awesomeintune.com URLs before publishing. Hydration Kit description from trainer mention, check wording. -->
 
 ## What you did today
 
