@@ -45,7 +45,7 @@ Already done: users synced and licensed (Lab 1.3), MDM user scope **All** (Lab 2
 - [ ] CL1 and CL2 are listed in Intune admin center → Devices → Windows
 - [ ] You found the join in the User Device Registration log and event `75` or `76` in the DeviceManagement-Enterprise-Diagnostics-Provider log
 
-**Note:** The ADMX on DC1 still uses the old name "Azure AD". **Device Credential** is for VDI scenarios only.
+**Note:** The ADMX on DC1 still uses the old name "Azure AD". **Device Credential** is only supported for co-management and Azure Virtual Desktop multi-session hosts.
 
 **Note:** The MDM URL in `dsregcmd /status` can show up only after another restart. The EnterpriseMgmt task retries the enrollment every 5 minutes – a few minutes of waiting are normal.
 

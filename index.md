@@ -26,6 +26,8 @@ Lab tenant and licenses, custom domain and DNS records, hybrid identity with Mic
 
 Enrollment restrictions, roles and permissions, Entra join and single sign-on, Microsoft Entra hybrid join by GPO, co-management with Configuration Manager, configuration profiles, assignment filters and CSPs, Group Policy analytics.
 
+**Day notes:** [Day 2 – Windows management](Instructions/Notes/DAY_02_notes.html) (draft)
+
 | Lab | Title | Time |
 |---|---|---|
 | 2.1 | [Enrollment restrictions](Instructions/Labs/LAB_02_1_enrollment-restrictions.html) | 15 min |
@@ -75,6 +77,7 @@ Summary of each day with sources, for after the course.
 | Day | Notes |
 |---|---|
 | 1 | [Foundation and hybrid identity](Instructions/Notes/DAY_01_notes.html) (draft) |
+| 2 | [Windows management](Instructions/Notes/DAY_02_notes.html) (draft) |
 
 ### Appendix
 
