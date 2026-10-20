@@ -1,11 +1,11 @@
 ---
-title: 'Lab 2.1 – Hybrid join CL1 and CL2'
+title: 'Lab 2.2 – Hybrid join CL1 and CL2'
 lab:
-    title: 'Lab 2.1 – Hybrid join CL1 and CL2'
+    title: 'Lab 2.2 – Hybrid join CL1 and CL2'
     module: 'Day 2 – Windows management'
 ---
 
-# Lab 2.1 – Hybrid join CL1 and CL2
+# Lab 2.2 – Hybrid join CL1 and CL2
 
 **Estimated time:** 60 minutes
 <!-- VERIFY: duration -->
@@ -14,7 +14,7 @@ lab:
 
 **Goal:** Bring the domain-joined clients CL1 and CL2 to Microsoft Entra hybrid join and into Intune with the five-step program – and troubleshoot it on the client.
 
-Steps 1–3 are done since Day 1: computer objects synced, MDM auto-enrollment on, licenses assigned.
+Already done: users synced and licensed (Lab 1.3), MDM user scope **All** (Lab 2.1). CL1 and CL2 are in `OU=Cloud`, but Connect Sync takes them to Entra ID only after they wrote their `userCertificate` in this lab.
 
 1. SRV1: Microsoft Entra Connect → Configure → **Configure device options** → **Configure Hybrid Microsoft Entra join**: select **Windows 10 or later domain-joined devices**, forest `smart.etc`, authentication service **Microsoft Entra ID**, enterprise admin `SMART\Administrator`.
 2. DC1: Group Policy Management: create a GPO `MDM Auto-Enrollment` linked to `OU=Cloud` with Computer Configuration → Policies → Administrative Templates → Windows Components → MDM → **Enable automatic MDM enrollment using default Microsoft Entra credentials** = Enabled, credential type **User Credential**.
@@ -35,7 +35,7 @@ Steps 1–3 are done since Day 1: computer objects synced, MDM auto-enrollment o
 - [ ] CL1 and CL2 are listed in Intune admin center → Devices → Windows
 - [ ] You found event `75` or `76` on one client and know what it means
 
-**Note:** The hybrid join needs a sync cycle after the client wrote its certificate. MDM enrollment often needs another sign-in or a restart – a few minutes of waiting are normal.
+**Note:** The hybrid join needs a sync cycle after the client wrote its certificate. After that sync the device shows up in Entra ID as **Pending** until the client completes the registration – then it shows **Microsoft Entra hybrid joined** with a registration date. MDM enrollment often needs another sign-in or a restart – a few minutes of waiting are normal.
 
 **Why:** The GPO only triggers the enrollment. Without hybrid join and a PRT for the user, the enrollment task fails.
 

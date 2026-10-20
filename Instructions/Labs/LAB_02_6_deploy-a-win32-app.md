@@ -1,11 +1,11 @@
 ---
-title: 'Lab 2.4 – Deploy a Win32 app'
+title: 'Lab 2.6 – Deploy a Win32 app'
 lab:
-    title: 'Lab 2.4 – Deploy a Win32 app'
+    title: 'Lab 2.6 – Deploy a Win32 app'
     module: 'Day 2 – Windows management'
 ---
 
-# Lab 2.4 – Deploy a Win32 app
+# Lab 2.6 – Deploy a Win32 app
 
 **Estimated time:** 45 minutes
 <!-- VERIFY: duration -->
@@ -14,14 +14,14 @@ lab:
 
 **Goal:** Package CMTrace as Win32 app, deploy it from Intune and follow it in the Company Portal and the logs.
 
-1. CL3: create `C:\Source\CMTrace` and copy `cmtrace.exe`, `CmtraceInstall.ps1` and `CmtraceRemove.ps1` from `\\dc1\labfiles` into it. If Windows asks for credentials, sign in as `SMART\User1`.
+1. CL3: create `C:\Source\CMTrace` and copy `cmtrace.exe`, `CmtraceInstall.ps1` and `CmtraceRemove.ps1` from the lab files folder `C:\Scripts` into it.
 2. CL3: download the Microsoft Win32 Content Prep Tool (`IntuneWinAppUtil.exe`) from GitHub and package the folder:
 
    ```powershell
    .\IntuneWinAppUtil.exe -c C:\Source\CMTrace -s CmtraceInstall.ps1 -o C:\Source\Output
    ```
 
-3. Intune admin center → Apps → Windows → Create → **Windows app (Win32)**: app `CMTrace` from `CmtraceInstall.intunewin` with these settings, assigned as **Available** to `Lab Users`:
+3. Intune admin center → Apps → Windows → Create → **Windows app (Win32)**: app `CMTrace` from `CmtraceInstall.intunewin` with these settings, assigned as **Available** to `Cloud Users`:
 
    | Setting | Value |
    |---|---|
@@ -30,7 +30,7 @@ lab:
    | Install behavior | System |
    | Detection rule | File: `C:\Windows`, file or folder `CMTrace.exe`, file or folder exists |
 
-4. Apps → Windows → Create → **Microsoft Store app (new)**: add an app of your choice and assign it as **Available** to `Lab Users`.
+4. Apps → Windows → Create → **Microsoft Store app (new)**: add an app of your choice and assign it as **Available** to `Cloud Users`.
 5. CL3 as User1: open the Company Portal and install both apps.
 6. CL3: open `C:\ProgramData\Microsoft\IntuneManagementExtension\Logs\AppWorkload.log` with CMTrace and find download, install and detection of `CMTrace`.
 
@@ -43,5 +43,5 @@ lab:
 **Note:** The Intune Management Extension installs itself the first time a Win32 app, script or remediation targets the device or user – the first install takes longer.
 
 **Why:** The detection rule decides **Installed** – not the exit code alone.
-<!-- Confirmed 2026-10-15: all lab files on \\dc1\labfiles. cmtrace.exe stays out of the public repo. -->
+<!-- 2026-10-20 Michael: lab files currently via bit.ly share to C:\Scripts, later as ZIP from this repo. VERIFY: on which machine C:\Scripts lives (CL3 needs the files). cmtrace.exe stays out of the public repo. -->
 <!-- VERIFY: Company Portal install – auto-installed in pod or part of this lab (handbook: "Installation des Company Portals")? -->

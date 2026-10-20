@@ -11,26 +11,28 @@ Lab instructions for the five-day MDDMI workshop: three days Windows, one day An
 
 ### Day 1 – Foundation and hybrid identity
 
-Tenant, custom domain and licenses, hybrid identity with Microsoft Entra Connect Sync, groups and RBAC, Company Portal, Entra join vs. registration.
+Lab tenant and licenses, custom domain and DNS records, hybrid identity with Microsoft Entra Connect Sync, dynamic groups, Company Portal.
 
 | Lab | Title | Time |
 |---|---|---|
 | 1.1 | [Set up your tenant](Instructions/Labs/LAB_01_1_set-up-your-tenant.html) | 30 min |
-| 1.2 | [Sync your users](Instructions/Labs/LAB_01_2_sync-your-users.html) | 45 min |
-| 1.3 | [Groups, roles and Company Portal](Instructions/Labs/LAB_01_3_groups-roles-and-company-portal.html) | 30 min |
-| 1.4 | [Join CL3 to Entra ID](Instructions/Labs/LAB_01_4_join-cl3-to-entra-id.html) | 30 min |
+| 1.2 | [Add your custom domain](Instructions/Labs/LAB_01_2_add-your-custom-domain.html) | 30 min |
+| 1.3 | [Sync your users](Instructions/Labs/LAB_01_3_sync-your-users.html) | 45 min |
+| 1.4 | [Groups and Company Portal](Instructions/Labs/LAB_01_4_groups-and-company-portal.html) | 30 min |
 
 ### Day 2 – Windows management
 
-Microsoft Entra hybrid join and MDM auto-enrollment by GPO, configuration profiles and CSPs, Group Policy analytics, Win32 and Store apps, Windows Autopilot.
+MDM auto-enrollment, Entra join vs. registration, Microsoft Entra hybrid join by GPO, roles and permissions, configuration profiles and CSPs, Group Policy analytics, Win32 and Store apps, Windows Autopilot.
 
 | Lab | Title | Time |
 |---|---|---|
-| 2.1 | [Hybrid join CL1 and CL2](Instructions/Labs/LAB_02_1_hybrid-join-cl1-and-cl2.html) | 60 min |
-| 2.2 | [Configuration profiles](Instructions/Labs/LAB_02_2_configuration-profiles.html) | 45 min |
-| 2.3 | [Migrate a GPO](Instructions/Labs/LAB_02_3_migrate-a-gpo.html) | 30 min |
-| 2.4 | [Deploy a Win32 app](Instructions/Labs/LAB_02_4_deploy-a-win32-app.html) | 45 min |
-| 2.5 | [Deploy CL4 with Windows Autopilot](Instructions/Labs/LAB_02_5_deploy-cl4-with-autopilot.html) | 60 min |
+| 2.1 | [Join CL3 to Entra ID](Instructions/Labs/LAB_02_1_join-cl3-to-entra-id.html) | 30 min |
+| 2.2 | [Hybrid join CL1 and CL2](Instructions/Labs/LAB_02_2_hybrid-join-cl1-and-cl2.html) | 60 min |
+| 2.3 | [Roles and permissions](Instructions/Labs/LAB_02_3_roles-and-permissions.html) | 20 min |
+| 2.4 | [Configuration profiles](Instructions/Labs/LAB_02_4_configuration-profiles.html) | 45 min |
+| 2.5 | [Migrate a GPO](Instructions/Labs/LAB_02_5_migrate-a-gpo.html) | 30 min |
+| 2.6 | [Deploy a Win32 app](Instructions/Labs/LAB_02_6_deploy-a-win32-app.html) | 45 min |
+| 2.7 | [Deploy CL4 with Windows Autopilot](Instructions/Labs/LAB_02_7_deploy-cl4-with-autopilot.html) | 60 min |
 
 ### Day 3 – Windows security
 
@@ -90,12 +92,13 @@ One pod and one Microsoft 365 tenant per participant – nothing is shared, you 
 |---|---|---|
 | DC1 | AD DS and DNS, domain `smart.etc` | `OU=Cloud` is the sync scope (User1, User2, CL1, CL2) |
 | SRV1 | Windows Server, domain joined | Becomes your Microsoft Entra Connect Sync server on Day 1 |
-| PKI | Smart PKI, root CA | Root certificate for Lab 2.2 and 5.2 |
-| CL1 | Windows 11, domain joined | User1 – hybrid joined on Day 2 |
-| CL2 | Windows 11, domain joined | User2 – hybrid joined on Day 2 |
-| CL3 | Windows 11, no domain | In OOBE – you join it to Entra ID on Day 1 |
+| PKI | One-tier Enterprise CA (Hyper-V VM on your lab host) | Switched off – not needed. Its root certificate is already distributed in `smart.etc` through AD (Lab 2.4, 5.2) |
+| ConfigMgr server | Configuration Manager (Hyper-V VM on your lab host) | CL1 and CL2 have the ConfigMgr client |
+| CL1 | Windows 11, domain joined | Signs in automatically as User1 – hybrid joined on Day 2 |
+| CL2 | Windows 11, domain joined | Signs in automatically as User2 – hybrid joined on Day 2 |
+| CL3 | Windows 11, no domain | In OOBE – you join it to Entra ID on Day 2 |
 | CL4 | Windows 11, no domain | In OOBE – you deploy it with Windows Autopilot on Day 2 |
-| Tenant | Microsoft 365 E3 or E5 | Your tenant admin account from your lab hoster |
+| Tenant | Microsoft 365 E5 (GoDeploy, 20 licenses) | You launch it in Lab 1.1; it expires after two weeks |
 
 On Day 4 you get an Android test device from the trainer. For Day 5 the trainer tells you which iPhone or iPad to use.
 
@@ -112,8 +115,9 @@ Passwords are on the pod card from the trainer.
 
 ### Tools
 
-- Lab files: `\\dc1\labfiles`
+- Lab files: the trainer gives you a link to the course share; copy its `Scripts` folder to `C:\Scripts`. Later the lab files come as a ZIP download from this repository.
+- Work on your lab host, never on your own notebook. Use Remote Desktop Connection Manager on the lab host to reach the VMs. If one client misbehaves, continue on the other one and tell the trainer.
 - Full screen in the lab portal (Guacamole): press `F11`, move the mouse to the top edge to bring back the address bar and click **Reload** (inside the session `F5` goes to the VM) – the connection to the VM reconnects at full screen size without black borders.
 - CMTrace for all .log files – Intune Management Extension logs in `C:\ProgramData\Microsoft\IntuneManagementExtension\Logs`
-- Microsoft 365 admin center: admin.microsoft.com · Intune admin center: intune.microsoft.com · Entra admin center: entra.microsoft.com
-- Lab files: [Labfiles folder in this repository](https://github.com/happelm/MDDMI/tree/main/Labfiles)
+- Microsoft 365 admin center: admin.cloud.microsoft · Intune admin center: intune.microsoft.com · Entra admin center: entra.microsoft.com
+- Scripts used in the labs: [Labfiles folder in this repository](https://github.com/happelm/MDDMI/tree/main/Labfiles)

@@ -1,11 +1,11 @@
 ---
-title: 'Lab 2.3 – Migrate a GPO'
+title: 'Lab 2.5 – Migrate a GPO'
 lab:
-    title: 'Lab 2.3 – Migrate a GPO'
+    title: 'Lab 2.5 – Migrate a GPO'
     module: 'Day 2 – Windows management'
 ---
 
-# Lab 2.3 – Migrate a GPO
+# Lab 2.5 – Migrate a GPO
 
 **Estimated time:** 30 minutes
 <!-- VERIFY: duration -->
@@ -17,8 +17,8 @@ lab:
 1. DC1: Group Policy Management → a GPO with computer settings → **Save Report** as XML.
 2. Intune admin center → Devices → Manage devices → Group Policy analytics → **Import**: upload the XML.
 3. Open the report: which settings are supported by MDM, which are not, which are deprecated?
-4. Select the supported settings → **Migrate**: create a settings catalog profile `GPO Migration` and assign it to `Win11 Devices`.
-5. Intune admin center → Devices → Configuration → Create → Windows 10 and later → Templates → **Wi-Fi**: profile `Lab Wi-Fi` for a fake WLAN with SSID `LAB-WLAN`, assigned to `Win11 Devices`.
+4. Select the supported settings → **Migrate**: create a settings catalog profile `GPO Migration` and assign it to `All Windows 11 Devices`.
+5. Intune admin center → Devices → Configuration → Create → Windows 10 and later → Templates → **Wi-Fi**: profile `Lab Wi-Fi` for a fake WLAN with SSID `LAB-WLAN`, assigned to `All Windows 11 Devices`.
 6. CL3: sync and check the Wi-Fi profile with `netsh wlan show profiles`.
 
 ### Checkpoint

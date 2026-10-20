@@ -14,7 +14,7 @@ lab:
 
 **Goal:** Create the core Endpoint security policies for your Windows clients in one block – and check them on the clients only at the end.
 
-Create all policies in Intune admin center → Endpoint security, platform **Windows**, assigned to `Win11 Devices`. Do not check the clients in between.
+Create all policies in Intune admin center → Endpoint security, platform **Windows**, assigned to `All Windows 11 Devices`. Do not check the clients in between.
 
 1. Antivirus → Microsoft Defender Antivirus: policy `AV Baseline` with real-time protection, cloud-delivered protection and an exclusion for `C:\Source`.
 2. Disk encryption → BitLocker: policy `BitLocker OS Drive` – require device encryption, encrypt the OS drive silently, back up the recovery key to Microsoft Entra ID. Look at every other option with the trainer: TPM only vs. TPM and PIN, encryption method, recovery options.

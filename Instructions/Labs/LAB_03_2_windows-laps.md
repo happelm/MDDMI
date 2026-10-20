@@ -15,7 +15,7 @@ lab:
 **Goal:** Let Windows LAPS manage the local administrator password of your Entra joined clients and read it as an admin.
 
 1. Entra admin center → Identity → Devices → All devices → Device settings: **Enable Microsoft Entra Local Administrator Password Solution (LAPS)** = Yes.
-2. Intune admin center → Endpoint security → Account protection → Create policy → Windows → **Local admin password solution (Windows LAPS)**: policy `LAPS` with backup directory **Backup the password to Microsoft Entra ID only** and a password age of `7` days, assigned to `Win11 Devices`.
+2. Intune admin center → Endpoint security → Account protection → Create policy → Windows → **Local admin password solution (Windows LAPS)**: policy `LAPS` with backup directory **Backup the password to Microsoft Entra ID only** and a password age of `7` days, assigned to `All Windows 11 Devices`.
 3. CL3: sync, then look at Event Viewer → Applications and Services Logs → Microsoft → Windows → LAPS → Operational.
 4. Intune admin center → Devices → All devices → CL3 → **Local admin password**: show the password.
 5. Intune admin center → Devices → All devices → CL3 → **Rotate local admin password**. Show the password again.

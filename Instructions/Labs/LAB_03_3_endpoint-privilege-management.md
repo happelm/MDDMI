@@ -16,7 +16,7 @@ lab:
 
 **Goal:** Let a standard user run a specific installer and a specific admin command with elevation – without making the user a local administrator.
 
-1. Intune admin center → Endpoint security → Endpoint Privilege Management → Create policy → Windows → **Elevation settings policy**: policy `EPM Settings` with Endpoint Privilege Management **Enabled**, assigned to `Win11 Devices`.
+1. Intune admin center → Endpoint security → Endpoint Privilege Management → Create policy → Windows → **Elevation settings policy**: policy `EPM Settings` with Endpoint Privilege Management **Enabled**, assigned to `All Windows 11 Devices`.
 2. Create policy → **Elevation rules policy**: policy `EPM Rules` with two rules, elevation type **User confirmed**:
    - the Notepad++ installer (file name and file hash or certificate)
    - `sc.exe` from `C:\Windows\System32`

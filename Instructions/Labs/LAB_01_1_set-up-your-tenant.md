@@ -12,21 +12,28 @@ lab:
 
 > **Draft:** This lab is new and not yet tested in this course. If a step behaves differently, tell the trainer.
 
-**Goal:** Sign in to your own lab tenant as Global Administrator with MFA, know your licenses and add your custom domain.
+**Goal:** Launch your own Microsoft 365 E5 lab tenant, sign in as Global Administrator with MFA and free up licenses for your lab users.
 
-1. Sign in to the Microsoft 365 admin center (admin.microsoft.com) with the tenant admin account from your lab hoster. Register MFA with the Microsoft Authenticator app when you are asked.
-2. Microsoft 365 admin center → Billing → Your products: note which licenses your tenant has and how many are free.
-3. Open the Intune admin center (intune.microsoft.com) and the Entra admin center (entra.microsoft.com) in the same browser profile and check that both load with your admin account.
-4. Entra admin center → Identity → Settings → Domain names → Add custom domain: add the third-level domain the trainer assigned to you (for example `i37.mslab.live`).
-5. Create the TXT record shown by Entra ID in the DNS zone of your third-level domain, as the trainer shows you, then select **Verify**.
+Do every step on your lab host, never on your own notebook: your corporate browser is often signed in to your production tenant.
+
+1. Lab host: open `https://lms.godeploy.it` → **Register Now** and create your own account. **Sign in with Microsoft** usually fails – use the registration form.
+2. Register the product key you got from the trainer (the key contains the letter O, not the digit zero). Open the course and select **Launch Lab**. Provisioning takes a few minutes.
+3. Copy the user name and the *complete* password from **Office 365 Tenant Credentials** into Notepad – the password field scrolls, so make sure you get all of it. Ignore the VMs and lab instructions in the GoDeploy portal.
+4. Open the Microsoft 365 admin center (`admin.cloud.microsoft`) in an InPrivate window and sign in as **MOD Administrator** with these credentials.
+5. Register MFA when you are asked. Any authenticator app works – for a non-Microsoft app choose **I want to use a different authenticator app**.
+6. Microsoft 365 admin center → Billing → Your products: your tenant has 20 Microsoft 365 E5 licenses and none are free.
+7. Microsoft 365 admin center → Users → Active users: delete two or three demo users, for example Megan Bowen, Lynne Robbins and Joni Sherman. **Never delete MOD Administrator.**
+8. Open the Entra admin center (`entra.microsoft.com`) and the Intune admin center (`intune.microsoft.com`) in the same window and check that both load.
 
 ### Checkpoint
 
 - [ ] Admin sign-in with MFA works
-- [ ] You know your license type (for example Microsoft 365 E5 or EMS E5) and the number of free licenses
-- [ ] Your custom domain shows **Verified** in Entra ID
+- [ ] At least two Microsoft 365 E5 licenses are available
+- [ ] Entra admin center and Intune admin center open with your admin account
 
-**Note:** DNS changes can take a few minutes. If verification fails, wait and verify again – do not delete and re-add the domain.
+**Note:** The tenant expires two weeks after you launch it and is then deleted. Don't store anything in it that you want to keep.
 
-**Why:** In real projects you almost always use a custom domain for UPNs. The `onmicrosoft.com` domain works for every lab in this course – if the custom domain cannot be verified in class, continue with it.
-<!-- Trainer: mslab.live is delegated in third-level zones, counter at i37 (2026-10-15). VERIFY: DNS provider/self-service portal for the delegated zones. -->
+**Note:** If the MFA push doesn't arrive, close the browser and sign in again.
+
+**Note:** The vLab can't take files from your notebook. Copy links and text into the session, not files.
+<!-- Source: Day 1 recording 2026-10-19 (AM 02:45–03:13). VERIFY: exact admin UPN format of the GoDeploy tenant. -->
