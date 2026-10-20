@@ -32,5 +32,5 @@ lab:
 
 **Why:** With a work profile, protection is built in – work apps and data stay in the profile. App protection policies on top are only needed for devices without enrollment.
 <!-- Confirmed 2026-10-15: participants get Android test devices. VERIFY: Google account on the test devices for the personal profile (handbook: needed for device setup). -->
-<!-- VERIFY: CA from Lab 3.4 targets Windows only – both policies coexist; check Office 365 vs. Exchange Online targeting. -->
+<!-- VERIFY: CA from Lab 3.2 targets Windows only – both policies coexist; check Office 365 vs. Exchange Online targeting. -->
 <!-- VERIFY: compliance setting name "Required password type / minimum password length" for personally-owned work profile (device vs. work profile password). -->

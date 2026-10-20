@@ -36,14 +36,12 @@ MDM auto-enrollment, Entra join vs. registration, Microsoft Entra hybrid join by
 
 ### Day 3 – Windows security
 
-Endpoint security policies, Windows LAPS, Endpoint Privilege Management, compliance and Conditional Access, Microsoft Defender for Endpoint (demo).
+Endpoint security policies, compliance and Conditional Access, Microsoft Defender for Endpoint (demo).
 
 | Lab | Title | Time |
 |---|---|---|
 | 3.1 | [Endpoint security policies](Instructions/Labs/LAB_03_1_endpoint-security-policies.html) | 60 min |
-| 3.2 | [Windows LAPS](Instructions/Labs/LAB_03_2_windows-laps.html) | 30 min |
-| 3.3 | [Endpoint Privilege Management](Instructions/Labs/LAB_03_3_endpoint-privilege-management.html) | 30 min (optional) |
-| 3.4 | [Compliance and Conditional Access](Instructions/Labs/LAB_03_4_compliance-and-conditional-access.html) | 45 min |
+| 3.2 | [Compliance and Conditional Access](Instructions/Labs/LAB_03_2_compliance-and-conditional-access.html) | 45 min |
 
 ### Day 4 – Android
 

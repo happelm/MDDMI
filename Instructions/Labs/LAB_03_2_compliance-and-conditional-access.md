@@ -1,11 +1,11 @@
 ---
-title: 'Lab 3.4 – Compliance and Conditional Access'
+title: 'Lab 3.2 – Compliance and Conditional Access'
 lab:
-    title: 'Lab 3.4 – Compliance and Conditional Access'
+    title: 'Lab 3.2 – Compliance and Conditional Access'
     module: 'Day 3 – Windows security'
 ---
 
-# Lab 3.4 – Compliance and Conditional Access
+# Lab 3.2 – Compliance and Conditional Access
 
 **Estimated time:** 45 minutes
 <!-- VERIFY: duration -->
