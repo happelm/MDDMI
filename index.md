@@ -114,7 +114,7 @@ Passwords are on the pod card from the trainer.
 ### Tools
 
 - Lab files: the trainer gives you a link to the course share; copy its `Scripts` folder to `C:\Scripts`. Later the lab files come as a ZIP download from this repository.
-- Work on your lab host, never on your own notebook. Use Remote Desktop Connection Manager on the lab host to reach the VMs. If one client misbehaves, continue on the other one and tell the trainer.
+- Online participants open the vLab host with the link from the ETC customer portal; in the classroom you sit in front of your lab host. Work on your lab host, never on your own notebook. Use Remote Desktop Connection Manager on the lab host to reach the VMs. If one client misbehaves, continue on the other one and tell the trainer.
 - Full screen in the lab portal (Guacamole): press `F11`, move the mouse to the top edge to bring back the address bar and click **Reload** (inside the session `F5` goes to the VM) – the connection to the VM reconnects at full screen size without black borders.
 - CMTrace for all .log files – Intune Management Extension logs in `C:\ProgramData\Microsoft\IntuneManagementExtension\Logs`
 - Microsoft 365 admin center: admin.cloud.microsoft · Intune admin center: intune.microsoft.com · Entra admin center: entra.microsoft.com

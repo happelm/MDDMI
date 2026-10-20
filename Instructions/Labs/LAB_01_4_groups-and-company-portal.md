@@ -35,7 +35,7 @@ Use English for object names and fill in a description for every object you crea
    |---|---|
    | Organization name | Your custom domain |
    | Color | Your choice |
-   | Logo | A logo from `C:\Scripts` |
+   | Logo | `C:\Scripts\ETCLogoTransparent.png` |
    | IT contact | Your choice |
    | Privacy statement URL | Any URL (required) |
    | Hide Remove and Reset buttons on corporate Windows devices | **Yes** |
