@@ -20,6 +20,18 @@ title: 'Day 1 notes – Foundation and hybrid identity'
 
 Online participants find the vLab link in the ETC customer portal. Lab files are in `C:\Scripts` on your vLab host.
 
+- Work **only on your lab host**, never on your own notebook. Your corporate browser is usually signed in to your production tenant – mixing up tenants is the most common and most dangerous lab mistake.
+- If the Guacamole sign-in fails, press `Ctrl+Alt+Shift`, select **Logoff** in the side menu and open your link again.
+- After two weeks the tenant is deleted for good. Keep nothing in it that you want to keep.
+
+| Portal | URL | Used for |
+|---|---|---|
+| Microsoft 365 admin center | admin.cloud.microsoft | Licenses, domains and their DNS records, users |
+| Microsoft Entra admin center | entra.microsoft.com | Users, groups, devices, custom domains, Entra Connect, Conditional Access |
+| Microsoft Intune admin center | intune.microsoft.com | Devices, apps, endpoint security, tenant administration |
+
+Several items in the Intune admin center – Conditional Access, for example – open Entra pages. If you get *access denied* there, you're missing an Entra role, not an Intune role.
+
 ## 1. Intune needs Entra ID
 
 - Intune doesn't exist on its own: identities, groups, device objects, Conditional Access and licensing all come from Microsoft Entra ID. Good Entra knowledge is a prerequisite for working with Intune.
@@ -32,6 +44,8 @@ Online participants find the vLab link in the ETC customer portal. Lab files are
 - Periodic password changes are no longer recommended (NIST SP 800-63B, BSI). Change a password when there is a reason to.
 - An Entra account always has a password, and you can't remove it. For passwordless users, Microsoft documents scrambling the password so that nobody knows it.
 - Since 2025, MFA is mandatory for the Microsoft Intune admin center, the Entra admin center and the Azure portal.
+- Avoid MFA fatigue: good single sign-on means fewer prompts, and fewer prompts mean users still pay attention when one appears.
+- Require MFA for device registration and enrollment – it keeps rogue devices out of your tenant.
 
 Sources: [Authentication methods](https://learn.microsoft.com/entra/identity/authentication/concept-authentication-methods) · [Mandatory MFA for admin portals](https://learn.microsoft.com/entra/identity/authentication/concept-mandatory-multifactor-authentication) · [NIST SP 800-63B](https://pages.nist.gov/800-63-4/sp800-63b.html)
 <!-- VERIFY Michael: password scramble Learn article title/URL before publishing -->
@@ -48,9 +62,11 @@ Sources: [Intune planning guide](https://learn.microsoft.com/intune/fundamentals
 
 ## 4. Custom domain and DNS
 
+- Single sign-on needs the same UPN suffix on-premises and in the cloud. Neither `smart.etc` nor the `onmicrosoft.com` domain can be renamed, so a third, routable domain goes into both: as UPN suffix in AD and as verified custom domain in Entra ID.
 - A custom domain needs a TXT record for verification in Entra ID. For mail and Intune, Microsoft 365 asks for MX, `autodiscover`, SPF and the two Intune CNAMEs.
 - `enterpriseregistration` → `enterpriseregistration.windows.net`, and `enterpriseenrollment` → `enterpriseenrollment-s.manage.microsoft.com`. These CNAMEs only matter for enrollment without automatic enrollment, where Windows has to discover the server from the user's email address.
 - Microsoft is ending support for CNAME auto-discovery for Windows MDM-only enrollment (Intune Customer Success blog). Entra join with automatic enrollment doesn't use it.
+- Whoever can edit these DNS records can break Microsoft 365 for the whole company – mail, Teams, everything. Protect access to your DNS provider.
 
 Sources: [Enable auto-discovery of the Intune enrollment server](https://learn.microsoft.com/intune/device-enrollment/windows/create-cname-autodiscovery) · [Intune Customer Success blog: Preparing for end of support for CNAME auto-discovery in Windows MDM-only enrollment](https://techcommunity.microsoft.com/blog/intunecustomersuccess/preparing-for-end-of-support-for-cname-auto-discovery-in-windows-mdm-only-enroll/4564973/)
 <!-- VERIFY: end-of-support date from the blog -->
@@ -101,8 +117,11 @@ Lab: [1.2 Add your custom domain](../Labs/LAB_01_2_add-your-custom-domain.html)
 | Password hash synchronization | Recommended default, works when on-prem is down |
 | Enable single sign-on **cleared** | Seamless SSO is legacy; joined Windows devices use the PRT |
 | Filter on `OU=Cloud` only, no group filtering | Group filtering is for pilots only |
+| **Create new AD account** for the sync | A domain admin must never be the sync account; the wizard refuses it |
 | Password writeback **on** | Self-service password reset for synced users |
 | Continue without all UPN suffixes verified | `smart.etc` can never be verified; only users with the custom suffix are needed |
+
+Synced attributes are read-only in Entra ID – change them in Active Directory and let the next sync carry them over.
 
 Sources: [Connect Sync](https://learn.microsoft.com/entra/identity/hybrid/connect/how-to-connect-sync-whatis) · [Cloud Sync](https://learn.microsoft.com/entra/identity/hybrid/cloud-sync/what-is-cloud-sync) · [Staging server](https://learn.microsoft.com/entra/identity/hybrid/connect/how-to-connect-sync-staging-server) · [PHS](https://learn.microsoft.com/entra/identity/hybrid/connect/how-to-connect-password-hash-synchronization) · [Seamless SSO](https://learn.microsoft.com/entra/identity/hybrid/connect/how-to-connect-sso) · [Entra ID to AD provisioning (preview)](https://learn.microsoft.com/entra/identity/hybrid/cloud-sync/overview-provision-entra-id-to-active-directory) · [Default sync rules for computers](https://learn.microsoft.com/entra/identity/hybrid/connect/concept-azure-ad-connect-sync-default-configuration#out-of-box-rules-from-on-premises-to-microsoft-entra-id)
 
@@ -110,7 +129,8 @@ Lab: [1.3 Sync your users](../Labs/LAB_01_3_sync-your-users.html)
 
 ## 6. Device management options
 
-- Each platform has several enrollment methods; Android alone has six variants, from a personally owned work profile to fully managed and dedicated devices.
+- Ownership and management depth go together: the more strictly a device is managed, the more sensitive the data it may access – and the less freedom the user has. Conditional Access weighs the device's compliance from Intune together with other signals such as location and risk.
+- Each platform has several enrollment methods; Android alone has six variants, from a personally owned work profile to fully managed and dedicated devices. Choose carefully – changing the method later requires a device reset.
 - Windows supports MDM enrollment and app protection for Microsoft Edge on unmanaged devices. Windows Information Protection is retired.
 - Intune doesn't manage Windows Server through MDM. Defender for Endpoint security settings management can still apply endpoint security policies to servers.
 - **Recommendation:** use Entra join for new Windows devices. Hybrid join only for existing domain-joined devices.
@@ -119,17 +139,26 @@ Lab: [1.3 Sync your users](../Labs/LAB_01_3_sync-your-users.html)
 
 ## 7. Groups, Company Portal, terms
 
+- Assign to security groups and never mix users and devices in one group.
+- Android devices report different OS types depending on the enrollment method (`AndroidEnterprise`, `AndroidForWork`, …) – use `-startsWith "Android"`.
 - Dynamic groups need Entra ID P1. A tenant can have up to 15,000 of them. They update with a delay, so for time-critical assignments use **All devices** with an assignment filter.
 - The rule builder doesn't cover every operator. Write rules such as `-match` (regular expressions) in the text box, and use `-match` sparingly.
 - `deviceTrustType` values are `AzureAD` (Entra joined), `ServerAD` (hybrid joined) and `Workplace` (registered).
 - Windows 11 versions report `10.0.2xxxx`. 26H2 is build 26300, 26H1 is build 28000. Windows Server reports `deviceOSType` as "Windows Server", so a rule on `deviceOSType -eq "Windows"` keeps servers out.
 - Device categories can only be changed by an admin, not by the user.
-- Company Portal branding lives in Tenant administration → Customization. Hide Remove and Reset for corporate devices only works in the default policy; up to 25 additional policies can target user groups.
+- On Windows, deploy the Company Portal as one of the first apps – users install apps there, see their devices and find IT contact details.
+- Company Portal branding lives in Tenant administration → Customization → Default (edit). Hide Remove and Reset for corporate devices only works in the default policy; up to 25 additional policies can target user groups.
 - Intune terms and conditions and Entra terms of use both exist. Entra terms of use, enforced through Conditional Access, are the more flexible option.
 
 Sources: [Dynamic membership rules](https://learn.microsoft.com/entra/identity/users/groups-dynamic-membership) · [Windows 11 release information](https://learn.microsoft.com/windows/release-health/windows11-release-information) · [Terms and conditions](https://learn.microsoft.com/intune/intune-service/enrollment/terms-and-conditions-create)
 
 Lab: [1.4 Groups and Company Portal](../Labs/LAB_01_4_groups-and-company-portal.html)
+
+## Trainer recommendations
+
+- Use the portals and all object names in English – error messages and documentation are easier to match.
+- Fill in descriptions: who created an object and why it was changed.
+- Automate. AI makes writing scripts easy – but understand what you run.
 
 ## What you did today
 
