@@ -13,7 +13,7 @@ title: 'Day 2 notes – Windows management'
 - On Windows, the Company Portal isn't needed for enrollment. An Entra join with automatic enrollment, GPO auto-enrollment or Windows Autopilot enrolls the device without it. You still need the Company Portal to install **Available** apps.
 - The Intune Management Extension (IME) installs itself when the first Win32 app, PowerShell script or remediation targets the device.
 - Device cleanup rules hide Intune devices that haven't checked in for 30 to 270 days. They don't wipe or retire the device and don't remove it from Entra ID.
-- Devices deleted in Entra ID go to a soft-deleted state (preview) and can be restored for 30 days – BitLocker recovery keys and LAPS passwords are kept. In the course tenant, the Entra admin center already shows a **Restore devices** button for deleted devices, and it works. Learn still names only Microsoft Graph and PowerShell for the preview.<!-- Lab observation Michael 2026-10-20; VERIFY exact menu path. -->
+- Devices deleted in Entra ID go to a soft-deleted state (preview) and can be restored for 30 days – BitLocker recovery keys and LAPS passwords are kept. You restore them in the Entra admin center in the **Deleted devices** view. Learn still names only Microsoft Graph and PowerShell for the preview.<!-- Lab observation Michael 2026-10-20: restore works in the portal. -->
 
 Sources: [Device enrollment guide](https://learn.microsoft.com/intune/device-enrollment/guide) · [Corporate identifiers and ownership](https://learn.microsoft.com/intune/device-enrollment/add-corporate-identifiers) · [Device cleanup rules](https://learn.microsoft.com/intune/governance/configure-cleanup-rules) · [Device soft delete (preview)](https://learn.microsoft.com/entra/identity/devices/concept-soft-delete-devices)
 
@@ -133,7 +133,6 @@ Lab: [2.7 Group Policy analytics](../Labs/LAB_02_7_group-policy-analytics.html)
 - [IntuneManagement](https://github.com/Micke-K/IntuneManagement) (community): backup, export and import of Intune policies.
 - [awesomeintune.com](https://awesomeintune.com) (community): curated list of Intune tools and blogs.
 - [intunesettings.app](https://intunesettings.app) (community): search all settings catalog settings.
-- [Intune Hydration Kit](https://github.com/jorgeasaurus/IntuneHydrationKit-WebApp) (community): builds a baseline Intune configuration in a tenant. Use it in test tenants. Its README names a proprietary license – check it before any production use.
 
 <!-- VERIFY: intunesettings.app and awesomeintune.com URLs before publishing.  -->
 
