@@ -16,8 +16,8 @@ lab:
 
 **Why:** Without these records there is no mailbox and no device registration with the custom domain, and the UPNs of your synced users in Lab 1.3 need a verified domain.
 
-1. Entra admin center → Entra ID → Domain names (its own menu item, not inside Entra Connect) → **Add custom domain**: add your domain and note the TXT value.
-2. On your lab host, open the ClouDNS panel `https://panel.cloudns.com` – it only accepts connections from the lab hosts. The trainer gives you the sign-in.
+1. Entra admin center → Entra ID → Domain names → **Add custom domain**: add your domain and note the TXT value.
+2. On your lab host, open the ClouDNS panel `https://panel.cloudns.com` – it only accepts connections from the public IPs of the lab hosts. The trainer gives you the sign-in.
 3. ClouDNS panel → **Add new** → **Master Zone**: enter only your domain → **Create**. Wait until the zone is listed (2–3 minutes).
 4. In your zone → **Add new record** → type **TXT**: paste the value from Entra ID into **Points to** and save. Wait 1–2 minutes, then select **Verify** in Entra ID.
 5. Microsoft 365 admin center → Settings → Domains (**Show all**) → your domain (status **Incomplete setup**) → **Continue setup**.
