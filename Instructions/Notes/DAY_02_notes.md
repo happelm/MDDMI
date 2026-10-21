@@ -12,6 +12,7 @@ title: 'Day 2 notes – Windows management'
 - Enrollment restrictions control how many devices a user may enroll and which platforms and versions may enroll at all. GPO, co-management and Autopilot enrollments don't count against the device limit.
 - Intune roles plus scope groups and scope tags limit admins to part of the devices; Entra roles work on the whole tenant.
 - The MDM user scope decides who enrolls automatically. An Entra joined device gets single sign-on to cloud and on-premises resources through the PRT.
+- Keep personal Windows devices out of Intune: turn on **Disable MDM enrollment when adding work or school account** in production.
 - Hybrid join runs in steps: SCP, `userCertificate`, sync, registration, MDM enrollment. `dsregcmd /status` and the two event logs show where it stops.
 - Co-management needs workloads moved to Intune – until then, Intune policies don't reach ConfigMgr clients.
 - Settings catalog first, template second, custom OMA-URI last. Use assignment filters to narrow assignments by device properties.
@@ -23,10 +24,12 @@ title: 'Day 2 notes – Windows management'
 - Every enrolled device is either **Corporate** or **Personal**. Ownership decides what Intune may see and do (for example, the full app inventory or a wipe), and you can use it in assignment filters. You can change it later in the device properties.
 - On Windows, the Company Portal isn't needed for enrollment. An Entra join with automatic enrollment, GPO auto-enrollment or Windows Autopilot enrolls the device without it. You still need the Company Portal to install **Available** apps.
 - The Intune Management Extension (IME) installs itself when the first Win32 app, PowerShell script or remediation targets the device.
+- Intune supports Windows 11 Home, but many settings (CSPs) don't apply to Home. *Trainer recommendation:* don't manage Home devices. Linux (Ubuntu 24.04/26.04 LTS, Red Hat Enterprise Linux 9/10) and ChromeOS can be enrolled, with far fewer management options than Windows.
+- Intune marks devices with no compliance policy as **Compliant** by default. Microsoft recommends switching this to **Not compliant** as soon as you use Conditional Access (Endpoint security → Device compliance → Compliance policy settings).
 - Device cleanup rules hide Intune devices that haven't checked in for 30 to 270 days. They don't wipe or retire the device and don't remove it from Entra ID.
 - Devices deleted in Entra ID go to a soft-deleted state (preview) and can be restored for 30 days – BitLocker recovery keys and LAPS passwords are kept. You restore them in the Entra admin center in the **Deleted devices** view. Learn still names only Microsoft Graph and PowerShell for the preview.<!-- Lab observation Michael 2026-10-20: restore works in the portal. -->
 
-Sources: [Device enrollment guide](https://learn.microsoft.com/intune/device-enrollment/guide) · [Corporate identifiers and ownership](https://learn.microsoft.com/intune/device-enrollment/add-corporate-identifiers) · [Device cleanup rules](https://learn.microsoft.com/intune/governance/configure-cleanup-rules) · [Device soft delete (preview)](https://learn.microsoft.com/entra/identity/devices/concept-soft-delete-devices)
+Sources: [Device enrollment guide](https://learn.microsoft.com/intune/device-enrollment/guide) · [Supported operating systems](https://learn.microsoft.com/intune/fundamentals/ref-supported-platforms) · [Compliance policy settings](https://learn.microsoft.com/intune/device-security/compliance/overview#compliance-policy-settings) · [Corporate identifiers and ownership](https://learn.microsoft.com/intune/device-enrollment/add-corporate-identifiers) · [Device cleanup rules](https://learn.microsoft.com/intune/governance/configure-cleanup-rules) · [Device soft delete (preview)](https://learn.microsoft.com/entra/identity/devices/concept-soft-delete-devices)
 
 ## 2. Enrollment restrictions
 
@@ -45,7 +48,7 @@ Lab: [2.1 Enrollment restrictions](../Labs/LAB_02_1_enrollment-restrictions.html
 - **Entra roles** such as Intune Administrator work on the whole tenant. **Intune roles** only work inside Intune and can be limited.
 - An Intune role assignment has three parts: **admin groups** (who gets the role), **scope groups** (which users and devices they can target) and **scope tags** (which objects they can see). Scope groups and scope tags must both match.
 - Built-in Intune roles can't be changed. To adjust permissions, duplicate a built-in role and edit the copy.
-- Some settings need an Entra role no matter which Intune role you have. Creating device limit restrictions needs Intune Administrator, for example.
+- Some settings need an Entra role no matter which Intune role you have. Creating device limit restrictions needs the Entra role Intune Administrator, for example – every Intune role has read-only access to them.
 
 Sources: [RBAC with Microsoft Intune](https://learn.microsoft.com/intune/fundamentals/role-based-access-control/overview) · [Scope tags](https://learn.microsoft.com/intune/fundamentals/role-based-access-control/scope-tags)
 
@@ -62,10 +65,13 @@ Lab: [2.2 Roles and permissions](../Labs/LAB_02_2_roles-and-permissions.html)
 - An Entra joined device doesn't need a domain controller to sign in. With line of sight to a DC, it still gets Kerberos tickets for on-premises resources (the SSO test with `\\dc1\LabFiles` in Lab 2.3).
 - Use Entra join for new or reinstalled devices. Hybrid join brings the existing domain-joined fleet into Entra ID and needs line of sight to a DC. Moving a hybrid joined device to Entra join needs a reset.
 - The **MDM user scope** (All, Some or None) decides who enrolls automatically when a device joins Entra ID. Windows Autopilot needs it too. Without a license that includes Intune and Entra ID P1, auto-enrollment doesn't run.
+- **Disable MDM enrollment when adding work or school account** (Automatic Enrollment, preview) stops the "Allow my organization to manage my device" prompt when a user adds a work account in Microsoft Edge or an app such as Teams. It doesn't affect Entra join or Autopilot. *Trainer recommendation:* **Yes** in production; the lab keeps **No**.
+- To require MFA at enrollment, target the Conditional Access resource **Microsoft Intune Enrollment**. New tenants don't have it automatically – an admin creates its service principal (app ID `d4ebce55-015a-49b5-a083-c84d1797ae8c`) with PowerShell or Graph.
+- After a sign-in with the **password**, an Entra joined device gets Kerberos tickets for on-premises resources. After a sign-in with **Windows Hello for Business**, it needs cloud Kerberos trust for that – covered later in the course.
 - Windows Information Protection (WIP) is gone. It is removed starting with Windows 11, version 24H2.
 - Windows Hello for Business uses a 6-digit PIN by default. In a Hyper-V VM, set up Hello in the basic console, not in an enhanced session.
 
-Sources: [Microsoft Entra device identity](https://learn.microsoft.com/entra/identity/devices/overview) · [Entra joined vs. hybrid joined](https://learn.microsoft.com/intune/solutions/cloud-native-endpoints/entra-join-types) · [Windows automatic enrollment](https://learn.microsoft.com/intune/device-enrollment/windows/enable-automatic-mdm) · [Deprecated Windows features (WIP)](https://learn.microsoft.com/windows/whats-new/deprecated-features) · [Windows Hello for Business at enrollment](https://learn.microsoft.com/intune/device-security/identity-protection/configure-tenant-wide-policy)
+Sources: [Microsoft Entra device identity](https://learn.microsoft.com/entra/identity/devices/overview) · [Entra joined vs. hybrid joined](https://learn.microsoft.com/intune/solutions/cloud-native-endpoints/entra-join-types) · [Windows automatic enrollment](https://learn.microsoft.com/intune/device-enrollment/windows/enable-automatic-mdm) · [MFA for enrollment](https://learn.microsoft.com/intune/device-enrollment/configure-multifactor-authentication) · [Cloud Kerberos trust](https://learn.microsoft.com/windows/security/identity-protection/hello-for-business/deploy/hybrid-cloud-kerberos-trust) · [Deprecated Windows features (WIP)](https://learn.microsoft.com/windows/whats-new/deprecated-features) · [Windows Hello for Business at enrollment](https://learn.microsoft.com/intune/device-security/identity-protection/configure-tenant-wide-policy)
 
 Lab: [2.3 Join CL3 to Entra ID](../Labs/LAB_02_3_join-cl3-to-entra-id.html)
 
@@ -109,6 +115,7 @@ Lab: [2.5 Co-management with Configuration Manager](../Labs/LAB_02_5_co-manageme
 - The **properties catalog** collects hardware inventory. Data shows up after up to 24 hours.
 - Intune doesn't resolve conflicts between two configuration profiles. The setting shows **Conflict**, and you have to fix it yourself.
 - A device checks in about every 8 hours. Right after enrollment it checks in more often. A manual sync or a restart is faster than waiting.
+- *Trainer recommendation:* Intune has no version history and no recycle bin for policies. Write who changed what and why into the description, and back up your policies (for example with IntuneManagement, see below).
 - *Trainer recommendation:* name profiles by a fixed pattern – platform, ownership, type, purpose (for example, `Win CO SC OneDrive Settings`).
 
 Sources: [Create a device profile](https://learn.microsoft.com/intune/device-configuration/create-device-profile) · [Settings catalog](https://learn.microsoft.com/intune/device-configuration/settings-catalog/) · [Policy refresh intervals and conflicts](https://learn.microsoft.com/intune/device-configuration/troubleshoot-device-profiles) · [Reboot CSP](https://learn.microsoft.com/windows/client-management/mdm/reboot-csp) · [Configuration service provider reference](https://learn.microsoft.com/windows/client-management/mdm/)
@@ -141,7 +148,7 @@ Lab: [2.7 Group Policy analytics](../Labs/LAB_02_7_group-policy-analytics.html)
 - [Microsoft Intune – What's new](https://learn.microsoft.com/intune/fundamentals/whats-new): read it at least every two weeks – Intune changes fast.
 - [CIS Benchmarks](https://www.cisecurity.org/cis-benchmarks): hardening recommendations, also available for Intune.
 - [OpenIntuneBaseline](https://github.com/SkipToTheEndpoint/OpenIntuneBaseline) (community): ready-made baseline policies to import.
-- [IntuneManagement](https://github.com/Micke-K/IntuneManagement) (community): backup, export and import of Intune policies.
+- [IntuneManagement](https://github.com/Micke-K/IntuneManagement) (community): backup, export and import of Intune policies – Intune itself keeps no versions.
 - [awesomeintune.com](https://awesomeintune.com) (community): curated list of Intune tools and blogs.
 - [intunesettings.app](https://intunesettings.app) (community): search all settings catalog settings.
 
