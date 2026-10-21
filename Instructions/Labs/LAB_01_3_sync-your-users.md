@@ -10,8 +10,6 @@ lab:
 **Estimated time:** 45 minutes
 <!-- VERIFY: duration -->
 
-> **Draft:** This lab is new and not yet tested in this course. If a step behaves differently, tell the trainer.
-
 **Goal:** Synchronize `OU=Cloud` with Microsoft Entra Connect Sync on SRV1 using password hash synchronization, and license User1 and User2.
 
 1. DC1: Active Directory Domains and Trusts → right-click the top node **Active Directory Domains and Trusts** (not the domain) → Properties → add your custom domain from Lab 1.2 as UPN suffix.

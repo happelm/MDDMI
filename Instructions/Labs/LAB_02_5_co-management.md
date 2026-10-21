@@ -10,8 +10,6 @@ lab:
 **Estimated time:** 30 minutes
 <!-- VERIFY: duration -->
 
-> **Draft:** This lab is new and not yet tested in this course. If a step behaves differently, tell the trainer.
-
 **Goal:** Cloud attach the Configuration Manager site and move all co-management workloads to Intune, so Intune policies reach CL1 and CL2.
 
 1. Look at the symptom first. Entra admin center → Devices → All devices: CL1 and CL2 show MDM **Microsoft Configuration Manager**. Intune admin center → Devices → Windows: their compliance shows **ConfigMgr**. Intune policies only reach CL3.

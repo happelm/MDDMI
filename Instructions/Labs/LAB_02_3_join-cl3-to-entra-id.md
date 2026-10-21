@@ -10,8 +10,6 @@ lab:
 **Estimated time:** 45 minutes
 <!-- VERIFY: duration -->
 
-> **Draft:** This lab is new and not yet tested in this course. If a step behaves differently, tell the trainer.
-
 **Goal:** Turn on MDM auto-enrollment, join CL3 to Microsoft Entra ID as User1 from OOBE without Autopilot, see it enroll in Intune and test single sign-on to cloud and on-premises resources.
 
 1. Intune admin center → Devices → Enrollment → Windows → **Automatic Enrollment**: set the **MDM user scope** to **All**. Leave the MAM user scope at **None** and don't change the MDM URLs. You find the same setting in the Entra admin center → Entra ID → Mobility (MDM and MAM) → Microsoft Intune.

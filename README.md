@@ -11,7 +11,7 @@ Lab instructions for the five-day MDDMI workshop: three days Windows, one day An
 
 Lab tenant and licenses, custom domain and DNS records, hybrid identity with Microsoft Entra Connect Sync, dynamic groups, Company Portal.
 
-**Day notes:** [Day 1 – Foundation and hybrid identity](Instructions/Notes/DAY_01_notes.md) (draft)
+**Day notes:** [Day 1 – Foundation and hybrid identity](Instructions/Notes/DAY_01_notes.md)
 
 | Lab | Title | Time |
 |---|---|---|
@@ -24,7 +24,7 @@ Lab tenant and licenses, custom domain and DNS records, hybrid identity with Mic
 
 Enrollment restrictions, roles and permissions, Entra join and single sign-on, Microsoft Entra hybrid join by GPO, co-management with Configuration Manager, configuration profiles, assignment filters and CSPs, Group Policy analytics.
 
-**Day notes:** [Day 2 – Windows management](Instructions/Notes/DAY_02_notes.md) (draft)
+**Day notes:** [Day 2 – Windows management](Instructions/Notes/DAY_02_notes.md)
 
 | Lab | Title | Time |
 |---|---|---|
@@ -74,8 +74,8 @@ Summary of each day with sources, for after the course.
 
 | Day | Notes |
 |---|---|
-| 1 | [Foundation and hybrid identity](Instructions/Notes/DAY_01_notes.md) (draft) |
-| 2 | [Windows management](Instructions/Notes/DAY_02_notes.md) (draft) |
+| 1 | [Foundation and hybrid identity](Instructions/Notes/DAY_01_notes.md) |
+| 2 | [Windows management](Instructions/Notes/DAY_02_notes.md) |
 
 ### Appendix
 
@@ -87,7 +87,7 @@ Summary of each day with sources, for after the course.
 
 ## About this guide
 
-> **Draft:** This lab guide is new. Every lab is marked as draft until it has been tested in this course.
+> **Status:** The labs of Day 1 and Day 2 have been tested in this course. Labs of later days are marked as draft until they have been tested.
 
 Each lab lists its goal, the steps at task level (not every click) and a checkpoint you confirm before moving on. The Windows labs build on each other – work through them in order and do not reset your VMs between days.
 

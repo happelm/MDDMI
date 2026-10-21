@@ -10,8 +10,6 @@ lab:
 **Estimated time:** 30 minutes
 <!-- VERIFY: duration -->
 
-> **Draft:** This lab is new and not yet tested in this course. If a step behaves differently, tell the trainer.
-
 **Goal:** Add the third-level domain the trainer assigned to you (for example `i44.mslab.live`) to your tenant, verify it and create all DNS records Microsoft 365 and Intune ask for.
 
 **Why:** Without these records there is no mailbox and no device registration with the custom domain, and the UPNs of your synced users in Lab 1.3 need a verified domain.

@@ -10,8 +10,6 @@ lab:
 **Estimated time:** 60 minutes
 <!-- VERIFY: duration -->
 
-> **Draft:** This lab is new and not yet tested in this course. If a step behaves differently, tell the trainer.
-
 **Goal:** Bring the domain-joined clients CL1 and CL2 to Microsoft Entra hybrid join and into Intune – and check both steps on the client.
 
 Already done: users synced and licensed (Lab 1.3), MDM user scope **All** (Lab 2.3). CL1 and CL2 are in `OU=Cloud`, but Connect Sync takes them to Entra ID only after they wrote their `userCertificate` in this lab.

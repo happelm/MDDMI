@@ -10,8 +10,6 @@ lab:
 **Estimated time:** 15 minutes
 <!-- VERIFY: duration -->
 
-> **Draft:** This lab is new and not yet tested in this course. If a step behaves differently, tell the trainer.
-
 **Goal:** Control how many devices a user can enroll and which iOS/iPadOS versions may enroll at all.
 
 1. Intune admin center → Devices → Enrollment → **Device limit restriction** → **Create restriction**: name `10 Devices for Cloud Users`, device limit **10**, assigned to `Cloud Users`.

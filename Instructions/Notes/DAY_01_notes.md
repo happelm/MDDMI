@@ -4,7 +4,7 @@ title: 'Day 1 notes – Foundation and hybrid identity'
 
 # Day 1 notes – Foundation and hybrid identity
 
-> **Draft:** These notes are new and not yet reviewed by the trainer. Summary of what was covered on Day 1, with sources – not a transcript. Recommendations marked "trainer recommendation" are field experience, not Microsoft documentation.
+> Summary of what was covered on Day 1, with sources – not a transcript. Recommendations marked "trainer recommendation" are field experience, not Microsoft documentation.
 
 ## Key takeaways
 

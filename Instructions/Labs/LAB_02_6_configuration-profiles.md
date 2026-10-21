@@ -10,8 +10,6 @@ lab:
 **Estimated time:** 60 minutes
 <!-- VERIFY: duration -->
 
-> **Draft:** This lab is new and not yet tested in this course. If a step behaves differently, tell the trainer.
-
 **Goal:** Deploy settings with a template, a custom OMA-URI, the settings catalog and the properties catalog, distribute a root certificate, and narrow assignments with assignment filters.
 
 All profiles: Intune admin center → Devices → Configuration → **Create** → **New policy** → platform **Windows 10 and later**.

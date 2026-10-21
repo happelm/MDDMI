@@ -4,7 +4,7 @@ title: 'Day 2 notes – Windows management'
 
 # Day 2 notes – Windows management
 
-> **Draft:** These notes are new and not yet reviewed by the trainer. Summary of what was covered on Day 2, with sources – not a transcript. Recommendations marked "trainer recommendation" are field experience, not Microsoft documentation. Links marked "community" point to non-Microsoft projects.
+> Summary of what was covered on Day 2, with sources – not a transcript. Recommendations marked "trainer recommendation" are field experience, not Microsoft documentation. Links marked "community" point to non-Microsoft projects.
 
 ## Key takeaways
 

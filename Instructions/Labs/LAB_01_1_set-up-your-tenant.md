@@ -10,8 +10,6 @@ lab:
 **Estimated time:** 30 minutes
 <!-- VERIFY: duration -->
 
-> **Draft:** This lab is new and not yet tested in this course. If a step behaves differently, tell the trainer.
-
 **Goal:** Launch your own Microsoft 365 E5 lab tenant, sign in as Global Administrator with MFA and free up licenses for your lab users.
 
 Do every step on your lab host, never on your own notebook: your corporate browser is often signed in to your production tenant.

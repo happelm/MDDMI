@@ -10,8 +10,6 @@ lab:
 **Estimated time:** 30 minutes
 <!-- VERIFY: duration -->
 
-> **Draft:** This lab is new and not yet tested in this course. If a step behaves differently, tell the trainer.
-
 **Goal:** Analyze two GPOs with Group Policy analytics, migrate what Intune supports into a settings catalog policy and see the limits.
 
 1. DC1: Group Policy Management → `GPO-01` → **Save Report** → save as XML. Do the same for `GPO-02`.

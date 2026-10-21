@@ -10,8 +10,6 @@ lab:
 **Estimated time:** 30 minutes
 <!-- VERIFY: duration -->
 
-> **Draft:** This lab is new and not yet tested in this course. If a step behaves differently, tell the trainer.
-
 **Goal:** Build the dynamic device groups the later labs assign to and brand the Company Portal.
 
 Use English for object names and fill in a description for every object you create.

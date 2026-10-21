@@ -10,8 +10,6 @@ lab:
 **Estimated time:** 15 minutes
 <!-- VERIFY: duration -->
 
-> **Draft:** This lab is new and not yet tested in this course. If a step behaves differently, tell the trainer.
-
 **Goal:** Give a group of admins policy permissions for Windows devices only, with a built-in Intune role, a scope group and a scope tag.
 
 1. Intune admin center → Tenant administration → Roles → All roles: open **Policy and Profile Manager** → Permissions and look at what the role can do.
