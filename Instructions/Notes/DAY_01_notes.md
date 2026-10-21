@@ -6,6 +6,16 @@ title: 'Day 1 notes – Foundation and hybrid identity'
 
 > **Draft:** These notes are new and not yet reviewed by the trainer. Summary of what was covered on Day 1, with sources – not a transcript. Recommendations marked "trainer recommendation" are field experience, not Microsoft documentation.
 
+## Key takeaways
+
+- Intune is built on Entra ID: identities, groups, device objects, licenses and Conditional Access all come from there.
+- Use phishing-resistant sign-in (Windows Hello for Business, FIDO2, passkeys) and require MFA for device registration and enrollment.
+- Single sign-on needs the same routable UPN suffix in AD and in Entra ID – that is why you add a custom domain.
+- Password hash synchronization is the default sign-in method; Seamless SSO is legacy. Treat the sync server as Tier 0.
+- Domain-joined computers show up in Entra ID only after the client starts the hybrid join and writes `userCertificate`.
+- New Windows devices: Entra join. Hybrid join only for the existing domain-joined fleet.
+- Assign to security groups, never mix users and devices in one group, and use filters where timing matters.
+
 ## Your lab environment
 
 | System | Role |

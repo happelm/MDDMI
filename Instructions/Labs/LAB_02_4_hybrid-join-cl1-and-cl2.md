@@ -49,6 +49,8 @@ Already done: users synced and licensed (Lab 1.3), MDM user scope **All** (Lab 2
 
 **Note:** The MDM URL in `dsregcmd /status` can show up only after another restart. The EnterpriseMgmt task retries the enrollment every 5 minutes – a few minutes of waiting are normal.
 
+**Note:** Running the sync cycle, the Automatic-Device-Join task and the restarts by hand only speeds things up for class. In production you just wait: the task runs at every sign-in and every hour, and the sync runs every 30 minutes.
+
 **Note:** Azure AD Connect may show a banner about moving to Microsoft Entra Cloud Sync. Ignore it for this lab.
 
 **Tip:** The wizard writes a service connection point (SCP) to AD. You see it on DC1 in ADSI Edit → Configuration partition → Services → Device Registration Configuration. Without the SCP the client doesn't know which tenant to join.

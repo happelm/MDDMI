@@ -6,6 +6,17 @@ title: 'Day 2 notes – Windows management'
 
 > **Draft:** These notes are new and not yet reviewed by the trainer. Summary of what was covered on Day 2, with sources – not a transcript. Recommendations marked "trainer recommendation" are field experience, not Microsoft documentation. Links marked "community" point to non-Microsoft projects.
 
+## Key takeaways
+
+- Registration (Entra ID) and enrollment (Intune) are two different things – the device lists don't have to match.
+- Enrollment restrictions control how many devices a user may enroll and which platforms and versions may enroll at all. GPO, co-management and Autopilot enrollments don't count against the device limit.
+- Intune roles plus scope groups and scope tags limit admins to part of the devices; Entra roles work on the whole tenant.
+- The MDM user scope decides who enrolls automatically. An Entra joined device gets single sign-on to cloud and on-premises resources through the PRT.
+- Hybrid join runs in steps: SCP, `userCertificate`, sync, registration, MDM enrollment. `dsregcmd /status` and the two event logs show where it stops.
+- Co-management needs workloads moved to Intune – until then, Intune policies don't reach ConfigMgr clients.
+- Settings catalog first, template second, custom OMA-URI last. Use assignment filters to narrow assignments by device properties.
+- Don't migrate GPOs 1:1 – use Group Policy analytics to decide what you still need.
+
 ## 1. Registration, enrollment and ownership
 
 - **Registration** puts a device object into Microsoft Entra ID. **Enrollment** puts the device into Intune management. A device can be registered without being enrolled, so the device lists in Entra ID and in Intune don't have to match.
@@ -104,7 +115,7 @@ Sources: [Create a device profile](https://learn.microsoft.com/intune/device-con
 
 ## 8. Groups and assignment filters
 
-- Groups decide **who** gets a policy. Assignment filters narrow it down **at check-in** by device properties such as ownership, OS version or join type. Filters work immediately, with no wait for dynamic group processing.
+- Groups decide **who** gets a policy. Assignment filters narrow it down **at check-in** by device properties such as ownership, OS version or join type. Filters are evaluated when the device checks in, without waiting for dynamic group membership to be calculated.
 - A tenant can have up to 200 filters.
 - Don't mix user and device groups across include and exclude. Exclude users from a user assignment and devices from a device assignment, or use a filter instead.
 - Be careful with exclusions based on dynamic groups: while the group is still being calculated, a device can briefly fall outside the exclusion.
