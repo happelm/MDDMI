@@ -1,37 +1,29 @@
 ---
-title: 'Lab 3.4 – Compliance and Conditional Access'
+title: 'Lab 4.5 – Windows compliance policy'
 lab:
-    title: 'Lab 3.4 – Compliance and Conditional Access'
-    module: 'Day 3 – Windows apps and security'
+    title: 'Lab 4.5 – Windows compliance policy'
+    module: 'Day 4 – Android'
 ---
 
-# Lab 3.4 – Compliance and Conditional Access
+# Lab 4.5 – Windows compliance policy
 
-**Estimated time:** 45 minutes
-<!-- VERIFY: duration -->
+**Estimated time:** 20 minutes
 
-> **Draft:** This lab is new and not yet tested in this course. If a step behaves differently, tell the trainer.
+> **Draft:** This lab is new and has not been run in this environment yet. If a step behaves differently, tell the trainer.
 
-**Goal:** Make Microsoft 365 access depend on a compliant Windows device – and see Intune evaluate and Entra ID enforce.
+**Goal:** Build a Windows compliance policy the same way as the Android one, make CL3 noncompliant on purpose and compliant again.
 
-1. CL3: run `ver` and note the OS version.
-2. Intune admin center → Devices → Compliance → Create policy → Windows 10 and later: policy `Win Compliance` with **Minimum OS version** set higher than the version from step 1 and **Require BitLocker**, assigned to `Cloud Users`.
-3. Entra admin center → Identity → Overview → Properties → **Manage security defaults**: turn security defaults off – otherwise you cannot create Conditional Access policies.
-4. Entra admin center → Protection → Conditional Access → Create new policy: `Require compliant Windows` for `Cloud Users` (exclude your admin account), target resource **Office 365**, condition device platforms **Windows**, grant **Require device to be marked as compliant**. Set it to **Report-only** first.
-5. CL3 as User1: open office.com in Microsoft Edge. Entra admin center → Monitoring & health → Sign-in logs: find the sign-in and read the Report-only tab.
-6. Set the policy to **On**. CL3: Company Portal → **Check access**, wait until the device is noncompliant, open office.com again.
-7. Change the minimum OS version in `Win Compliance` to the version from step 1 or lower, **Check access** again – office.com opens.
-8. Trainer demo: Microsoft Defender for Endpoint connected to Intune, machine risk score in the compliance policy.
+1. CL3: run `winver` and note the OS build.
+2. Intune admin center → Devices → Compliance → Create policy → **Windows 10 and later**: policy `Win Compliance` with **Minimum OS version** set higher than the build from step 1. Assign it to `All Windows 11 Devices`.
+3. CL3: Company Portal → your device → **Check access**. Wait until CL3 shows as noncompliant in the Company Portal and in the Intune admin center.
+4. Change **Minimum OS version** in `Win Compliance` to the build from step 1 or lower. **Check access** again.
 
 ### Checkpoint
 
 - [ ] CL3 noncompliant with the reason minimum OS version
-- [ ] Sign-in from CL3 blocked with a compliance message
-- [ ] CL3 compliant again, office.com opens
-- [ ] Sign-in log shows the Conditional Access result
+- [ ] CL3 compliant again after the change
 
-**Note:** Never target all users without excluding an admin account – a mistake in a Conditional Access policy can lock you out of your own tenant.
+**Note:** The Conditional Access policy from Lab 4.2 targets Android only. A Windows policy with **Require device to be marked as compliant** works the same way – exclude your admin account, start in **Report-only**.
 
-**Why:** Configuration profiles set settings, compliance policies evaluate them. BitLocker can be enforced by a profile – the compliance policy only checks whether it is on.
-<!-- VERIFY: Entra admin center menu paths (Identity / Protection / Monitoring & health) – Entra nav changes often; check before class. -->
-<!-- VERIFY: CL1/CL2 users User1/User2 are in Cloud Users too – hybrid clients will also be evaluated; intended? -->
+**Why:** Configuration profiles set settings, compliance policies only check them. Conditional Access uses the result to allow or block access.
+<!-- Moved from Day 3 (old Lab 3.4) by Michael's decision 2026-10-21 16:59: compliance on the Android day, one Windows policy taken along. CA and the MDE demo stay with Lab 4.2 / the trainer. VERIFY: version format for Minimum OS version (e.g. 10.0.26200.xxxx). -->
