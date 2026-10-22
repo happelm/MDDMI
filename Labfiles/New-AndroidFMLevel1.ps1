@@ -1,7 +1,7 @@
 <#
 .SYNOPSIS
     Creates the Microsoft "fully managed basic security (level 1)" example for Android Enterprise
-    as one compliance policy and one device restrictions profile, and optionally assigns both to a group.
+    as one compliance policy and one device restrictions profile. With -Assignment it also assigns both to a group.
 
 .DESCRIPTION
     Values follow Microsoft Learn:
@@ -14,29 +14,29 @@
     The script only adds objects. If a policy with the same name exists, it is skipped.
     Lab script for MDDMI Lab 4.6 - Windows PowerShell 5.1 compatible.
 
-.PARAMETER GroupName
-    Display name of the Entra group to assign both policies to. Default: All Android Devices.
+.PARAMETER Assignment
+    Assign both new policies to the group in -GroupName. Without this switch nothing is assigned.
 
-.PARAMETER NoAssignment
-    Create the policies without assigning them.
+.PARAMETER GroupName
+    Display name of the Entra group used with -Assignment. Default: All Android Devices.
 
 .EXAMPLE
     PowerShell.exe -ExecutionPolicy Bypass -File .\New-AndroidFMLevel1.ps1
 
 .EXAMPLE
-    PowerShell.exe -ExecutionPolicy Bypass -File .\New-AndroidFMLevel1.ps1 -NoAssignment
+    PowerShell.exe -ExecutionPolicy Bypass -File .\New-AndroidFMLevel1.ps1 -Assignment -GroupName 'All Android Devices'
 #>
 [CmdletBinding()]
 param(
-    [string]$GroupName = 'All Android Devices',
-    [switch]$NoAssignment
+    [switch]$Assignment,
+    [string]$GroupName = 'All Android Devices'
 )
 
 $ErrorActionPreference = 'Stop'
 $graph = 'https://graph.microsoft.com/beta'
 
-$compliancePolicyName = 'AE FM Level 1 Compliance'
-$restrictionsName     = 'AE FM Level 1 Device Restrictions'
+$compliancePolicyName = 'AE COBO ZT Level 1 Compliance'
+$restrictionsName     = 'AE COBO ZT Level 1 Device Restrictions'
 
 # --- Module and sign-in -----------------------------------------------------------------
 if (-not (Get-Module -ListAvailable -Name Microsoft.Graph.Authentication)) {
@@ -140,7 +140,7 @@ foreach ($item in @(
 }
 
 # --- Assign ------------------------------------------------------------------------------
-if (-not $NoAssignment) {
+if ($Assignment) {
     $escapedGroup = $GroupName.Replace("'", "''")
     $groups = Invoke-MgGraphRequest -Method GET -Uri "https://graph.microsoft.com/v1.0/groups?`$filter=displayName eq '$escapedGroup'&`$select=id,displayName"
     $group = $groups.value | Select-Object -First 1
