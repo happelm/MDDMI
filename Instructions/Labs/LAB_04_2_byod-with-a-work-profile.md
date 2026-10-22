@@ -9,8 +9,6 @@ lab:
 
 **Estimated time:** 75 minutes
 
-> **Draft:** This lab has not been confirmed by the trainer yet. If a step behaves differently, tell the trainer.
-
 **Goal:** Prepare web enrollment, compliance, Conditional Access and an Outlook configuration first – then let User1 enroll the Android test device as a personal device because Outlook demands it.
 
 ## Prepare the tenant

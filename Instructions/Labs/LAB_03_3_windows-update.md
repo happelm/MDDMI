@@ -9,8 +9,6 @@ lab:
 
 **Estimated time:** 45 minutes
 
-> **Draft:** This lab is new and has not been run in this environment yet. If a step behaves differently, tell the trainer.
-
 **Goal:** Build a test ring and a broad ring, pause and resume a ring, pin the Windows version with a feature update policy and control driver updates.
 
 **Why:** Update rings control *when* and *how* a device installs updates. Feature update policies control *which* Windows version it gets. Driver update policies decide which drivers Windows Update may install.

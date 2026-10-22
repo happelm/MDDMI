@@ -9,8 +9,6 @@ lab:
 
 **Estimated time:** 75 minutes
 
-> **Draft:** This lab is new and has not been run in this environment yet. If a step behaves differently, tell the trainer.
-
 **Goal:** Upload the hardware hash of CL4 from OOBE, assign a user-driven Entra join profile and deploy CL4 as User2.
 
 ## Upload the hardware hash

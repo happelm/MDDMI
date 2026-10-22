@@ -9,8 +9,6 @@ lab:
 
 **Estimated time:** 30 minutes
 
-> **Draft:** This lab is new and has not been run in this environment yet. If a step behaves differently, tell the trainer.
-
 **Goal:** Deploy CMTrace as a required Win32 app and follow the install on CL3 in the Intune Management Extension log.
 
 1. Intune admin center → Apps → Windows → Create → **Windows app (Win32)**. Select the package `C:\Scripts\cmtrace.intunewin`. It already contains `cmtraceinstall.ps1` and `cmtraceremove.ps1`, so you don't need to package anything.

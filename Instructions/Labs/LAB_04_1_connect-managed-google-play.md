@@ -9,8 +9,6 @@ lab:
 
 **Estimated time:** 20 minutes
 
-> **Draft:** This lab has not been confirmed by the trainer yet. If a step behaves differently, tell the trainer.
-
 **Goal:** Connect your tenant to Managed Google Play with the Google account you created before the course – the base for every Android Enterprise enrollment and every app from Google Play.
 
 1. Intune admin center → Devices → Enrollment → **Android** tab → Prerequisites → **Managed Google Play**: select **I agree** (Microsoft may share data with Google), then **Launch Google to connect now**.

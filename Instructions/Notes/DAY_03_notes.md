@@ -4,8 +4,6 @@ title: 'Day 3 notes – Windows apps, updates and Autopilot'
 
 # Day 3 notes – Windows apps, updates and Autopilot
 
-> **Draft:** These notes have not been reviewed by the trainer yet.
-
 > Summary of what was covered on Day 3, with sources – not a transcript. Recommendations marked "trainer recommendation" are field experience, not Microsoft documentation. Links marked "community" point to non-Microsoft sources.
 
 ## Key takeaways

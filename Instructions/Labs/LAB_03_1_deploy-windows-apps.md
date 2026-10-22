@@ -9,8 +9,6 @@ lab:
 
 **Estimated time:** 60 minutes
 
-> **Draft:** This lab is new and has not been run in this environment yet. If a step behaves differently, tell the trainer.
-
 **Goal:** Check last night's scheduled restart, then add one app of each type – Microsoft Store, Microsoft 365 Apps, web link and line-of-business (MSI) – and assign them as required or available.
 
 **Why:** Each app type has its own install path and its own limits. The trainer may split the apps between you and your neighbor.

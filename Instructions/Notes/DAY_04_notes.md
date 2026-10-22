@@ -4,8 +4,6 @@ title: 'Day 4 notes – Android'
 
 # Day 4 notes – Android
 
-> **Draft:** These notes have not been reviewed by the trainer yet.
-
 > Summary of what was covered on Day 4, with sources – not a transcript. Recommendations marked "trainer recommendation" are field experience, not Microsoft documentation. Links marked "community" point to non-Microsoft sources; Samsung sources are named as such. "Lab observation" means the trainer saw it in a lab tenant; it isn't documented by Microsoft.
 
 ## Key takeaways

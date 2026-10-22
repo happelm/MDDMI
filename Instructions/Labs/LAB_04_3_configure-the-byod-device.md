@@ -9,8 +9,6 @@ lab:
 
 **Estimated time:** 45 minutes
 
-> **Draft:** This lab has not been confirmed by the trainer yet. If a step behaves differently, tell the trainer.
-
 **Goal:** Restrict the work profile, push the Smart PKI root certificate, deploy Edge and LinkedIn, and look at the device from the admin side.
 
 ## Device restrictions

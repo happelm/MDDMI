@@ -9,8 +9,6 @@ lab:
 
 **Estimated time:** 30 minutes
 
-> **Draft:** This lab has not been confirmed by the trainer yet. If a step behaves differently, tell the trainer.
-
 **Goal:** Treat devices without a compliance policy as noncompliant, build one Windows compliance policy and watch `CA-001` block a Windows client.
 
 1. Intune admin center → Devices → Compliance → **Compliance policy settings**:

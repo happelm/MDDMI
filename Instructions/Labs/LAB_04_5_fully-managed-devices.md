@@ -9,8 +9,6 @@ lab:
 
 **Estimated time:** 120 minutes
 
-> **Draft:** This lab has not been confirmed by the trainer yet. If a step behaves differently, tell the trainer.
-
 **Goal:** Turn the BYOD test device into a corporate-owned fully managed device (COBO) by QR code, with a naming template, enrollment time grouping, compliance, restrictions with a filter and corporate apps.
 
 ## Prepare the enrollment
