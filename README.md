@@ -60,6 +60,7 @@ Managed Google Play, personally owned work profile with compliance and Condition
 | 4.3 | [Apps and retire](Instructions/Labs/LAB_04_3_apps-and-retire.md) | 30 min |
 | 4.4 | [Corporate-owned work profile](Instructions/Labs/LAB_04_4_corporate-owned-work-profile.md) | 45 min |
 | 4.5 | [Windows compliance policy](Instructions/Labs/LAB_04_5_windows-compliance-policy.md) (draft, if time permits) | 20 min |
+| 4.6 | [Android security baseline with Graph](Instructions/Labs/LAB_04_6_android-security-baseline-with-graph.md) (draft, if time permits) | 20 min |
 
 ### Day 5 – iOS/iPadOS
 
