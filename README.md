@@ -38,20 +38,20 @@ Enrollment restrictions, roles and permissions, Entra join and single sign-on, M
 | 2.6 | [Configuration profiles](Instructions/Labs/LAB_02_6_configuration-profiles.md) | 60 min |
 | 2.7 | [Group Policy analytics](Instructions/Labs/LAB_02_7_group-policy-analytics.md) | 30 min |
 
-### Day 3 – Windows apps and security
+### Day 3 – Windows apps, updates and Autopilot
 
-Win32 and Store apps, Windows Autopilot, Endpoint security policies, compliance and Conditional Access, Microsoft Defender for Endpoint (demo).
+Store, Microsoft 365, web link, MSI and Win32 apps, Windows Update rings, feature and driver updates, Windows Autopilot, device actions (talk).
 
 | Lab | Title | Time |
 |---|---|---|
-| 3.1 | [Deploy a Win32 app](Instructions/Labs/LAB_03_1_deploy-a-win32-app.md) | 45 min |
-| 3.2 | [Deploy CL4 with Windows Autopilot](Instructions/Labs/LAB_03_2_deploy-cl4-with-autopilot.md) | 60 min |
-| 3.3 | [Endpoint security policies](Instructions/Labs/LAB_03_3_endpoint-security-policies.md) | 60 min |
-| 3.4 | [Compliance and Conditional Access](Instructions/Labs/LAB_03_4_compliance-and-conditional-access.md) | 45 min |
+| 3.1 | [Deploy Windows apps](Instructions/Labs/LAB_03_1_deploy-windows-apps.md) (draft) | 60 min |
+| 3.2 | [Deploy a Win32 app](Instructions/Labs/LAB_03_2_deploy-a-win32-app.md) (draft) | 30 min |
+| 3.3 | [Windows Update rings, feature and driver updates](Instructions/Labs/LAB_03_3_windows-update.md) (draft) | 45 min |
+| 3.4 | [Deploy CL4 with Windows Autopilot](Instructions/Labs/LAB_03_4_deploy-cl4-with-autopilot.md) (draft) | 75 min |
 
 ### Day 4 – Android
 
-Managed Google Play, personally owned work profile with compliance and Conditional Access, apps and retire, corporate-owned work profile.
+Managed Google Play, personally owned work profile with compliance and Conditional Access, apps and retire, corporate-owned work profile, one Windows compliance policy.
 
 | Lab | Title | Time |
 |---|---|---|
@@ -59,6 +59,7 @@ Managed Google Play, personally owned work profile with compliance and Condition
 | 4.2 | [BYOD with a work profile](Instructions/Labs/LAB_04_2_byod-with-a-work-profile.md) | 60 min |
 | 4.3 | [Apps and retire](Instructions/Labs/LAB_04_3_apps-and-retire.md) | 30 min |
 | 4.4 | [Corporate-owned work profile](Instructions/Labs/LAB_04_4_corporate-owned-work-profile.md) | 45 min |
+| 4.5 | [Windows compliance policy](Instructions/Labs/LAB_04_5_windows-compliance-policy.md) (draft, if time permits) | 20 min |
 
 ### Day 5 – iOS/iPadOS
 
@@ -78,6 +79,7 @@ Summary of each day with sources, for after the course.
 |---|---|
 | 1 | [Foundation and hybrid identity](Instructions/Notes/DAY_01_notes.md) |
 | 2 | [Windows management](Instructions/Notes/DAY_02_notes.md) |
+| 3 | [Windows apps, updates and Autopilot](Instructions/Notes/DAY_03_notes.md) (draft) |
 
 ### Appendix
 
