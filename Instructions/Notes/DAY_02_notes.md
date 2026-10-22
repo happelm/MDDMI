@@ -126,7 +126,6 @@ Sources: [Create a device profile](https://learn.microsoft.com/intune/device-con
 - A tenant can have up to 200 filters.
 - Don't mix user and device groups across include and exclude. Exclude users from a user assignment and devices from a device assignment, or use a filter instead.
 - Be careful with exclusions based on dynamic groups: while the group is still being calculated, a device can briefly fall outside the exclusion.
-- In Lab 2.6 the root certificate profile uses a filter on `deviceTrustType` so that only Entra joined devices get it. CL1 and CL2 already have the certificate through AD.
 
 Sources: [Assignment filters](https://learn.microsoft.com/intune/fundamentals/filters/overview) · [Filter properties](https://learn.microsoft.com/intune/fundamentals/filters/ref-device-properties) · [Filters and exclusions: recommendations](https://learn.microsoft.com/intune/fundamentals/filters/performance-recommendations)
 
