@@ -42,6 +42,8 @@ Enrollment restrictions, roles and permissions, Entra join and single sign-on, M
 
 Store, Microsoft 365, web link, MSI and Win32 apps, Windows Update rings, feature and driver updates, Windows Autopilot, device actions (talk).
 
+**Day notes:** [Day 3 – Windows apps, updates and Autopilot](Instructions/Notes/DAY_03_notes.md)
+
 | Lab | Title | Time |
 |---|---|---|
 | 3.1 | [Deploy Windows apps](Instructions/Labs/LAB_03_1_deploy-windows-apps.md) (draft) | 60 min |
@@ -51,15 +53,17 @@ Store, Microsoft 365, web link, MSI and Win32 apps, Windows Update rings, featur
 
 ### Day 4 – Android
 
-Managed Google Play, personally owned work profile with compliance and Conditional Access, apps and retire, corporate-owned work profile, one Windows compliance policy.
+Managed Google Play, personally owned work profile with web enrollment, compliance and Conditional Access, configuration, certificates and apps, one Windows compliance policy, fully managed devices with enrollment time grouping.
+
+**Day notes:** [Day 4 – Android](Instructions/Notes/DAY_04_notes.md)
 
 | Lab | Title | Time |
 |---|---|---|
-| 4.1 | [Connect Managed Google Play](Instructions/Labs/LAB_04_1_connect-managed-google-play.md) | 20 min |
-| 4.2 | [BYOD with a work profile](Instructions/Labs/LAB_04_2_byod-with-a-work-profile.md) | 60 min |
-| 4.3 | [Apps and retire](Instructions/Labs/LAB_04_3_apps-and-retire.md) | 30 min |
-| 4.4 | [Corporate-owned work profile](Instructions/Labs/LAB_04_4_corporate-owned-work-profile.md) | 45 min |
-| 4.5 | [Windows compliance policy](Instructions/Labs/LAB_04_5_windows-compliance-policy.md) (draft, if time permits) | 20 min |
+| 4.1 | [Connect Managed Google Play](Instructions/Labs/LAB_04_1_connect-managed-google-play.md) (draft) | 20 min |
+| 4.2 | [BYOD with a work profile](Instructions/Labs/LAB_04_2_byod-with-a-work-profile.md) (draft) | 75 min |
+| 4.3 | [Configure the BYOD device](Instructions/Labs/LAB_04_3_configure-the-byod-device.md) (draft) | 45 min |
+| 4.4 | [Windows compliance policy](Instructions/Labs/LAB_04_4_windows-compliance-policy.md) (draft) | 30 min |
+| 4.5 | [Fully managed devices](Instructions/Labs/LAB_04_5_fully-managed-devices.md) (draft) | 120 min |
 | 4.6 | [Android security baseline with Graph](Instructions/Labs/LAB_04_6_android-security-baseline-with-graph.md) (draft, if time permits) | 20 min |
 
 ### Day 5 – iOS/iPadOS
@@ -81,6 +85,7 @@ Summary of each day with sources, for after the course.
 | 1 | [Foundation and hybrid identity](Instructions/Notes/DAY_01_notes.md) |
 | 2 | [Windows management](Instructions/Notes/DAY_02_notes.md) |
 | 3 | [Windows apps, updates and Autopilot](Instructions/Notes/DAY_03_notes.md) (draft) |
+| 4 | [Android](Instructions/Notes/DAY_04_notes.md) (draft) |
 
 ### Appendix
 
