@@ -68,7 +68,7 @@ lab:
 
 ## Apps and contacts
 
-12. Apps → Android → Create → **Line-of-business app**: upload the APK from `C:\Scripts` (Intune Pro). Assign it as **Required** to `Cloud Users`.
+12. Apps → Android → Create → **Line-of-business app**: upload `C:\Scripts\intunepro.apk`. Assign it as **Required** to `Cloud Users`.
 13. Apps → Android → Create → **Android Enterprise system app**:
 
     | Setting | Value |
@@ -78,7 +78,7 @@ lab:
     | Package name | `com.sec.android.gallery3d` |
 
     Assign it as **Required** to `Cloud Users`. Intune turns on the hidden gallery app – it doesn't install anything.
-14. CL3, signed in as User1: copy the demo contacts CSV from `C:\Scripts` to `C:\Temp`. Outlook on the web → People → **Import contacts** → select the CSV. The contacts show up in the phone's Contacts app.
+14. CL3, signed in as User1: copy `C:\Scripts\DemoOutlookContacts.csv` to `C:\Temp`. Outlook on the web → People → **Import contacts** → select the CSV. The contacts show up in the phone's Contacts app.
 15. Intune admin center → your phone → **Locate device**.
 
 ### Checkpoint
@@ -106,4 +106,4 @@ lab:
 **Note:** Keep the phone enrolled – Day 5 ends with a passkey on it.
 
 **Why:** On a fully managed device IT owns the whole phone: wipe, locate, system apps, USB and date settings. The price is that the user has no private profile.
-<!-- Source: Day 4 recording 2026-10-22 PM 00:20–03:01. Learn: enrollment-time-grouping (Android) (static group, owner Intune Provisioning Client AppId f1346770-5b25-470b-88bd-d5744ab7952c, not with staging token, report), android-fully-managed-enroll (device name template variables), filters-device-properties (deviceManagementType values), apps-ae-system (Android Enterprise system app; Required/Uninstall only; no coexistence; not editable), lob-apps-android (APK only fully managed/dedicated), ref-device-restrictions-android-enterprise (Date and Time changes, Locate device, FRP emails). Michael's device missed the ETG group with a self-built QR → Intune QR. VERIFY with Michael: ETG group name, AE CO compliance values (min length 4?), APK and CSV file names in C:\Scripts. -->
+<!-- Source: Day 4 recording 2026-10-22 PM 00:20–03:01. Learn: enrollment-time-grouping (Android) (static group, owner Intune Provisioning Client AppId f1346770-5b25-470b-88bd-d5744ab7952c, not with staging token, report), android-fully-managed-enroll (device name template variables), filters-device-properties (deviceManagementType values), apps-ae-system (Android Enterprise system app; Required/Uninstall only; no coexistence; not editable), lob-apps-android (APK only fully managed/dedicated), ref-device-restrictions-android-enterprise (Date and Time changes, Locate device, FRP emails). Michael's device missed the ETG group with a self-built QR → Intune QR. Names, AE CO values and file names confirmed by Michael 2026-10-22 16:52. -->
