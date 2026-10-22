@@ -5,6 +5,8 @@ Lab instructions for the five-day MDDMI workshop: three days Windows, one day An
 - **Read online:** <https://happelm.github.io/MDDMI/>
 - **Day notes:** a summary of each course day with sources – [jump to the list](#day-notes)
 
+> **Before the course:** Create a new Google account (@gmail.com) at home and keep its sign-in at hand. You need it on Day 4 to connect your tenant to Managed Google Play. Don't use your work account or your main private account.
+
 ## Labs
 
 ### Day 1 – Foundation and hybrid identity

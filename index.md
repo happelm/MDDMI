@@ -7,6 +7,8 @@ permalink: index.html
 
 Lab instructions for the five-day MDDMI workshop: three days Windows, one day Android, half a day iOS/iPadOS. Use the copy button on every code block.
 
+> **Before the course:** Create a new Google account (@gmail.com) at home and keep its sign-in at hand. You need it on Day 4 to connect your tenant to Managed Google Play. Don't use your work account or your main private account.
+
 ## Labs
 
 ### Day 1 – Foundation and hybrid identity

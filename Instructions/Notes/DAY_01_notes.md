@@ -6,6 +6,8 @@ title: 'Day 1 notes – Foundation and hybrid identity'
 
 > Summary of what was covered on Day 1, with sources – not a transcript. Recommendations marked "trainer recommendation" are field experience, not Microsoft documentation.
 
+> **To do before Day 4:** Create a new Google account (@gmail.com) at home. You need it to connect your tenant to Managed Google Play. Don't use your work account or your main private account.
+
 ## Key takeaways
 
 - Intune is built on Entra ID: identities, groups, device objects, licenses and Conditional Access all come from there.
