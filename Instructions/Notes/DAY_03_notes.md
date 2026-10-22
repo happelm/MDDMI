@@ -33,7 +33,7 @@ Sources: [Win32 app management](https://learn.microsoft.com/intune/app-managemen
 
 ### Single sign-on prompt in the EEA
 
-In the European Economic Area, Windows asks users once whether their Windows account may sign them in to other Microsoft apps. On managed Windows 11 24H2 and 25H2 devices with the July 2026 security update, admins can accept this automatically with the registry value `AutoAcceptSsoPermission` (DWORD) = `1`. The article names the path `HKLM\SOFTWARE\Policies\Microsoft\Windows\AAD` in the text, but its screenshot shows `HKLM\SOFTWARE\Policies\Microsoft\AAD` – check on a test device which one works.
+In the European Economic Area, Windows asks users once whether their Windows account may sign them in to other Microsoft apps. On managed Windows 11 24H2 and 25H2 devices with the July 2026 security update, admins can accept this automatically with the registry value `AutoAcceptSsoPermission` (DWORD) = `1`. Use the path `HKLM\SOFTWARE\Policies\Microsoft\Windows\AAD` from the article text – it worked in the trainer's lab. The screenshot in the article shows `HKLM\SOFTWARE\Policies\Microsoft\AAD`.
 
 Source: [Admin control for SSO prompts in Windows](https://learn.microsoft.com/entra/identity/devices/sso-admin-control)
 
