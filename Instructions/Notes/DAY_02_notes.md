@@ -165,4 +165,4 @@ Lab: [2.7 Group Policy analytics](../Labs/LAB_02_7_group-policy-analytics.html)
 
 ## Tomorrow (Day 3)
 
-Win32 and Store apps, Windows Autopilot for CL4, Endpoint security policies, compliance and Conditional Access.
+Win32 and Store apps, Windows Update, Windows Autopilot for CL4.
