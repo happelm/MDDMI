@@ -25,7 +25,7 @@ lab:
 - [ ] Both GPOs are listed in Group Policy analytics with an MDM support percentage
 - [ ] `Win Migrated Defender Settings` exists without an assignment
 
-**Note:** Firewall rules don't come over – they belong in an Endpoint security firewall policy (Day 3). Group Policy preferences have no CSP at all.
+**Note:** Firewall rules don't come over – they belong in an Endpoint security firewall policy. Group Policy preferences have no CSP at all.
 
 **Why:** Migrating a GPO 1:1 carries old decisions into the cloud. Use the report to decide what you still need.
 <!-- Source: Day 2 recording 2026-10-20 (PM). Learn "Analyze your on-premises GPOs using Group Policy analytics", "Create a settings catalog policy from imported GPOs". Wi-Fi steps removed per Day 2 change list. -->
