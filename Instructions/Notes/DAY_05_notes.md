@@ -50,9 +50,7 @@ Source: [Get an Apple MDM push certificate](https://learn.microsoft.com/intune/d
 - A device gets one policy. Changes reach only devices that enroll (again) – existing devices need a reset.
 - **Enrollment notifications** can send an email or push notification after enrollment.
 
-Sources: [Set up automated device enrollment](https://learn.microsoft.com/intune/device-enrollment/apple/setup-automated-ios) · [Enrollment time grouping](https://learn.microsoft.com/intune/device-enrollment/setup-time-grouping)
-
-<!-- Apple Business (March 2026) and Apple Configurator for iPhone iOS 16+: Apple sources checked by the transcript review. VERIFY: add the Apple links before publishing. -->
+Sources: [Set up automated device enrollment](https://learn.microsoft.com/intune/device-enrollment/apple/setup-automated-ios) · [Enrollment time grouping](https://learn.microsoft.com/intune/device-enrollment/setup-time-grouping) · [Introducing Apple Business (Apple Newsroom)](https://www.apple.com/de/newsroom/2026/03/introducing-apple-business/) · [Add devices using Apple Configurator (Apple)](https://support.apple.com/guide/apple-business-manager/add-devices-using-apple-configurator-axm200a54d59/web) · [Built-in device management alongside a third-party MDM (Apple Platform Deployment)](https://support.apple.com/guide/deployment/dep5a7629d2f/web)
 
 ## 4. Shared iPad vs. shared device mode
 

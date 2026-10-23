@@ -151,8 +151,6 @@ Lab: [2.7 Group Policy analytics](../Labs/LAB_02_7_group-policy-analytics.html)
 - [awesomeintune.com](https://awesomeintune.com) (community): curated list of Intune tools and blogs.
 - [intunesettings.app](https://intunesettings.app) (community): search all settings catalog settings.
 
-<!-- VERIFY: intunesettings.app and awesomeintune.com URLs before publishing.  -->
-
 ## What you did today
 
 1. Limited devices per user and iOS/iPadOS versions with enrollment restrictions ([Lab 2.1](../Labs/LAB_02_1_enrollment-restrictions.html)).

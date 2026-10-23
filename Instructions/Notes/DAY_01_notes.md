@@ -54,13 +54,12 @@ Several items in the Intune admin center – Conditional Access, for example –
 - Phishing hits passwords and weak MFA alike. Number matching in Microsoft Authenticator is the default for push notifications.
 - Phishing-resistant methods are Windows Hello for Business, FIDO2 security keys and passkeys, and certificate-based authentication. Windows Hello resists phishing because the key is bound to the device's TPM and to the sign-in origin. The biometric gesture only unlocks that key locally.
 - Periodic password changes are no longer recommended (NIST SP 800-63B, BSI). Change a password when there is a reason to.
-- An Entra account always has a password, and you can't remove it. For passwordless users, Microsoft documents scrambling the password so that nobody knows it.
+- An Entra account always has a password, and you can't remove it. For passwordless users, Microsoft documents scrambling it to a random 64-character password so that nobody knows it. For synced users, scramble the password in the on-premises AD.
 - Since 2025, MFA is mandatory for the Microsoft Intune admin center, the Entra admin center and the Azure portal.
 - Avoid MFA fatigue: good single sign-on means fewer prompts, and fewer prompts mean users still pay attention when one appears.
 - Require MFA for device registration and enrollment – it keeps rogue devices out of your tenant.
 
-Sources: [Authentication methods](https://learn.microsoft.com/entra/identity/authentication/concept-authentication-methods) · [Mandatory MFA for admin portals](https://learn.microsoft.com/entra/identity/authentication/concept-mandatory-multifactor-authentication) · [NIST SP 800-63B](https://pages.nist.gov/800-63-4/sp800-63b.html)
-<!-- VERIFY Michael: password scramble Learn article title/URL before publishing -->
+Sources: [Authentication methods](https://learn.microsoft.com/entra/identity/authentication/concept-authentication-methods) · [Mandatory MFA for admin portals](https://learn.microsoft.com/entra/identity/authentication/concept-mandatory-multifactor-authentication) · [NIST SP 800-63B](https://pages.nist.gov/800-63-4/sp800-63b.html) · [Remove password usage from Microsoft Entra ID](https://learn.microsoft.com/entra/identity/authentication/how-to-plan-password-scramble-phishing-resistant-passwordless-authentication)
 
 ## 3. Licensing
 
@@ -77,11 +76,10 @@ Sources: [Intune planning guide](https://learn.microsoft.com/intune/fundamentals
 - Single sign-on needs the same UPN suffix on-premises and in the cloud. Neither `smart.etc` nor the `onmicrosoft.com` domain can be renamed, so a third, routable domain goes into both: as UPN suffix in AD and as verified custom domain in Entra ID.
 - A custom domain needs a TXT record for verification in Entra ID. For mail and Intune, Microsoft 365 asks for MX, `autodiscover`, SPF and the two Intune CNAMEs.
 - `enterpriseregistration` → `enterpriseregistration.windows.net`, and `enterpriseenrollment` → `enterpriseenrollment-s.manage.microsoft.com`. These CNAMEs only matter for enrollment without automatic enrollment, where Windows has to discover the server from the user's email address.
-- Microsoft is ending support for CNAME auto-discovery for Windows MDM-only enrollment (Intune Customer Success blog). Entra join with automatic enrollment doesn't use it.
+- Microsoft is ending support for CNAME auto-discovery for Windows MDM-only enrollment on or soon after **January 15, 2027** (Message Center MC1509780). Existing devices aren't affected; users then enter the enrollment server address manually. Entra join with automatic enrollment doesn't use it.
 - Whoever can edit these DNS records can break Microsoft 365 for the whole company – mail, Teams, everything. Protect access to your DNS provider.
 
 Sources: [Enable auto-discovery of the Intune enrollment server](https://learn.microsoft.com/intune/device-enrollment/windows/create-cname-autodiscovery) · [Intune Customer Success blog: Preparing for end of support for CNAME auto-discovery in Windows MDM-only enrollment](https://techcommunity.microsoft.com/blog/intunecustomersuccess/preparing-for-end-of-support-for-cname-auto-discovery-in-windows-mdm-only-enroll/4564973/)
-<!-- VERIFY: end-of-support date from the blog -->
 
 Lab: [1.2 Add your custom domain](../Labs/LAB_01_2_add-your-custom-domain.html)
 

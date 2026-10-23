@@ -69,9 +69,9 @@ lab:
 
 **Note:** **Password complexity Low** allows repeating or ordered PINs like `1234`. **Medium** needs at least 4 characters and blocks repeating and ordered PINs, **High** at least 8 (6 for alphabetic or alphanumeric).
 
-**Note:** In production, exclude your break-glass accounts from every Conditional Access policy and start with **Report-only**. If the Entra admin center says that security defaults must be turned off before you can turn on the policy, turn them off first (Entra ID → Overview → Properties → Manage security defaults).
+**Note:** In production, exclude your break-glass accounts from every Conditional Access policy and start with **Report-only**.
 
 **Note:** Microsoft Outlook doesn't need a license count on Android – Managed Google Play apps show 0 licenses.
 
 **Why this order:** If the user enrolls first, you don't see how Conditional Access drives the enrollment. In real life, this is how most BYOD users meet Intune: through an app that refuses to work.
-<!-- Source: Day 4 recording 2026-10-22 AM 01:12–01:51 and 02:14–02:42. Learn: android-management-api-overview (web enrollment tenant-wide, can't be reversed; Intune app + Company Portal in the work profile), ref-android-enterprise-settings (password complexity Low/Medium/High; one lock), app-configuration-policies-outlook (configuration designer). Michael 14:48: Learn wording for Medium. Security defaults: in class CA-001 was created without this step – VERIFY whether the course tenants have security defaults off. VERIFY: exact Outlook configuration designer labels in the current portal. -->
+<!-- Source: Day 4 recording 2026-10-22 AM 01:12–01:51 and 02:14–02:42. Learn: android-management-api-overview (web enrollment tenant-wide, can't be reversed; Intune app + Company Portal in the work profile), ref-android-enterprise-settings (password complexity Low/Medium/High; one lock), app-configuration-policies-outlook (configuration designer). Michael 14:48: Learn wording for Medium. VERIFY: exact Outlook configuration designer labels in the current portal. -->
