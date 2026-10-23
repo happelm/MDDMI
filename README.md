@@ -68,13 +68,17 @@ Managed Google Play, personally owned work profile with web enrollment, complian
 
 ### Day 5 – iOS/iPadOS
 
-Apple MDM push certificate, device enrollment with the Company Portal, profiles and compliance, app protection. Half day.
+Apple MDM push certificate, configuration and compliance without a device, apps, app protection (optional test on your own iPhone without enrollment), passwordless sign-in and passkeys. Automated device enrollment, Shared iPad and shared device mode are a trainer demo. Half day.
+
+**Day notes:** [Day 5 – iOS/iPadOS](Instructions/Notes/DAY_05_notes.md) (draft)
 
 | Lab | Title | Time |
 |---|---|---|
-| 5.1 | [Apple MDM push certificate](Instructions/Labs/LAB_05_1_apple-mdm-push-certificate.md) | 20 min |
-| 5.2 | [Enroll an iPhone](Instructions/Labs/LAB_05_2_enroll-an-iphone.md) | 45 min |
-| 5.3 | [Protect Outlook with app protection](Instructions/Labs/LAB_05_3_protect-outlook-with-app-protection.md) | 30 min |
+| 5.1 | [Apple MDM push certificate](Instructions/Labs/LAB_05_1_apple-mdm-push-certificate.md) (draft, optional) | 15 min |
+| 5.2 | [iOS device configuration and compliance](Instructions/Labs/LAB_05_2_ios-device-configuration-and-compliance.md) (draft) | 30 min |
+| 5.3 | [iOS apps and app configuration](Instructions/Labs/LAB_05_3_ios-apps.md) (draft) | 25 min |
+| 5.4 | [App protection for Microsoft apps](Instructions/Labs/LAB_05_4_app-protection-for-microsoft-apps.md) (draft) | 30 min |
+| 5.5 | [Passwordless sign-in and passkeys](Instructions/Labs/LAB_05_5_passwordless-and-passkeys.md) (draft) | 20 min |
 
 ### Day notes
 
@@ -86,6 +90,7 @@ Summary of each day with sources, for after the course.
 | 2 | [Windows management](Instructions/Notes/DAY_02_notes.md) |
 | 3 | [Windows apps, updates and Autopilot](Instructions/Notes/DAY_03_notes.md) |
 | 4 | [Android](Instructions/Notes/DAY_04_notes.md) |
+| 5 | [iOS/iPadOS](Instructions/Notes/DAY_05_notes.md) (draft) |
 
 ### Appendix
 
@@ -121,7 +126,7 @@ One pod and one Microsoft 365 tenant per participant – nothing is shared, you 
 | CL4 | Windows 11, no domain | In OOBE – you deploy it with Windows Autopilot on Day 3 |
 | Tenant | Microsoft 365 E5 (GoDeploy, 20 licenses) | You launch it in Lab 1.1; it expires after two weeks |
 
-On Day 4 you get an Android test device from the trainer. For Day 5 the trainer tells you which iPhone or iPad to use.
+On Day 4 you get an Android test device from the trainer. Day 5 needs no iPhone – if you want, you can test app protection on your own iPhone without enrolling it. An Apple Account is only needed for the optional Lab 5.1.
 
 ### Accounts
 
