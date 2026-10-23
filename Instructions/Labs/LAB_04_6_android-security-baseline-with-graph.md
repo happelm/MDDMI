@@ -9,8 +9,6 @@ lab:
 
 **Estimated time:** 20 minutes (if time permits)
 
-> **Draft:** This lab is new and has not been run in this environment yet. If a step behaves differently, tell the trainer.
-
 **Goal:** Create Microsoft's "fully managed basic security (level 1)" example with one script instead of clicking through two policies, and check that the script did what Learn says.
 
 **Why:** Microsoft publishes recommended settings for Android Enterprise in three levels. Level 1 is the minimum for corporate-owned devices. A script built from that table is repeatable and reviewable – and an AI assistant can write most of it if you give it the right sources.
@@ -63,4 +61,4 @@ as one Intune compliance policy and one device restrictions profile.
 Then check the result yourself: compare every property with the Graph reference and every value with the Learn table before you run it in a tenant.
 
 </details>
-<!-- Source: Michael 2026-10-22 (Level 1 as Graph script, participants run it, show the AI prompt). Learn: android-fully-managed (level 1 tables), ref-android-enterprise-settings (fully managed compliance still uses password type/length; deprecation note is for personally owned work profile), Graph beta androidDeviceOwnerCompliancePolicy, androidDeviceOwnerGeneralDeviceConfiguration, deviceComplianceScheduledActionForRule. Script parsed without errors (PowerShell 7 parser); NOT yet run against a tenant. VERIFY mappings: "Time to lock screen" = passwordMinutesOfInactivityBeforeScreenTimeout, "User can configure credentials" = certificateCredentialConfigurationDisabled, "Threat scan on apps" = securityRequireVerifyApps. -->
+<!-- Source: Michael 2026-10-22 (Level 1 as Graph script, participants run it, show the AI prompt). Learn: android-fully-managed (level 1 tables), ref-android-enterprise-settings (fully managed compliance still uses password type/length; deprecation note is for personally owned work profile), Graph beta androidDeviceOwnerCompliancePolicy, androidDeviceOwnerGeneralDeviceConfiguration, deviceComplianceScheduledActionForRule. Script parsed without errors; run live in class 2026-10-23 by the trainer (policies created, not assigned). VERIFY mappings: "Time to lock screen" = passwordMinutesOfInactivityBeforeScreenTimeout, "User can configure credentials" = certificateCredentialConfigurationDisabled, "Threat scan on apps" = securityRequireVerifyApps. -->

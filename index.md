@@ -66,7 +66,7 @@ Managed Google Play, personally owned work profile with web enrollment, complian
 | 4.3 | [Configure the BYOD device](Instructions/Labs/LAB_04_3_configure-the-byod-device.html) | 45 min |
 | 4.4 | [Windows compliance policy](Instructions/Labs/LAB_04_4_windows-compliance-policy.html) | 30 min |
 | 4.5 | [Fully managed devices](Instructions/Labs/LAB_04_5_fully-managed-devices.html) | 120 min |
-| 4.6 | [Android security baseline with Graph](Instructions/Labs/LAB_04_6_android-security-baseline-with-graph.html) (draft, if time permits) | 20 min |
+| 4.6 | [Android security baseline with Graph](Instructions/Labs/LAB_04_6_android-security-baseline-with-graph.html) (if time permits) | 20 min |
 
 ### Day 5 – iOS/iPadOS
 
