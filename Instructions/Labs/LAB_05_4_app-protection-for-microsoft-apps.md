@@ -9,8 +9,6 @@ lab:
 
 **Estimated time:** 30 minutes, plus 20 minutes for the optional test on your own iPhone
 
-> **Draft:** This lab follows the class run on 2026-10-23 and hasn't been confirmed by the trainer yet. If a step behaves differently, tell the trainer.
-
 **Goal:** Protect company data inside the Microsoft apps with an app protection policy – on enrolled and on unenrolled devices.
 
 ## Create the policy

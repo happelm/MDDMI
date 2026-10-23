@@ -9,8 +9,6 @@ lab:
 
 **Estimated time:** 20 minutes
 
-> **Draft:** This lab follows the class run on 2026-10-23 and hasn't been confirmed by the trainer yet. If a step behaves differently, tell the trainer.
-
 **Goal:** Register Microsoft Authenticator on the Android test device for User1, turn on phone sign-in, create a passkey and sign in without a password.
 
 1. Android test device (fully managed from Lab 4.5): open Microsoft Authenticator. User1 is listed in grey – the account is there for single sign-on only, not for MFA.

@@ -9,8 +9,6 @@ lab:
 
 **Estimated time:** 30 minutes
 
-> **Draft:** This lab follows the class run on 2026-10-23 and hasn't been confirmed by the trainer yet. If a step behaves differently, tell the trainer.
-
 **Goal:** Build a device restrictions profile, a declarative software update policy and a compliance policy for iOS/iPadOS – without a device, so nothing is assigned.
 
 ## Device restrictions
@@ -47,6 +45,7 @@ lab:
    | Device Health → Jailbroken devices | Block |
    | System Security → Require a password to unlock mobile devices | Require |
    | System Security → Required password type | Numeric |
+   | System Security → Minimum password length | 4 |
    | Actions for noncompliance → Mark device noncompliant | Immediately |
 
    Look at **Restricted apps** and **Minimum OS version**. Create it without assignment.

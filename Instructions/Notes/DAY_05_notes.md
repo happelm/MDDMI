@@ -4,8 +4,6 @@ title: 'Day 5 notes – iOS/iPadOS'
 
 # Day 5 notes – iOS/iPadOS
 
-> **Draft:** These notes follow the class run on 2026-10-23 and haven't been confirmed by the trainer yet.
-
 > Summary of what was covered on Day 5, with sources – not a transcript. Recommendations marked "trainer recommendation" are field experience, not Microsoft documentation. Apple sources are named as such. "Lab observation" means the trainer saw it in a lab tenant; it isn't documented by Microsoft.
 
 ## Key takeaways
@@ -17,17 +15,7 @@ title: 'Day 5 notes – iOS/iPadOS'
 - App protection policies protect data inside the app on every enrollment type, including no enrollment at all. For iOS they are the answer to "private account in a managed app".
 - Synced passkeys are generally available in Microsoft Entra ID since March 2026. Passkeys in Microsoft Authenticator stay device-bound.
 
-## 1. Q&A from Day 4
-
-- **Honeywell:** the OEMConfig app for Honeywell devices is **Honeywell UEM Connect** (trainer) – the same principle as the Knox Service Plugin for Samsung.
-- **China (21Vianet):** Intune operated by 21Vianet is a separate service with its own feature set. Examples from Learn: standalone Intune only (no tenant attach / co-management with Configuration Manager), no Windows Autopilot (Windows Autopilot device preparation is available), and no Android Enterprise for devices with Google Mobile Services. Check the article before you plan a rollout there.
-- **Windows kiosk vs. shared multi-user device:** the **Kiosk** template locks a device to one app (single-app kiosk) or a set of apps (multi-app kiosk). The **Shared multi-user device** template (SharedPC CSP) is for many users on one PC: guest and/or domain accounts, account deletion at a storage or inactivity threshold or after sign-out, power settings.
-- Trainer experience: shared multi-user device settings stayed on the PC after the policy was removed (tattooing). Plan to remove them yourself – the SharedPC CSP lists the settings.
-- For heavily locked-down scenarios, RemoteApp or Azure Virtual Desktop can be an alternative to a kiosk (trainer recommendation).
-
-Sources: [Microsoft Intune operated by 21Vianet](https://learn.microsoft.com/intune/fundamentals/china#feature-differences-in-intune-operated-by-21vianet) · [Windows shared multi-user device settings](https://learn.microsoft.com/intune/device-configuration/templates/ref-shared-device-settings-windows) · [Shared PC or multi-user devices](https://learn.microsoft.com/intune/device-configuration/templates/configure-shared-device) · [SharedPC CSP](https://learn.microsoft.com/windows/client-management/mdm/sharedpc-csp)
-
-## 2. Enrollment options for iOS/iPadOS
+## 1. Enrollment options for iOS/iPadOS
 
 | Option | Ownership | What the organization controls | Wipe |
 |---|---|---|---|
@@ -44,7 +32,7 @@ Sources: [Microsoft Intune operated by 21Vianet](https://learn.microsoft.com/int
 
 Sources: [iOS/iPadOS enrollment guide](https://learn.microsoft.com/intune/device-enrollment/apple/guide-ios-ipados) · [Account-driven user enrollment](https://learn.microsoft.com/intune/device-enrollment/apple/setup-account-driven-user#prerequisites)
 
-## 3. Apple MDM push certificate
+## 2. Apple MDM push certificate
 
 - Valid for **365 days**. After expiry there is a **30-day grace period** to renew.
 - Renew with **Renew** in the Apple Push Certificates Portal and the **same Apple Account**. **Create a Certificate** creates a new certificate – then every Apple device must enroll again, the same as when the grace period runs out.
@@ -52,7 +40,7 @@ Sources: [iOS/iPadOS enrollment guide](https://learn.microsoft.com/intune/device
 
 Source: [Get an Apple MDM push certificate](https://learn.microsoft.com/intune/device-enrollment/apple/create-mdm-push-certificate#renew-apple-mdm-push-certificate)
 
-## 4. Apple Business and automated device enrollment
+## 3. Apple Business and automated device enrollment
 
 - **Apple Business** (announced by Apple in March 2026) unifies Apple Business Manager, Business Essentials and Business Connect and includes built-in device management for small companies. It works alongside a third-party MDM like Intune. Registration needs a D-U-N-S number and a verification call; plan about a week (trainer experience).
 - **Enrollment program token (ADE token):** Intune → Enrollment program tokens → download the public key → in Apple Business add an MDM server with it → download the server token → upload it in Intune. Valid one year; when it expires, only the sync with Apple Business stops.
@@ -66,7 +54,7 @@ Sources: [Set up automated device enrollment](https://learn.microsoft.com/intune
 
 <!-- Apple Business (March 2026) and Apple Configurator for iPhone iOS 16+: Apple sources checked by the transcript review. VERIFY: add the Apple links before publishing. -->
 
-## 5. Shared iPad vs. shared device mode
+## 4. Shared iPad vs. shared device mode
 
 | | Shared iPad | Microsoft Entra shared device mode |
 |---|---|---|
@@ -82,7 +70,7 @@ Sources: [Set up automated device enrollment](https://learn.microsoft.com/intune
 
 Sources: [Shared device solutions for iOS/iPadOS](https://learn.microsoft.com/intune/device-enrollment/apple/shared-device-solutions-ios#compare-solutions) · [Shared iPad](https://learn.microsoft.com/intune/device-enrollment/apple/shared-ipad) · [Frontline workers on iOS/iPadOS](https://learn.microsoft.com/intune/solutions/frontline-worker/ios-ipados#shared-ipad-vs-microsoft-entra-shared-device-mode)
 
-## 6. Configuration and software updates
+## 5. Configuration and software updates
 
 - The **Device restrictions** template is no longer updated; new settings come in the settings catalog. Lab 5.2 uses the template on purpose because it groups the settings by enrollment type (all enrollment types / device enrollment and ADE / ADE only).
 - Settings that keep corporate data out of private apps: **Block viewing corporate documents in unmanaged apps**, **Allow unmanaged apps to read from managed contacts accounts** (so the Phone app shows Outlook contacts) and **Allow copy/paste to be affected by managed open-in**.
@@ -99,20 +87,20 @@ Sources: [Shared device solutions for iOS/iPadOS](https://learn.microsoft.com/in
 
 Sources: [Apple settings catalog reference](https://learn.microsoft.com/intune/device-configuration/settings-catalog/ref-apple-settings) · [Update policies for Apple devices](https://learn.microsoft.com/intune/device-updates/apple/) · [Deprecated MDM update policies](https://learn.microsoft.com/intune/device-updates/apple/deprecated-mdm-policies-ios)
 
-## 7. Apps
+## 6. Apps
 
 - **iOS store app:** for personal devices; the user installs it with their own Apple Account. The store country in the app link can break installs (trainer experience).
 - **Apps and Books (VPP):** buy or get apps in Apple Business, assign them to a location, sync them to Intune with the **Apple VPP token** (Tenant administration → Connectors and tokens). Device licensing needs no Apple Account on the device; user licensing does. New assignments use device licensing by default. The token is valid one year; expiry stops the sync.
 - VPP token **Management type DDM:** iOS/iPadOS 18 or later, only **Required** and **Uninstall** assignments, no app configuration policies yet. Don't re-upload an existing token as DDM if it has available assignments – they are lost.
 - **Per-app VPN** is set in the app assignment and needs a VPN profile. iOS starts the VPN automatically when the app opens. Android Enterprise supports per-app VPN too (Cisco, F5, Pulse, Microsoft Tunnel and others), but opening the app doesn't start the VPN – that needs always-on VPN. Windows has per-app VPN in the VPN profile.
-- **App configuration:** Outlook has a configuration designer; most apps need the keys from the vendor. For Teams, the notification keys (`com.microsoft.teams.chat.notifications.IntuneMAMOnly` and the channel/other variants, value `1`) belong in a **Managed apps** configuration policy together with the app protection setting **Org data notifications = Block org data**.
+- **App configuration:** Outlook has a configuration designer; most apps need the keys from the vendor. For Teams, the notification keys (`com.microsoft.teams.chat.notifications.IntuneMAMOnly` and the channel/other variants, value `1`) belong in a **Managed apps** configuration policy together with the app protection setting **Org data notifications = Block org data**. A Managed apps policy is assigned to users and works on enrolled and unenrolled devices alike.
 - Own PDFs or e-books can't be distributed with Intune; e-books come through Apps and Books.
 
-Sources: [Manage Apple VPP apps](https://learn.microsoft.com/intune/app-management/deployment/manage-vpp-apple) · [Microsoft Tunnel – VPN profile](https://learn.microsoft.com/intune/device-security/microsoft-tunnel/install#create-a-vpn-profile) · [Android Enterprise VPN settings](https://learn.microsoft.com/intune/device-configuration/templates/ref-vpn-settings-android-enterprise) · [Configure Teams for iOS and Android](https://learn.microsoft.com/intune/app-management/configuration/configure-teams-mobile)
+Sources: [App configuration overview](https://learn.microsoft.com/intune/app-management/configuration/overview#apps-that-support-app-configuration) · [Manage Apple VPP apps](https://learn.microsoft.com/intune/app-management/deployment/manage-vpp-apple) · [Microsoft Tunnel – VPN profile](https://learn.microsoft.com/intune/device-security/microsoft-tunnel/install#create-a-vpn-profile) · [Android Enterprise VPN settings](https://learn.microsoft.com/intune/device-configuration/templates/ref-vpn-settings-android-enterprise) · [Configure Teams for iOS and Android](https://learn.microsoft.com/intune/app-management/configuration/configure-teams-mobile)
 
 <!-- VERIFY before slides: Edge "Chromium keys" wording (Learn configure-edge-ios-android lists com.microsoft.intune.mam.managedbrowser.* keys and some Edge policy names); "restricted apps: Android can't"; private mailbox disappearing when Outlook becomes managed. Left out of the notes on purpose. -->
 
-## 8. Compliance and app protection
+## 7. Compliance and app protection
 
 - iOS compliance: **Jailbroken devices = Block**, minimum OS version, **Require a password**, and mark the device noncompliant immediately. **Restricted apps** marks the device noncompliant when a listed app is installed.
 - Two different leaks need two different tools: a private mail app next to a managed Outlook is handled by managed open-in (device restrictions); a private account inside the managed Outlook is handled only by app protection (multi-identity).
@@ -123,7 +111,7 @@ Sources: [Manage Apple VPP apps](https://learn.microsoft.com/intune/app-manageme
 
 Sources: [iOS app protection settings](https://learn.microsoft.com/intune/app-management/protection/ref-settings-ios)
 
-## 9. Passwordless and passkeys
+## 8. Passwordless and passkeys
 
 - `aka.ms/mfasetup` opens **Security info**. There you add Microsoft Authenticator; **Enable phone sign-in** registers the device and turns on passwordless sign-in with number matching.
 - **Passkeys in Microsoft Authenticator are device-bound** – they don't sync. The phone needs Android 14 or iOS 17 or later, and the passkey profile in Microsoft Entra ID must allow Authenticator. Device registration isn't a prerequisite for the passkey.

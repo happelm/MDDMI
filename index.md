@@ -72,15 +72,15 @@ Managed Google Play, personally owned work profile with web enrollment, complian
 
 Apple MDM push certificate, configuration and compliance without a device, apps, app protection (optional test on your own iPhone without enrollment), passwordless sign-in and passkeys. Automated device enrollment, Shared iPad and shared device mode are a trainer demo. Half day.
 
-**Day notes:** [Day 5 – iOS/iPadOS](Instructions/Notes/DAY_05_notes.html) (draft)
+**Day notes:** [Day 5 – iOS/iPadOS](Instructions/Notes/DAY_05_notes.html)
 
 | Lab | Title | Time |
 |---|---|---|
-| 5.1 | [Apple MDM push certificate](Instructions/Labs/LAB_05_1_apple-mdm-push-certificate.html) (draft, optional) | 15 min |
-| 5.2 | [iOS device configuration and compliance](Instructions/Labs/LAB_05_2_ios-device-configuration-and-compliance.html) (draft) | 30 min |
-| 5.3 | [iOS apps and app configuration](Instructions/Labs/LAB_05_3_ios-apps.html) (draft) | 25 min |
-| 5.4 | [App protection for Microsoft apps](Instructions/Labs/LAB_05_4_app-protection-for-microsoft-apps.html) (draft) | 30 min |
-| 5.5 | [Passwordless sign-in and passkeys](Instructions/Labs/LAB_05_5_passwordless-and-passkeys.html) (draft) | 20 min |
+| 5.1 | [Apple MDM push certificate](Instructions/Labs/LAB_05_1_apple-mdm-push-certificate.html) (optional) | 15 min |
+| 5.2 | [iOS device configuration and compliance](Instructions/Labs/LAB_05_2_ios-device-configuration-and-compliance.html) | 30 min |
+| 5.3 | [iOS apps and app configuration](Instructions/Labs/LAB_05_3_ios-apps.html) | 25 min |
+| 5.4 | [App protection for Microsoft apps](Instructions/Labs/LAB_05_4_app-protection-for-microsoft-apps.html) | 30 min |
+| 5.5 | [Passwordless sign-in and passkeys](Instructions/Labs/LAB_05_5_passwordless-and-passkeys.html) | 20 min |
 
 ### Day notes
 
@@ -92,7 +92,7 @@ Summary of each day with sources, for after the course.
 | 2 | [Windows management](Instructions/Notes/DAY_02_notes.html) |
 | 3 | [Windows apps, updates and Autopilot](Instructions/Notes/DAY_03_notes.html) |
 | 4 | [Android](Instructions/Notes/DAY_04_notes.html) |
-| 5 | [iOS/iPadOS](Instructions/Notes/DAY_05_notes.html) (draft) |
+| 5 | [iOS/iPadOS](Instructions/Notes/DAY_05_notes.html) |
 
 ### Appendix
 
@@ -104,7 +104,7 @@ Summary of each day with sources, for after the course.
 
 ## About this guide
 
-> **Status:** The labs of Days 1 to 4 have been tested in this course. Labs marked as draft haven't been tested yet.
+> **Status:** All labs have been tested in this course.
 
 Each lab lists its goal, the steps at task level (not every click) and a checkpoint you confirm before moving on. The Windows labs build on each other – work through them in order and do not reset your VMs between days.
 
