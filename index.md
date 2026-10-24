@@ -5,7 +5,7 @@ permalink: index.html
 
 # MDDMI – Modern Device Management with Microsoft Intune
 
-Lab instructions for the five-day MDDMI workshop: three days Windows, one day Android, half a day iOS/iPadOS. Use the copy button on every code block.
+Lab instructions for the five-day MDDMI workshop: three days Windows, one day Android, one day iOS/iPadOS. Use the copy button on every code block.
 
 > **Before the course:** Create a new Google account (@gmail.com) at home and keep its sign-in at hand. You need it on Day 4 to connect your tenant to Managed Google Play. Don't use your work account or your main private account.
 
@@ -70,7 +70,7 @@ Managed Google Play, personally owned work profile with web enrollment, complian
 
 ### Day 5 – iOS/iPadOS
 
-Apple MDM push certificate, configuration and compliance without a device, apps, app protection (optional test on your own iPhone without enrollment), passwordless sign-in and passkeys. Automated device enrollment, Shared iPad and shared device mode are a trainer demo. Half day.
+Apple MDM push certificate, configuration and compliance without a device, apps, app protection (optional test on your own iPhone without enrollment), passwordless sign-in and passkeys. Automated device enrollment, Shared iPad and shared device mode are a trainer demo.
 
 **Day notes:** [Day 5 – iOS/iPadOS](Instructions/Notes/DAY_05_notes.html)
 

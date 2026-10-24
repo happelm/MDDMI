@@ -1,6 +1,6 @@
 # MDDMI – Modern Device Management with Microsoft Intune
 
-Lab instructions for the five-day MDDMI workshop: three days Windows, one day Android, half a day iOS/iPadOS.
+Lab instructions for the five-day MDDMI workshop: three days Windows, one day Android, one day iOS/iPadOS.
 
 - **Read online:** <https://happelm.github.io/MDDMI/>
 - **Day notes:** a summary of each course day with sources – [jump to the list](#day-notes)
@@ -68,7 +68,7 @@ Managed Google Play, personally owned work profile with web enrollment, complian
 
 ### Day 5 – iOS/iPadOS
 
-Apple MDM push certificate, configuration and compliance without a device, apps, app protection (optional test on your own iPhone without enrollment), passwordless sign-in and passkeys. Automated device enrollment, Shared iPad and shared device mode are a trainer demo. Half day.
+Apple MDM push certificate, configuration and compliance without a device, apps, app protection (optional test on your own iPhone without enrollment), passwordless sign-in and passkeys. Automated device enrollment, Shared iPad and shared device mode are a trainer demo.
 
 **Day notes:** [Day 5 – iOS/iPadOS](Instructions/Notes/DAY_05_notes.md)
 
