@@ -34,7 +34,7 @@ lab:
 
 **Note:** Without a license that includes Intune and Entra ID P1, auto-enrollment doesn't run – even with the MDM user scope set. If MDM and MAM user scope both include a user, MAM wins on registered devices.
 
-**Note:** The trainer shows that `\\dc1` doesn't open after a sign-in with the Hello PIN – the PIN needs Cloud Kerberos trust, which comes later in the course.
+**Note:** The trainer shows that `\\dc1` doesn't open after a sign-in with the Hello PIN – the PIN needs Cloud Kerberos trust, which is out of scope for this course.
 
 **Why:** An Entra joined device gets a Primary Refresh Token (PRT) at sign-in. With the PRT the device gets single sign-on to cloud apps, and with line of sight to a DC it also gets Kerberos tickets for on-premises resources.
 <!-- Source: Day 2 recording 2026-10-20 (AM). Learn "Enable Windows automatic enrollment", "Primary Refresh Token". Old step 7 (registration demo on CL2) removed per Michael 2026-10-20. -->
