@@ -151,3 +151,9 @@ Passwords are on the pod card from the trainer.
 ## Known issues and feedback
 
 Known issues, workarounds and corrections are tracked in the [Issues](https://github.com/happelm/MDDMI/issues) tab. If something in a lab does not work as described, check the open issues first, then open a new one with the lab number and the step.
+
+## Contributing
+
+Trainers and participants may fork this repository. Pull requests are welcome and are merged after review.
+
+(c) Enterprise Training Center
