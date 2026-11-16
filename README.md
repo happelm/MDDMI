@@ -4,6 +4,7 @@ Lab instructions for the five-day MDDMI workshop: three days Windows, one day An
 
 - **Read online:** <https://happelm.github.io/MDDMI/>
 - **Day notes:** a summary of each course day with sources – [jump to the list](#day-notes)
+- **Toolbox:** three read-only PowerShell scripts for what the Intune admin center can't show you – policy documentation, Intune vs. Entra device comparison, assignments per group – [open the Toolbox](https://github.com/happelm/MDDMI/tree/main/Toolbox)
 
 > **Before the course:** Create a new Google account (@gmail.com) at home and keep its sign-in at hand. You need it on Day 4 to connect your tenant to Managed Google Play. Don't use your work account or your main private account.
 
