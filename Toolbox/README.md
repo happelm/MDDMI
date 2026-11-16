@@ -25,7 +25,7 @@ PowerShell.exe -ExecutionPolicy Bypass -File .\Compare-IntuneEntraDevices.ps1 -S
 ```
 
 ```powershell
-PowerShell.exe -ExecutionPolicy Bypass -File .\Get-IntunePolicyAssignmentsByGroup.ps1 -GroupName 'All Windows 11 Devices' -ExportCsv
+PowerShell.exe -ExecutionPolicy Bypass -File .\Get-IntunePolicyAssignmentsByGroup.ps1 -GroupName 'All Windows 11 Devices' -IncludeAllUsersAllDevices -ExportCsv -OutputFolder 'C:\Temp'
 ```
 
 Every script has help with all parameters: `Get-Help .\<script>.ps1 -Full`.
@@ -34,7 +34,7 @@ Every script has help with all parameters: `Get-Help .\<script>.ps1 -Full`.
 |---|---|---|
 | `Export-IntunePolicyDocumentation.ps1` | `C:\Temp\IntuneDocumentation\IntunePolicyDocumentation.html` and `.csv` | `DeviceManagementConfiguration.Read.All`, `Group.Read.All` |
 | `Compare-IntuneEntraDevices.ps1` | Summary in the console, `C:\Temp\IntuneEntraDeviceComparison.csv` | `DeviceManagementManagedDevices.Read.All`, `Device.Read.All` |
-| `Get-IntunePolicyAssignmentsByGroup.ps1` | Table in the console, CSV with `-ExportCsv` | `DeviceManagementConfiguration.Read.All`, `DeviceManagementApps.Read.All`, `DeviceManagementScripts.Read.All`, `DeviceManagementServiceConfig.Read.All`, `DeviceManagementRBAC.Read.All`, `GroupMember.Read.All` |
+| `Get-IntunePolicyAssignmentsByGroup.ps1` | Table in the console, CSV in `C:\Temp` with `-ExportCsv -OutputFolder 'C:\Temp'` | `DeviceManagementConfiguration.Read.All`, `DeviceManagementApps.Read.All`, `DeviceManagementScripts.Read.All`, `DeviceManagementServiceConfig.Read.All`, `DeviceManagementRBAC.Read.All`, `GroupMember.Read.All` |
 
 CSV files use the delimiter `;` and UTF-8, so Excel with German regional settings opens them directly.
 
