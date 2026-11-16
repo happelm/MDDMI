@@ -30,7 +30,7 @@
     .\Export-IntunePolicyDocumentation.ps1 -NameContains 'Windows' -OutputFolder 'C:\Temp\Doku'
 
 .NOTES
-    Version : 1.0 (2026-11-16)
+    Version : 1.0.1 (2026-11-16) - fix: helper renamed, "H" is the built-in alias of Get-History
     Requires: Microsoft.Graph.Authentication 2.x, Windows PowerShell 5.1 or PowerShell 7
     Scopes  : DeviceManagementConfiguration.Read.All, Group.Read.All (for group names)
     Graph   : beta - configurationPolicies, their settings ($expand=settingDefinitions) and assignments
@@ -201,18 +201,18 @@ $docs | ForEach-Object {
 } | Export-Csv -Path $csvFile -Delimiter ';' -Encoding UTF8 -NoTypeInformation
 
 # 4. HTML: one section per policy
-function H ([string] $Text) { [System.Net.WebUtility]::HtmlEncode($Text) }
+function ConvertTo-HtmlText ([string] $Text) { [System.Net.WebUtility]::HtmlEncode($Text) }
 $sections = foreach ($doc in $docs) {
-    $settingRows = ($doc.Rows | ForEach-Object { "<tr><td>$(H $_.Setting)</td><td>$(H $_.Value)</td><td class=""csp"">$(H $_.Csp)</td></tr>" }) -join "`n"
+    $settingRows = ($doc.Rows | ForEach-Object { "<tr><td>$(ConvertTo-HtmlText $_.Setting)</td><td>$(ConvertTo-HtmlText $_.Value)</td><td class=""csp"">$(ConvertTo-HtmlText $_.Csp)</td></tr>" }) -join "`n"
     if (-not $settingRows) { $settingRows = '<tr><td colspan="3" class="muted">No settings configured.</td></tr>' }
-    $meta = "$(H $doc.Platform) &middot; $(H $doc.Technologies)"
-    if ($doc.Template) { $meta += " &middot; template $(H $doc.Template)" }
-    $meta += " &middot; modified $(H $doc.Modified) &middot; $($doc.Rows.Count) settings"
+    $meta = "$(ConvertTo-HtmlText $doc.Platform) &middot; $(ConvertTo-HtmlText $doc.Technologies)"
+    if ($doc.Template) { $meta += " &middot; template $(ConvertTo-HtmlText $doc.Template)" }
+    $meta += " &middot; modified $(ConvertTo-HtmlText $doc.Modified) &middot; $($doc.Rows.Count) settings"
     $desc = ''
-    if ($doc.Description) { $desc = "<p>$(H $doc.Description)</p>" }
+    if ($doc.Description) { $desc = "<p>$(ConvertTo-HtmlText $doc.Description)</p>" }
 @"
-<details open><summary><span class="name">$(H $doc.Name)</span><span class="meta">$meta</span></summary>
-$desc<p><b>Assigned:</b> $(H $doc.Assigned)</p>
+<details open><summary><span class="name">$(ConvertTo-HtmlText $doc.Name)</span><span class="meta">$meta</span></summary>
+$desc<p><b>Assigned:</b> $(ConvertTo-HtmlText $doc.Assigned)</p>
 <table><thead><tr><th>Setting</th><th>Value</th><th>CSP path</th></tr></thead><tbody>
 $settingRows
 </tbody></table></details>
