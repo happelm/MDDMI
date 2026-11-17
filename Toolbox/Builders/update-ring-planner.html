@@ -117,8 +117,10 @@ The page signs in nowhere and sends nothing: everything stays in your browser.</
     <li>With a deadline set, the device downloads and installs <strong>as soon as the update is offered</strong>. After the install a restart is pending.</li>
     <li>The <strong>deadline</strong> counts from the scan that found the update. The <strong>grace period</strong> counts from the pending restart.
       Windows forces the restart at whichever ends <strong>later</strong> – even during active hours, with a final notice 15 minutes before.</li>
-    <li><strong>Auto reboot before deadline = Yes</strong>: until then Windows tries to restart outside active hours. <strong>No</strong>: it waits for the
-      forced restart.</li>
+    <li><strong>Auto reboot before deadline = Yes</strong> (green hatch): from the pending restart until the forced restart, Windows tries to restart outside
+      active hours. <strong>No</strong>: it waits for the forced restart. The forced restart (red diamond) comes in both cases.</li>
+    <li>A quality update always needs a restart, so there is always a diamond. With deferral, deadline and grace 0 the restart is forced right after
+      the install. Exception not shown here: in hotpatch months a hotpatch-capable device installs without a restart.</li>
     <li>The extra row "device off" shows a device that found the update but was switched off before it could install, for example during a vacation.
       The grace period gives the user time after the install.</li>
     <li>Microsoft's guidance for quality updates: deferral + deadline + grace no more than <strong>7 days</strong>; recommended deadline 1 day
@@ -230,6 +232,7 @@ The page signs in nowhere and sends nothing: everything stays in your browser.</
     var s = [];
     s.push('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + W + ' ' + H + '" width="' + W + '" height="' + H + '" font-family="Segoe UI, system-ui, -apple-system, sans-serif" font-size="12">');
     s.push('<rect width="' + W + '" height="' + H + '" fill="#ffffff"/>');
+    s.push('<defs><pattern id="auto" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" fill="#eef6ec"/><line x1="0" y1="0" x2="0" y2="6" stroke="#4ac26b" stroke-width="2"/></pattern></defs>');
     s.push('<text x="16" y="24" font-size="16" font-weight="600" fill="#1f2328">Windows quality update – ' + esc(pt.toLocaleString('en-US', { month: 'long', year: 'numeric' })) + '</text>');
     s.push('<text x="16" y="42" fill="#57606a">Patch Tuesday ' + esc(fmt(pt).slice(0, 14)) + ' · device scans at ' + esc($('scan').value || '10:00') + ' · install ' + esc($('inst').value || 0) + ' h</text>');
     // day columns
@@ -254,6 +257,8 @@ The page signs in nowhere and sends nothing: everything stays in your browser.</
       var y = T + k * RH, c = row.c, mid = y + RH / 2;
       if (k % 2 === 1) s.push('<rect x="0" y="' + y + '" width="' + L + '" height="' + RH + '" fill="#f6f8fa"/>');
       s.push('<text x="16" y="' + (mid + 4) + '" fill="' + (row.alt ? '#57606a' : '#1f2328') + '"' + (row.alt ? ' font-style="italic"' : ' font-weight="600"') + '>' + esc(row.label.length > 30 ? row.label.slice(0, 29) + '…' : row.label) + '</text>');
+      // auto restart window (Auto reboot before deadline = Yes): from pending restart until the forced restart
+      if (row.r.ar && c.eff > c.pending) s.push('<rect x="' + X(c.pending).toFixed(1) + '" y="' + (mid - 16) + '" width="' + (X(c.eff) - X(c.pending)).toFixed(1) + '" height="32" fill="url(#auto)" opacity="0.7"/>');
       // deferral
       if (c.scan > pt) {
         s.push('<line x1="' + X(pt).toFixed(1) + '" y1="' + mid + '" x2="' + X(c.scan).toFixed(1) + '" y2="' + mid + '" stroke="#8c959f" stroke-width="2" stroke-dasharray="2 3"/>');
@@ -275,17 +280,24 @@ The page signs in nowhere and sends nothing: everything stays in your browser.</
     });
     // legend
     var ly = T + rows.length * RH + 56, lx = 16;
-    function leg(svgMark, text) { s.push('<g transform="translate(' + lx + ',' + ly + ')">' + svgMark + '<text x="22" y="4" fill="#1f2328">' + esc(text) + '</text></g>'); lx += 34 + text.length * 6.6; }
+    function leg(svgMark, text) {
+      var w = 34 + text.length * 6.6;
+      if (lx + w > W - 8) { lx = 16; ly += 22; }
+      s.push('<g transform="translate(' + lx + ',' + ly + ')">' + svgMark + '<text x="22" y="4" fill="#1f2328">' + esc(text) + '</text></g>'); lx += w;
+    }
     leg('<line x1="0" y1="0" x2="16" y2="0" stroke="#8c959f" stroke-width="2" stroke-dasharray="2 3"/>', 'Deferral');
     leg('<circle cx="8" cy="0" r="4" fill="#fff" stroke="#0078d4" stroke-width="2"/>', 'Scan finds update');
     leg('<rect x="0" y="-5" width="16" height="9" rx="2" fill="#0078d4"/>', 'Deadline (from scan)');
     leg('<line x1="8" y1="-6" x2="8" y2="6" stroke="#57606a" stroke-width="2"/>', 'Restart pending');
     leg('<rect x="0" y="-4" width="16" height="8" rx="2" fill="#d4a72c"/>', 'Grace (from pending restart)');
     leg('<path d="M 8 -7 l 7 7 l -7 7 l -7 -7 z" fill="#cf222e"/>', 'Forced restart at the latest');
+    if (state.rings.some(function (r) { return r.ar; })) leg('<rect x="0" y="-6" width="16" height="12" fill="url(#auto)"/>', 'Auto restart outside active hours possible (Yes)');
     if (off) leg('<rect x="0" y="-4" width="16" height="8" fill="#d0d7de"/>', 'Device off');
     s.push('<text x="16" y="' + (ly + 26) + '" fill="#8c959f" font-size="11">Weekends shaded. Assumes the scan at the set time on the offer day. Built with the MDDMI update ring planner.</text>');
     s.push('</svg>');
-    return s.join('');
+    var out = s.join(''), H2 = ly + 40;
+    return out.replace('viewBox="0 0 ' + W + ' ' + H + '" width="' + W + '" height="' + H + '"', 'viewBox="0 0 ' + W + ' ' + H2 + '" width="' + W + '" height="' + H2 + '"')
+              .replace('<rect width="' + W + '" height="' + H + '" fill="#ffffff"/>', '<rect width="' + W + '" height="' + H2 + '" fill="#ffffff"/>');
   }
 
   // ---------- table ----------
