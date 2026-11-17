@@ -38,7 +38,7 @@ title: 'Assignment filter builder'
   .afb .cond .val { display: flex; gap: 6px; align-items: center; min-width: 0; }
   .afb .cond .val input[type=text], .afb .cond .val select { flex: 1; min-width: 0; }
   .afb .cond .note { grid-column: 2 / -1; color: #57606a; font-size: 12px; margin-top: -4px; }
-  .afb .rule { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: 13px; background: #f6f8fa; border: 1px solid #d0d7de;
+  .afb .rule-out { height: auto; overflow: visible; line-height: 1.5; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: 13px; background: #f6f8fa; border: 1px solid #d0d7de;
     border-radius: 6px; padding: 10px 12px; white-space: pre-wrap; overflow-wrap: anywhere; min-height: 20px; }
   .afb .len { font-size: 13px; color: #57606a; }
   .afb .plain { font-size: 14px; margin: 8px 0; }
@@ -84,7 +84,7 @@ The page signs in nowhere and sends nothing: everything stays in your browser.</
   <legend>3. Rule</legend>
   <ul class="errors" id="errors"></ul>
   <ul class="warns" id="warns"></ul>
-  <div class="rule" id="rule"></div>
+  <div class="rule-out" id="rule"></div>
   <p class="len" id="len"></p>
   <div class="actions"><button type="button" class="primary" id="cpRule">Copy rule</button></div>
   <div class="row">

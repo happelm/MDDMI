@@ -38,7 +38,7 @@ title: 'Dynamic group rule builder'
   .dgb .cond .val { display: flex; gap: 6px; align-items: center; min-width: 0; }
   .dgb .cond .val input[type=text] { flex: 1; min-width: 0; }
   .dgb .cond .note { grid-column: 3 / -1; color: #57606a; font-size: 12px; margin-top: -4px; }
-  .dgb .rule { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: 13px; background: #f6f8fa; border: 1px solid #d0d7de;
+  .dgb .rule-out { height: auto; overflow: visible; line-height: 1.5; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: 13px; background: #f6f8fa; border: 1px solid #d0d7de;
     border-radius: 6px; padding: 10px 12px; white-space: pre-wrap; overflow-wrap: anywhere; min-height: 20px; }
   .dgb .len { font-size: 13px; color: #57606a; }
   @media (max-width: 700px) {
@@ -78,7 +78,7 @@ Microsoft Learn and can build a PowerShell script that creates the group. The pa
   <legend>3. Rule</legend>
   <ul class="errors" id="errors"></ul>
   <ul class="warns" id="warns"></ul>
-  <div class="rule" id="rule"></div>
+  <div class="rule-out" id="rule"></div>
   <p class="len" id="len"></p>
   <div class="actions">
     <button type="button" class="primary" id="cpRule">Copy rule</button>
