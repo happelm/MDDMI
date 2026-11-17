@@ -63,6 +63,12 @@
       <ul>
         {% if appendix %}<li><a href="{{ appendix.url | relative_url }}"{% if appendix.url == page.url %} class="active"{% endif %}>Appendix</a></li>{% endif %}
         {% for n in notes %}<li><a href="{{ n.url | relative_url }}"{% if n.url == page.url %} class="active"{% endif %}>{{ n.title }}</a></li>{% endfor %}
+        {% assign dgb = site.pages | where_exp: "p", "p.path == 'Toolbox/Builders/dynamic-group-builder.html'" | first %}
+        {% if dgb %}<li><a href="{{ dgb.url | relative_url }}"{% if dgb.url == page.url %} class="active"{% endif %}>Dynamic group rule builder</a></li>{% endif %}
+        {% assign afb = site.pages | where_exp: "p", "p.path == 'Toolbox/Builders/filter-builder.html'" | first %}
+        {% if afb %}<li><a href="{{ afb.url | relative_url }}"{% if afb.url == page.url %} class="active"{% endif %}>Assignment filter builder</a></li>{% endif %}
+        {% assign urp = site.pages | where_exp: "p", "p.path == 'Toolbox/Builders/update-ring-planner.html'" | first %}
+        {% if urp %}<li><a href="{{ urp.url | relative_url }}"{% if urp.url == page.url %} class="active"{% endif %}>Update ring planner</a></li>{% endif %}
         <li><a href="https://github.com/happelm/Intune-Resources/blob/main/Intune1Links.md" target="_blank" rel="noopener">Resources ↗</a></li>
       </ul>
     </nav>

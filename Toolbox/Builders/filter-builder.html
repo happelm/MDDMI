@@ -1,0 +1,353 @@
+---
+layout: default
+title: 'Assignment filter builder'
+---
+
+{% raw %}
+<style>
+  .afb fieldset { border: 1px solid #d0d7de; border-radius: 6px; padding: 12px 16px 16px; margin: 0 0 20px; min-width: 0; }
+  .afb legend { font-weight: 600; padding: 0 6px; }
+  .afb label { display: block; font-weight: 600; font-size: 14px; margin: 10px 0 4px; }
+  .afb .hint { font-weight: 400; color: #57606a; font-size: 13px; }
+  .afb input[type=text], .afb input[type=number], .afb input[type=month], .afb input[type=time], .afb select, .afb textarea { width: 100%; box-sizing: border-box; font: inherit; font-size: 14px;
+    padding: 5px 8px; border: 1px solid #d0d7de; border-radius: 6px; background: #fff; }
+  .afb input.bad, .afb select.bad { border-color: #cf222e; background: #fff5f5; }
+  .afb .row { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 0 16px; }
+  .afb .inline label { display: inline-flex; align-items: center; gap: 6px; font-weight: 400; margin: 4px 16px 4px 0; }
+  .afb .item { border: 1px solid #e1e4e8; border-left: 4px solid #0078d4; border-radius: 6px; padding: 8px 12px 12px; margin: 12px 0; }
+  .afb .item h3 { font-size: 15px; margin: 4px 0; display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .afb .item .desc { color: #57606a; font-size: 13px; margin: 4px 0; }
+  .afb button { font: inherit; font-size: 14px; padding: 5px 14px; border: 1px solid #d0d7de; border-radius: 6px; background: #f6f8fa; cursor: pointer; }
+  .afb button.primary { background: #0078d4; border-color: #0078d4; color: #fff; }
+  .afb button.small { font-size: 12px; padding: 2px 10px; }
+  .afb button:hover { filter: brightness(0.96); }
+  .afb button:disabled { opacity: .5; cursor: default; }
+  .afb .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; align-items: center; }
+  .afb .errors { color: #cf222e; font-size: 14px; margin: 8px 0; padding-left: 20px; }
+  .afb .warns { color: #9a6700; font-size: 14px; margin: 8px 0; padding-left: 20px; }
+  .afb .ok { color: #1a7f37; font-size: 14px; margin: 8px 0; }
+  .afb textarea.out { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: 12px; min-height: 120px; }
+  .afb .add { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .afb .add select { flex: 1; min-width: 0; }
+  .afb table { font-size: 13px; }
+  .afb td, .afb th { overflow-wrap: anywhere; }
+  .afb .cond { display: grid; grid-template-columns: 76px minmax(0, 1.3fr) minmax(0, 1fr) minmax(0, 1.8fr) auto; gap: 8px; align-items: center;
+    padding: 8px 0; border-bottom: 1px solid #eaeef2; }
+  .afb .cond .first { font-size: 13px; color: #57606a; font-weight: 600; }
+  .afb .cond label { margin: 0; font-weight: 400; font-size: 13px; display: inline-flex; align-items: center; gap: 4px; }
+  .afb .cond .val { display: flex; gap: 6px; align-items: center; min-width: 0; }
+  .afb .cond .val input[type=text], .afb .cond .val select { flex: 1; min-width: 0; }
+  .afb .cond .note { grid-column: 2 / -1; color: #57606a; font-size: 12px; margin-top: -4px; }
+  .afb .rule { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: 13px; background: #f6f8fa; border: 1px solid #d0d7de;
+    border-radius: 6px; padding: 10px 12px; white-space: pre-wrap; overflow-wrap: anywhere; min-height: 20px; }
+  .afb .len { font-size: 13px; color: #57606a; }
+  .afb .plain { font-size: 14px; margin: 8px 0; }
+  @media (max-width: 700px) {
+    .afb .cond { grid-template-columns: 1fr 1fr; }
+    .afb .cond .note { grid-column: 1 / -1; }
+  }
+</style>
+
+<h1>Assignment filter builder</h1>
+
+<blockquote><p><strong>Draft:</strong> This tool is new and has not been tested in class yet.</p></blockquote>
+
+<p>Click together the rule for an Intune <strong>assignment filter</strong>. The page offers only the properties, operators and values
+Microsoft Learn lists for the platform you pick, and says in plain words which devices get the assignment.
+The page signs in nowhere and sends nothing: everything stays in your browser.</p>
+
+<div class="afb" id="afb">
+
+<fieldset>
+  <legend>1. Filter type and platform</legend>
+  <div class="row">
+    <div><label for="mode">Filter type</label>
+      <select id="mode"><option value="device">Managed devices</option><option value="app">Managed apps (app protection, app configuration)</option></select></div>
+    <div><label for="plat">Platform</label><select id="plat"></select></div>
+  </div>
+  <label for="tplSel">Start from an example <span class="hint">replaces type, platform and conditions</span></label>
+  <div class="add">
+    <select id="tplSel"></select>
+    <button type="button" id="tplBtn" class="primary">Load example</button>
+  </div>
+</fieldset>
+
+<fieldset>
+  <legend>2. Conditions</legend>
+  <p class="hint"><strong>and</strong> binds stronger than <strong>or</strong>: the page puts brackets around every <strong>and</strong> block.
+    Properties, operators and values aren't case sensitive.</p>
+  <div id="conds"></div>
+  <div class="actions"><button type="button" id="addBtn">Add condition</button></div>
+</fieldset>
+
+<fieldset>
+  <legend>3. Rule</legend>
+  <ul class="errors" id="errors"></ul>
+  <ul class="warns" id="warns"></ul>
+  <div class="rule" id="rule"></div>
+  <p class="len" id="len"></p>
+  <div class="actions"><button type="button" class="primary" id="cpRule">Copy rule</button></div>
+  <div class="row">
+    <div><label for="fmode">Use it in the assignment as</label>
+      <select id="fmode"><option value="include">Include filtered devices in assignment</option><option value="exclude">Exclude filtered devices in assignment</option></select></div>
+  </div>
+  <p class="plain" id="plain"></p>
+  <p class="hint">Intune admin center → Tenant administration → <strong>Assignment filters</strong> → <strong>Create</strong> → <span id="createType">Managed devices</span>:
+    name, platform <strong id="platName"></strong> → Rules → <strong>Edit</strong> next to the rule syntax → paste → OK.
+    <strong>Preview devices</strong> shows enrolled devices that match before you save. In the policy: Assignments → <strong>Edit filter</strong>.</p>
+</fieldset>
+
+<fieldset>
+  <legend>Good to know</legend>
+  <ul>
+    <li><strong>Include</strong> + match = gets it. <strong>Exclude</strong> + match = doesn't get it. A device that doesn't match an
+      include filter doesn't get it.</li>
+    <li>If one device gets the same policy through several assignments: <strong>Exclude</strong> wins over <strong>No filter</strong>,
+      and <strong>No filter</strong> wins over <strong>Include</strong>.</li>
+    <li>Filters are evaluated at enrollment and at every check-in – no group processing delay. But a property that is set
+      <em>after</em> enrollment, like a device category chosen in Company Portal, is empty at the first check-in.</li>
+    <li>Use the filter on a user group, a device group or the <strong>All users</strong> / <strong>All devices</strong> virtual groups.
+      For Conditional Access, licensing or Autopilot profiles you still need a <a href="dynamic-group-builder.html">dynamic group</a>.</li>
+    <li>Up to 200 filters per tenant, up to 3,072 characters per filter. Managed app filters apply to app protection and
+      app configuration policies only.</li>
+    <li><code>deviceOwnership</code> is <code>Corporate</code> here; Entra dynamic groups use <code>Company</code>.
+      <code>deviceTrustType</code> uses the Intune values like <code>Azure AD joined</code>, not the Entra values.</li>
+    <li>A filter on <code>enrollmentProfileName</code> breaks when you rename the profile – enrolled devices keep the old name.</li>
+  </ul>
+  <p class="hint">Sources: Microsoft Learn – <a href="https://learn.microsoft.com/intune/fundamentals/filters/ref-device-properties">Filter properties and operators</a>,
+    <a href="https://learn.microsoft.com/intune/fundamentals/filters/overview">Assignment filters</a>,
+    <a href="https://learn.microsoft.com/intune/fundamentals/filters/troubleshoot">Filter reports and troubleshooting</a>.</p>
+</fieldset>
+
+</div>
+
+<script>
+(function () {
+  function $(id) { return document.getElementById(id); }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+
+  var PLATFORMS = {
+    device: [['windows', 'Windows 10 and later'], ['macos', 'macOS'], ['ios', 'iOS/iPadOS'], ['ae', 'Android Enterprise'], ['aosp', 'Android (AOSP)'], ['da', 'Android device administrator']],
+    app: [['android', 'Android'], ['ios', 'iOS/iPadOS'], ['windows', 'Windows']]
+  };
+  var ALL_DEV = ['windows', 'macos', 'ios', 'ae', 'aosp', 'da'];
+  var FULL = ['-eq', '-ne', '-in', '-notIn', '-startsWith', '-contains', '-notContains'];
+  var LIST = ['-eq', '-ne', '-in', '-notIn'];
+  var EQ = ['-eq', '-ne'];
+  var VER = ['-eq', '-ne', '-gt', '-ge', '-lt', '-le'];
+  var SKUS = ['BusinessN', 'CloudEdition', 'CloudEditionN', 'Core', 'CoreCountrySpecific', 'CoreN', 'CoreSingleLanguage', 'Education', 'EducationN',
+    'Enterprise', 'EnterpriseEval', 'EnterpriseG', 'EnterpriseGN', 'EnterpriseN', 'EnterpriseNEval', 'EnterpriseS', 'EnterpriseSEval', 'EnterpriseSN',
+    'Holographic', 'IoTUAP', 'IoTUAPCommercial', 'IoTEnterprise', 'PPIPro', 'Professional', 'ProfessionalEducation', 'ProfessionalEducationN',
+    'ProfessionalWorkstation', 'ProfessionalN', 'ProfessionalSingleLanguage', 'ServerRdsh'];
+
+  // Properties from Microsoft Learn. fixed: value list the user picks from; vals: suggestions; p: platforms.
+  var PROPS = {
+    device: {
+      deviceOwnership: { p: ALL_DEV, ops: EQ, fixed: { '*': ['Corporate', 'Personal'] } },
+      deviceTrustType: { p: ['windows'], ops: LIST, fixed: { '*': ['Azure AD joined', 'Azure AD registered', 'Hybrid Azure AD joined', 'Unknown'] },
+        note: 'Intune values – not the Entra values AzureAD/ServerAD/Workplace.' },
+      deviceManagementType: { p: ['ae', 'aosp'], ops: EQ, fixed: {
+        ae: ['Corporate-owned fully managed', 'Corporate-owned with work profile', 'Corporate-owned dedicated devices with Entra ID Shared mode',
+             'Corporate-owned dedicated devices without Entra ID Shared mode', 'Personally-owned work profile'],
+        aosp: ['AOSP user-associated devices', 'AOSP userless devices'] } },
+      enrollmentProfileName: { p: ['ae', 'aosp', 'ios', 'windows'], ops: FULL, nul: true, note: 'Autopilot, Apple ADE or Google enrollment profile name. Renaming the profile breaks the filter.' },
+      operatingSystemVersion: { p: ALL_DEV, ops: VER, ver: true, vals: ['10.0.22000', '10.0.26100', '18.0', '15.0'], note: 'Version, compared as a version: 10.0.22000 and higher = Windows 11.' },
+      operatingSystemSKU: { p: ['windows'], ops: FULL, vals: SKUS, note: 'The portal doesn\'t show SKU names – use the values from the list. Enterprise multi-session = ServerRdsh.' },
+      cpuArchitecture: { p: ['windows', 'macos'], ops: LIST, fixed: { windows: ['amd64', 'x86', 'arm64', 'unknown'], macos: ['x64', 'arm64', 'unknown'] },
+        note: 'Not supported in enrollment scenarios yet.' },
+      manufacturer: { p: ALL_DEV, ops: FULL, vals: ['Microsoft Corporation', 'Apple', 'Samsung', 'Lenovo', 'HP', 'Dell Inc.'] },
+      model: { p: ALL_DEV, ops: FULL, vals: ['Surface', 'iPhone', 'iPad', 'MacBookPro', 'Virtual Machine'], note: 'Apple: the model, not the product name. Models with " in the name: use -contains.' },
+      deviceName: { p: ALL_DEV, ops: FULL },
+      deviceCategory: { p: ALL_DEV, ops: FULL, note: 'Empty at the first check-in if the user picks the category in Company Portal after enrollment.' },
+      isRooted: { p: ['da', 'ae', 'aosp', 'ios'], ops: EQ, fixed: { '*': ['True', 'False'] }, note: 'Android Enterprise: work profile only.' }
+    },
+    app: {
+      deviceManagementType: { p: ['android', 'ios'], ops: EQ, fixed: {
+        android: ['Unmanaged', 'Android device administrator', 'AOSP userless devices', 'AOSP user-associated devices',
+                  'Corporate-owned dedicated devices with Entra ID Shared mode', 'Corporate-owned dedicated devices without Entra ID Shared mode',
+                  'Corporate-owned with work profile', 'Corporate-owned fully managed', 'Personally-owned work profile'],
+        ios: ['Unmanaged', 'Automated Device Enrollment user-associated devices', 'Automated Device Enrollment userless devices',
+              'Account Driven User Enrollment', 'Device Enrollment with Company Portal and Web Enrollment'] },
+        note: 'Needs a Microsoft Entra device ID on the device to match the detailed values.' },
+      appVersion: { p: ['android', 'ios', 'windows'], ops: FULL },
+      operatingSystemVersion: { p: ['android', 'ios', 'windows'], ops: VER, ver: true, vals: ['18.0', '15.0', '10.0.22000'] },
+      deviceManufacturer: { p: ['android', 'ios', 'windows'], ops: FULL, vals: ['Apple', 'Samsung', 'Microsoft'] },
+      deviceModel: { p: ['android', 'ios', 'windows'], ops: FULL, vals: ['iPhone', 'iPad'] }
+    }
+  };
+
+  var TEMPLATES = [
+    { label: 'Corporate Windows devices (Lab 2.6)', mode: 'device', plat: 'windows', conds: [{ prop: 'deviceOwnership', op: '-eq', val: 'Corporate' }] },
+    { label: 'Android fully managed (Lab 4.5)', mode: 'device', plat: 'ae', conds: [{ prop: 'deviceManagementType', op: '-eq', val: 'Corporate-owned fully managed' }] },
+    { label: 'Windows 11 only', mode: 'device', plat: 'windows', conds: [{ prop: 'operatingSystemVersion', op: '-ge', val: '10.0.22000' }] },
+    { label: 'Entra joined or hybrid joined Windows', mode: 'device', plat: 'windows', conds: [{ prop: 'deviceTrustType', op: '-in', val: 'Azure AD joined, Hybrid Azure AD joined' }] },
+    { label: 'Windows Enterprise multi-session (AVD)', mode: 'device', plat: 'windows', conds: [{ prop: 'operatingSystemSKU', op: '-eq', val: 'ServerRdsh' }] },
+    { label: 'Surface devices', mode: 'device', plat: 'windows', conds: [{ prop: 'model', op: '-startsWith', val: 'Surface' }] },
+    { label: 'Windows virtual machines (Hyper-V)', mode: 'device', plat: 'windows', conds: [{ prop: 'model', op: '-eq', val: 'Virtual Machine' }] },
+    { label: 'Devices with any Autopilot profile', mode: 'device', plat: 'windows', conds: [{ prop: 'enrollmentProfileName', op: '-ne', isNull: true }] },
+    { label: 'Personal iPhones and iPads', mode: 'device', plat: 'ios', conds: [{ prop: 'deviceOwnership', op: '-eq', val: 'Personal' }] },
+    { label: 'Corporate iPads', mode: 'device', plat: 'ios', conds: [{ prop: 'deviceOwnership', op: '-eq', val: 'Corporate' }, { join: 'and', prop: 'model', op: '-startsWith', val: 'iPad' }] },
+    { label: 'Apple silicon Macs', mode: 'device', plat: 'macos', conds: [{ prop: 'cpuArchitecture', op: '-eq', val: 'arm64' }] },
+    { label: 'App protection: unmanaged iOS devices only', mode: 'app', plat: 'ios', conds: [{ prop: 'deviceManagementType', op: '-eq', val: 'Unmanaged' }] }
+  ];
+
+  var state = { mode: 'device', plat: 'windows', conds: [], seq: 0, fmode: 'include' };
+  try { var saved = JSON.parse(localStorage.getItem('mddmi.afb') || 'null'); if (saved && saved.conds) state = saved; } catch (e) { /* no storage */ }
+  function save() { try { localStorage.setItem('mddmi.afb', JSON.stringify(state)); } catch (e) { /* no storage */ } }
+
+  TEMPLATES.forEach(function (t, i) { var o = document.createElement('option'); o.value = i; o.textContent = t.label; $('tplSel').appendChild(o); });
+
+  function props() {
+    var all = PROPS[state.mode], out = {};
+    Object.keys(all).forEach(function (k) { if (all[k].p.indexOf(state.plat) >= 0) out[k] = all[k]; });
+    return out;
+  }
+  function fixedVals(p) { return p.fixed ? (p.fixed[state.plat] || p.fixed['*'] || []) : null; }
+  function newCond(c) {
+    c = c || {};
+    var keys = Object.keys(props()), prop = c.prop || keys[0], p = props()[prop];
+    var fx = fixedVals(p);
+    return { uid: ++state.seq, join: c.join || 'and', prop: prop, op: c.op || p.ops[0], val: c.val !== undefined ? c.val : (fx ? fx[0] : ''), isNull: !!c.isNull };
+  }
+  function renderPlatforms() {
+    $('mode').value = state.mode;
+    $('plat').innerHTML = PLATFORMS[state.mode].map(function (x) { return '<option value="' + x[0] + '"' + (x[0] === state.plat ? ' selected' : '') + '>' + x[1] + '</option>'; }).join('');
+  }
+  function fitConds() {
+    // keep conditions valid after a platform or type change
+    var ps = props();
+    state.conds = state.conds.filter(function (c) { return ps[c.prop]; });
+    state.conds.forEach(function (c) {
+      var p = ps[c.prop], fx = fixedVals(p);
+      if (p.ops.indexOf(c.op) < 0) c.op = p.ops[0];
+      if (fx && c.op !== '-in' && c.op !== '-notIn' && fx.indexOf(c.val) < 0) c.val = fx[0];
+    });
+    if (!state.conds.length) state.conds.push(newCond());
+  }
+
+  function render() {
+    var ps = props();
+    $('conds').innerHTML = state.conds.map(function (c, i) {
+      var p = ps[c.prop], fx = fixedVals(p), multi = c.op === '-in' || c.op === '-notIn', dl = 'dl' + c.uid, pre = state.mode === 'app' ? 'app.' : 'device.';
+      var h = '<div class="cond" data-uid="' + c.uid + '">';
+      h += i === 0 ? '<span class="first">' + pre.slice(0, -1) + '</span>'
+        : '<select data-k="join" aria-label="Connector"><option' + (c.join === 'and' ? ' selected' : '') + '>and</option><option' + (c.join === 'or' ? ' selected' : '') + '>or</option></select>';
+      h += '<select data-k="prop" aria-label="Property">' + Object.keys(ps).map(function (k) { return '<option' + (k === c.prop ? ' selected' : '') + '>' + k + '</option>'; }).join('') + '</select>';
+      h += '<select data-k="op" aria-label="Operator">' + p.ops.map(function (o) { return '<option' + (o === c.op ? ' selected' : '') + '>' + o + '</option>'; }).join('') + '</select>';
+      if (fx && !multi) {
+        h += '<div class="val"><select data-k="val" aria-label="Value">' + fx.map(function (v) { return '<option' + (v === c.val ? ' selected' : '') + '>' + esc(v) + '</option>'; }).join('') + '</select></div>';
+      } else {
+        var sug = fx || p.vals || [];
+        h += '<div class="val"><input type="text" data-k="val" list="' + dl + '" value="' + esc(c.val) + '"' + (c.isNull ? ' disabled' : '') +
+          ' placeholder="' + (multi ? 'value1, value2' : 'value') + '" aria-label="Value"><datalist id="' + dl + '">' +
+          sug.map(function (v) { return '<option value="' + esc(v) + '">'; }).join('') + '</datalist>' +
+          (p.nul && (c.op === '-eq' || c.op === '-ne') ? '<label><input type="checkbox" data-k="isNull"' + (c.isNull ? ' checked' : '') + '> null</label>' : '') + '</div>';
+      }
+      h += '<button type="button" class="small" data-remove="1">Remove</button>';
+      if (p.note) h += '<div class="note">' + esc(p.note) + '</div>';
+      return h + '</div>';
+    }).join('');
+  }
+
+  function find(uid) { return state.conds.filter(function (c) { return c.uid === uid; })[0]; }
+  function onChange(e) {
+    var t = e.target, row = t.closest('.cond'); if (!row || !t.dataset.k) return;
+    var c = find(+row.dataset.uid), k = t.dataset.k, p;
+    c[k] = t.type === 'checkbox' ? t.checked : t.value;
+    if (k === 'prop') { p = props()[c.prop]; c.op = p.ops[0]; c.val = fixedVals(p) ? fixedVals(p)[0] : ''; c.isNull = false; }
+    if (k === 'op') {
+      p = props()[c.prop];
+      if (c.op !== '-eq' && c.op !== '-ne') c.isNull = false;
+      if (fixedVals(p) && c.op !== '-in' && c.op !== '-notIn' && fixedVals(p).indexOf(c.val) < 0) c.val = fixedVals(p)[0];
+    }
+    if (k !== 'val' || e.type === 'change') render();
+    update();
+  }
+
+  function quote(v) { return '"' + String(v) + '"'; }
+  function splitList(v) { return String(v).split(',').map(function (x) { return x.trim(); }).filter(function (x) { return x; }); }
+  function expr(c) {
+    var p = props()[c.prop], left = (state.mode === 'app' ? 'app.' : 'device.') + c.prop + ' ' + c.op + ' ';
+    if (c.isNull) return '(' + left + '$null)';
+    if (c.op === '-in' || c.op === '-notIn') return '(' + left + '[' + splitList(c.val).map(quote).join(', ') + '])';
+    if (p.ver) return '(' + left + String(c.val).trim() + ')';
+    return '(' + left + quote(String(c.val).trim()) + ')';
+  }
+  function buildRule() {
+    var blocks = [[]];
+    state.conds.forEach(function (c, i) { if (i > 0 && c.join === 'or') blocks.push([]); blocks[blocks.length - 1].push(expr(c)); });
+    if (blocks.length === 1) return blocks[0].join(' and ');
+    return blocks.map(function (b) { return b.length > 1 ? '(' + b.join(' and ') + ')' : b[0]; }).join(' or ');
+  }
+
+  function validate() {
+    var errs = [], warns = [], ps = props();
+    if (!state.conds.length) errs.push('Add at least one condition.');
+    state.conds.forEach(function (c, i) {
+      var n = '#' + (i + 1) + ' ' + c.prop + ': ', p = ps[c.prop], v = String(c.val).trim(), bad = false, fx = fixedVals(p);
+      if (!c.isNull && !v) { errs.push(n + 'value is empty.'); bad = true; }
+      if (/"/.test(v)) { errs.push(n + 'a value can\'t contain a double quote. For names like iPad Pro (12.9") use -contains with a part of the name.'); bad = true; }
+      if (p.ver && v && !/^\d+(\.\d+){0,3}$/.test(v)) { errs.push(n + 'enter a version like 10.0.22000 or 18.1.'); bad = true; }
+      if (fx && (c.op === '-in' || c.op === '-notIn')) {
+        splitList(v).forEach(function (x) { if (fx.indexOf(x) < 0) { errs.push(n + '"' + x + '" is not a valid value. Valid: ' + fx.join(', ') + '.'); bad = true; } });
+      }
+      if (c.op === '-ne' || c.op === '-notIn' || c.op === '-notContains') {
+        if (state.fmode === 'exclude') warns.push(n + 'a negative operator in an exclude filter is a double negation – check the plain-language line below.');
+      }
+      if (c.prop === 'deviceCategory') warns.push(n + 'the category is empty at the first check-in when the user picks it in Company Portal after enrollment. An app can install before the filter matches correctly.');
+      var el = document.querySelector('.cond[data-uid="' + c.uid + '"] [data-k="val"]'); if (el) el.classList.toggle('bad', bad);
+    });
+    return { errs: errs, warns: warns };
+  }
+
+  function platName() { return PLATFORMS[state.mode].filter(function (x) { return x[0] === state.plat; })[0][1]; }
+
+  function update() {
+    var v = validate(), rule = v.errs.length ? '' : buildRule();
+    if (rule.length > 3072) v.errs.push('The rule has ' + rule.length + ' characters – the limit is 3,072.');
+    $('errors').innerHTML = v.errs.map(function (e) { return '<li>' + esc(e) + '</li>'; }).join('');
+    $('warns').innerHTML = v.warns.map(function (e) { return '<li>' + esc(e) + '</li>'; }).join('');
+    var ok = !v.errs.length;
+    $('rule').textContent = ok ? rule : '';
+    $('len').textContent = ok ? rule.length + ' of 3,072 characters' : '';
+    $('cpRule').disabled = !ok;
+    $('platName').textContent = platName();
+    $('createType').textContent = state.mode === 'app' ? 'Managed apps' : 'Managed devices';
+    $('fmode').value = state.fmode;
+    var what = state.mode === 'app' ? 'Apps on ' + platName() + ' devices' : platName() + ' devices';
+    $('plain').innerHTML = ok ? (state.fmode === 'include'
+      ? '<strong>Gets the assignment:</strong> ' + esc(what) + ' in the assigned group that match the rule. All others in the group don\'t.'
+      : '<strong>Gets the assignment:</strong> ' + esc(what) + ' in the assigned group that do <em>not</em> match the rule. Devices that match are skipped.') : '';
+    save();
+  }
+
+  function copy(btn, text) {
+    var label = btn.textContent;
+    navigator.clipboard.writeText(text).then(function () { btn.textContent = 'Copied'; setTimeout(function () { btn.textContent = label; }, 1500); });
+  }
+
+  $('conds').addEventListener('input', onChange);
+  $('conds').addEventListener('change', onChange);
+  $('conds').addEventListener('click', function (e) {
+    if (!e.target.dataset || !e.target.dataset.remove) return;
+    var uid = +e.target.closest('.cond').dataset.uid;
+    state.conds = state.conds.filter(function (c) { return c.uid !== uid; });
+    render(); update();
+  });
+  $('addBtn').addEventListener('click', function () { state.conds.push(newCond({ join: 'and' })); render(); update(); });
+  $('mode').addEventListener('change', function () { state.mode = $('mode').value; state.plat = PLATFORMS[state.mode][0][0]; renderPlatforms(); fitConds(); render(); update(); });
+  $('plat').addEventListener('change', function () { state.plat = $('plat').value; fitConds(); render(); update(); });
+  $('fmode').addEventListener('change', function () { state.fmode = $('fmode').value; update(); });
+  $('tplBtn').addEventListener('click', function () {
+    var t = TEMPLATES[+$('tplSel').value];
+    state.mode = t.mode; state.plat = t.plat; renderPlatforms();
+    state.conds = t.conds.map(newCond);
+    render(); update();
+  });
+  $('cpRule').addEventListener('click', function () { copy($('cpRule'), $('rule').textContent); });
+
+  renderPlatforms();
+  if (state.conds.length) { fitConds(); render(); update(); } else { $('tplBtn').click(); }
+})();
+</script>
+{% endraw %}

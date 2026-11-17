@@ -1,0 +1,373 @@
+---
+layout: default
+title: 'Update ring planner'
+---
+
+{% raw %}
+<style>
+  .urp fieldset { border: 1px solid #d0d7de; border-radius: 6px; padding: 12px 16px 16px; margin: 0 0 20px; min-width: 0; }
+  .urp legend { font-weight: 600; padding: 0 6px; }
+  .urp label { display: block; font-weight: 600; font-size: 14px; margin: 10px 0 4px; }
+  .urp .hint { font-weight: 400; color: #57606a; font-size: 13px; }
+  .urp input[type=text], .urp input[type=number], .urp input[type=month], .urp input[type=time], .urp select, .urp textarea { width: 100%; box-sizing: border-box; font: inherit; font-size: 14px;
+    padding: 5px 8px; border: 1px solid #d0d7de; border-radius: 6px; background: #fff; }
+  .urp input.bad, .urp select.bad { border-color: #cf222e; background: #fff5f5; }
+  .urp .row { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 0 16px; }
+  .urp .inline label { display: inline-flex; align-items: center; gap: 6px; font-weight: 400; margin: 4px 16px 4px 0; }
+  .urp .item { border: 1px solid #e1e4e8; border-left: 4px solid #0078d4; border-radius: 6px; padding: 8px 12px 12px; margin: 12px 0; }
+  .urp .item h3 { font-size: 15px; margin: 4px 0; display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .urp .item .desc { color: #57606a; font-size: 13px; margin: 4px 0; }
+  .urp button { font: inherit; font-size: 14px; padding: 5px 14px; border: 1px solid #d0d7de; border-radius: 6px; background: #f6f8fa; cursor: pointer; }
+  .urp button.primary { background: #0078d4; border-color: #0078d4; color: #fff; }
+  .urp button.small { font-size: 12px; padding: 2px 10px; }
+  .urp button:hover { filter: brightness(0.96); }
+  .urp button:disabled { opacity: .5; cursor: default; }
+  .urp .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; align-items: center; }
+  .urp .errors { color: #cf222e; font-size: 14px; margin: 8px 0; padding-left: 20px; }
+  .urp .warns { color: #9a6700; font-size: 14px; margin: 8px 0; padding-left: 20px; }
+  .urp .ok { color: #1a7f37; font-size: 14px; margin: 8px 0; }
+  .urp textarea.out { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: 12px; min-height: 120px; }
+  .urp .add { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .urp .add select { flex: 1; min-width: 0; }
+  .urp table { font-size: 13px; }
+  .urp td, .urp th { overflow-wrap: anywhere; }
+  .urp table.rings { width: 100%; border-collapse: collapse; display: table; }
+  .urp table.rings th, .urp table.rings td { padding: 4px 6px; border-bottom: 1px solid #eaeef2; text-align: left; vertical-align: middle; }
+  .urp table.rings input[type=text] { min-width: 120px; }
+  .urp table.rings input[type=number] { width: 70px; }
+  .urp .tablewrap { overflow-x: auto; }
+  .urp .chart { border: 1px solid #d0d7de; border-radius: 6px; overflow-x: auto; background: #fff; }
+  .urp .chart svg { display: block; width: 100%; min-width: 760px; height: auto; }
+  .urp table.result { width: 100%; border-collapse: collapse; display: table; font-size: 13px; }
+  .urp table.result th, .urp table.result td { padding: 5px 8px; border-bottom: 1px solid #eaeef2; text-align: left; white-space: nowrap; overflow-wrap: normal; }
+  .urp .pass { color: #1a7f37; font-weight: 600; }
+  .urp .fail { color: #9a6700; font-weight: 600; }
+  @media (max-width: 700px) {
+    .urp table.rings thead { display: none; }
+    .urp table.rings tr { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 8px; padding: 8px 0; border-bottom: 1px solid #d0d7de; }
+    .urp table.rings td { border: 0; padding: 0; }
+    .urp table.rings td::before { content: attr(data-l); display: block; font-size: 12px; color: #57606a; }
+    .urp table.rings td.name { grid-column: 1 / -1; }
+    .urp table.rings input[type=number] { width: 100%; }
+  }
+</style>
+
+<h1>Update ring planner</h1>
+
+<blockquote><p><strong>Draft:</strong> This tool is new and has not been tested in class yet.</p></blockquote>
+
+<p>Plan your Windows Update rings and see on a timeline when each ring gets the monthly quality update and when Windows
+forces the restart at the latest. Download the timeline as SVG or PNG for your documentation or a change request.
+The page signs in nowhere and sends nothing: everything stays in your browser.</p>
+
+<div class="urp" id="urp">
+
+<fieldset>
+  <legend>1. Month and assumptions</legend>
+  <div class="row">
+    <div><label for="month">Update month</label><input type="month" id="month"></div>
+    <div><label for="scan">Device scans at <span class="hint">on the day the update is offered</span></label><input type="time" id="scan" value="10:00"></div>
+    <div><label for="inst">Install takes (hours)</label><input type="number" id="inst" min="0" max="24" step="0.5" value="1"></div>
+    <div><label for="off">Device off after the scan (days) <span class="hint">0 = no extra row</span></label><input type="number" id="off" min="0" max="30" value="0"></div>
+  </div>
+  <p class="hint" id="ptInfo"></p>
+</fieldset>
+
+<fieldset>
+  <legend>2. Rings</legend>
+  <div class="tablewrap">
+  <table class="rings">
+    <thead><tr><th>Ring name</th><th>Quality deferral (days)</th><th>Quality deadline (days)</th><th>Grace period (days)</th>
+      <th>Feature deferral (days)</th><th>Feature deadline (days)</th><th>Auto reboot before deadline</th><th></th></tr></thead>
+    <tbody id="rings"></tbody>
+  </table>
+  </div>
+  <div class="actions">
+    <button type="button" id="addRing">Add ring</button>
+    <button type="button" id="resetRings">Reset to the course rings</button>
+  </div>
+  <ul class="errors" id="errors"></ul>
+  <ul class="warns" id="warns"></ul>
+</fieldset>
+
+<fieldset>
+  <legend>3. Timeline</legend>
+  <div class="chart" id="chart"></div>
+  <div class="actions">
+    <button type="button" class="primary" id="dlPng">Download PNG</button>
+    <button type="button" id="dlSvg">Download SVG</button>
+  </div>
+</fieldset>
+
+<fieldset>
+  <legend>4. Settings and dates</legend>
+  <div class="tablewrap"><table class="result" id="result"></table></div>
+  <div class="actions"><button type="button" id="cpMd">Copy as Markdown table</button></div>
+</fieldset>
+
+<fieldset>
+  <legend>How the page calculates</legend>
+  <ul>
+    <li>Day 0 is <strong>Patch Tuesday</strong>, the second Tuesday of the month. The ring offers the update after the <strong>quality deferral</strong>.
+      The page assumes the device scans on that day at the time you set.</li>
+    <li>With a deadline set, the device downloads and installs <strong>as soon as the update is offered</strong>. After the install a restart is pending.</li>
+    <li>The <strong>deadline</strong> counts from the scan that found the update. The <strong>grace period</strong> counts from the pending restart.
+      Windows forces the restart at whichever ends <strong>later</strong> – even during active hours, with a final notice 15 minutes before.</li>
+    <li><strong>Auto reboot before deadline = Yes</strong>: until then Windows tries to restart outside active hours. <strong>No</strong>: it waits for the
+      forced restart.</li>
+    <li>The extra row "device off" shows a device that found the update but was switched off before it could install, for example during a vacation.
+      The grace period gives the user time after the install.</li>
+    <li>Microsoft's guidance for quality updates: deferral + deadline + grace no more than <strong>7 days</strong>; recommended deadline 1 day
+      for quality and 2 days for feature updates, grace 2 days (quality) and 7 days (feature).</li>
+    <li>Deadline range: the Intune documentation lists 2–30 days, but the portal saved 1 in class (Lab 3.3). The Windows Update CSP accepts 0–30.
+      An update ring has one grace period for quality and feature updates. A pause stops a ring for up to 35 days.</li>
+  </ul>
+  <p class="hint">The real times depend on when each device scans and how long the install takes. Use the timeline to plan and explain, not as a promise.
+    Sources: Microsoft Learn – <a href="https://learn.microsoft.com/windows/deployment/update/wufb-compliancedeadlines">Enforce compliance deadlines</a>,
+    <a href="https://learn.microsoft.com/windows/deployment/update/update-policies">Policies for update compliance</a>,
+    <a href="https://learn.microsoft.com/intune/device-updates/windows/ref-update-ring-settings">Update ring settings</a>,
+    <a href="https://learn.microsoft.com/windows/client-management/mdm/policy-csp-update">Policy CSP – Update</a>.</p>
+</fieldset>
+
+</div>
+
+<script>
+(function () {
+  function $(id) { return document.getElementById(id); }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+
+  var COURSE = [
+    { name: 'Test Ring', qd: 0, dl: 1, gr: 0, fd: 0, fdl: 2, ar: true },
+    { name: 'Pilot Ring', qd: 3, dl: 2, gr: 2, fd: 30, fdl: 2, ar: true },
+    { name: 'Broad Ring', qd: 10, dl: 1, gr: 0, fd: 60, fdl: 2, ar: true }
+  ];
+  var DAY = 86400000, WD = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  var state = null;
+  try { state = JSON.parse(localStorage.getItem('mddmi.urp') || 'null'); } catch (e) { state = null; }
+  if (!state || !state.rings) state = { rings: JSON.parse(JSON.stringify(COURSE)) };
+  function save() { try { localStorage.setItem('mddmi.urp', JSON.stringify(state)); } catch (e) { /* no storage */ } }
+
+  var now = new Date();
+  $('month').value = state.month || (now.getFullYear() + '-' + ('0' + (now.getMonth() + 1)).slice(-2));
+  if (state.scan) $('scan').value = state.scan;
+  if (state.inst !== undefined) $('inst').value = state.inst;
+  if (state.off !== undefined) $('off').value = state.off;
+
+  function pad(n) { return ('0' + n).slice(-2); }
+  function fmt(d) { return WD[d.getDay()] + ' ' + d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()) + ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes()); }
+  var MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  function fmtShort(d) { return WD[d.getDay()] + ' ' + MON[d.getMonth()] + ' ' + d.getDate() + ', ' + pad(d.getHours()) + ':' + pad(d.getMinutes()); }
+  function addDays(d, n) { var x = new Date(d.getTime()); x.setDate(x.getDate() + n); return x; }
+  function addHours(d, h) { return new Date(d.getTime() + h * 3600000); }
+
+  function patchTuesday() {
+    var m = ($('month').value || '').split('-'), y = +m[0], mo = +m[1] - 1;
+    if (!y || isNaN(mo)) { y = now.getFullYear(); mo = now.getMonth(); }
+    var d = new Date(y, mo, 1), first = (2 - d.getDay() + 7) % 7; // first Tuesday
+    return new Date(y, mo, 1 + first + 7);
+  }
+
+  function renderRings() {
+    $('rings').innerHTML = state.rings.map(function (r, i) {
+      function num(k, l, max) {
+        return '<td data-l="' + l + '"><input type="number" min="0" max="' + max + '" data-i="' + i + '" data-k="' + k + '" value="' + esc(r[k]) + '" aria-label="' + esc(r.name + ' ' + l) + '"></td>';
+      }
+      return '<tr><td class="name" data-l="Ring name"><input type="text" data-i="' + i + '" data-k="name" value="' + esc(r.name) + '" aria-label="Ring name"></td>' +
+        num('qd', 'Quality deferral', 30) + num('dl', 'Quality deadline', 30) + num('gr', 'Grace period', 7) + num('fd', 'Feature deferral', 365) + num('fdl', 'Feature deadline', 30) +
+        '<td data-l="Auto reboot before deadline"><select data-i="' + i + '" data-k="ar" aria-label="Auto reboot before deadline"><option value="1"' + (r.ar ? ' selected' : '') + '>Yes</option><option value="0"' + (r.ar ? '' : ' selected') + '>No</option></select></td>' +
+        '<td data-l=""><button type="button" class="small" data-del="' + i + '">Remove</button></td></tr>';
+    }).join('');
+  }
+
+  function intIn(v, lo, hi) { return /^\d+$/.test(String(v)) && +v >= lo && +v <= hi; }
+
+  function validate() {
+    var errs = [], warns = [];
+    if (!state.rings.length) errs.push('Add at least one ring.');
+    state.rings.forEach(function (r, i) {
+      var n = (r.name || 'Ring ' + (i + 1)) + ': ';
+      if (!String(r.name).trim()) errs.push('Ring ' + (i + 1) + ': name is empty.');
+      if (!intIn(r.qd, 0, 30)) errs.push(n + 'quality deferral must be 0–30 days.');
+      if (!intIn(r.dl, 0, 30)) errs.push(n + 'quality deadline must be 0–30 days.');
+      if (!intIn(r.gr, 0, 7)) errs.push(n + 'grace period must be 0–7 days.');
+      if (!intIn(r.fd, 0, 365)) errs.push(n + 'feature deferral must be 0–365 days.');
+      if (!intIn(r.fdl, 0, 30)) errs.push(n + 'feature deadline must be 0–30 days.');
+      if (+r.dl === 0 || +r.fdl === 0) warns.push(n + 'deadline 0 exists in the Windows Update CSP, but the update ring doesn\'t offer it. VERIFY: settings catalog.');
+      if (+r.dl === 1 || +r.fdl === 1) warns.push(n + 'deadline 1: the portal saved it in class, the Intune documentation lists 2–30.');
+      if (intIn(r.qd, 0, 30) && intIn(r.dl, 0, 30) && intIn(r.gr, 0, 7) && (+r.qd + +r.dl + +r.gr) > 7)
+        warns.push(n + 'deferral + deadline + grace = ' + (+r.qd + +r.dl + +r.gr) + ' days – more than the 7 days Microsoft recommends for quality updates.');
+    });
+    return { errs: errs, warns: warns };
+  }
+
+  function calc(r, offDays) {
+    var pt = patchTuesday(), t = ($('scan').value || '10:00').split(':'), inst = Math.max(0, parseFloat($('inst').value) || 0);
+    var scan = addDays(pt, +r.qd); scan.setHours(+t[0] || 0, +t[1] || 0, 0, 0);
+    var pending = addHours(offDays ? addDays(scan, offDays) : scan, inst);
+    var dlEnd = addDays(scan, +r.dl), grEnd = addDays(pending, +r.gr);
+    var eff = dlEnd > grEnd ? dlEnd : grEnd;
+    return { pt: pt, scan: scan, pending: pending, dlEnd: dlEnd, grEnd: grEnd, eff: eff, byGrace: grEnd > dlEnd };
+  }
+
+  // ---------- SVG timeline ----------
+  function buildSvg() {
+    var off = Math.max(0, parseInt($('off').value, 10) || 0), pt = patchTuesday();
+    var rows = [];
+    state.rings.forEach(function (r) {
+      rows.push({ r: r, c: calc(r, 0), label: r.name });
+      if (off) rows.push({ r: r, c: calc(r, off), label: r.name + ' – device off ' + off + ' d', alt: true });
+    });
+    var maxT = 8 * DAY;
+    rows.forEach(function (x) { maxT = Math.max(maxT, x.c.eff - pt + DAY); });
+    var days = Math.ceil(maxT / DAY) + 1;
+    var W = 1100, L = 210, R = 24, T = 64, RH = 44, H = T + rows.length * RH + 92;
+    var pxDay = (W - L - R) / days;
+    function X(d) { return L + (d - pt) / DAY * pxDay; }
+    var s = [];
+    s.push('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + W + ' ' + H + '" width="' + W + '" height="' + H + '" font-family="Segoe UI, system-ui, -apple-system, sans-serif" font-size="12">');
+    s.push('<rect width="' + W + '" height="' + H + '" fill="#ffffff"/>');
+    s.push('<text x="16" y="24" font-size="16" font-weight="600" fill="#1f2328">Windows quality update – ' + esc(pt.toLocaleString('en-US', { month: 'long', year: 'numeric' })) + '</text>');
+    s.push('<text x="16" y="42" fill="#57606a">Patch Tuesday ' + esc(fmt(pt).slice(0, 14)) + ' · device scans at ' + esc($('scan').value || '10:00') + ' · install ' + esc($('inst').value || 0) + ' h</text>');
+    // day columns
+    for (var i = 0; i < days; i++) {
+      var d = addDays(pt, i), x = X(d), wk = d.getDay() === 0 || d.getDay() === 6;
+      if (wk) s.push('<rect x="' + x.toFixed(1) + '" y="' + T + '" width="' + pxDay.toFixed(1) + '" height="' + (rows.length * RH) + '" fill="#f3f4f6"/>');
+      s.push('<line x1="' + x.toFixed(1) + '" y1="' + T + '" x2="' + x.toFixed(1) + '" y2="' + (T + rows.length * RH) + '" stroke="#e5e7eb"/>');
+      if (pxDay >= 26 || i % 2 === 0) {
+        s.push('<text x="' + (x + pxDay / 2).toFixed(1) + '" y="' + (T + rows.length * RH + 16) + '" text-anchor="middle" fill="#57606a">' + WD[d.getDay()] + '</text>');
+        s.push('<text x="' + (x + pxDay / 2).toFixed(1) + '" y="' + (T + rows.length * RH + 30) + '" text-anchor="middle" fill="#8c959f">' + MON[d.getMonth()] + ' ' + d.getDate() + '</text>');
+      }
+    }
+    // Patch Tuesday and 7-day line
+    s.push('<line x1="' + X(pt) + '" y1="' + (T - 8) + '" x2="' + X(pt) + '" y2="' + (T + rows.length * RH) + '" stroke="#1f2328" stroke-width="1.5"/>');
+    s.push('<text x="' + (X(pt) + 4) + '" y="' + (T - 10) + '" fill="#1f2328" font-weight="600">Patch Tuesday</text>');
+    var seven = addDays(pt, 7);
+    if (7 < days) {
+      s.push('<line x1="' + X(seven).toFixed(1) + '" y1="' + (T - 8) + '" x2="' + X(seven).toFixed(1) + '" y2="' + (T + rows.length * RH) + '" stroke="#9a6700" stroke-dasharray="4 3"/>');
+      s.push('<text x="' + (X(seven) + 4).toFixed(1) + '" y="' + (T - 10) + '" fill="#9a6700">7 days</text>');
+    }
+    rows.forEach(function (row, k) {
+      var y = T + k * RH, c = row.c, mid = y + RH / 2;
+      if (k % 2 === 1) s.push('<rect x="0" y="' + y + '" width="' + L + '" height="' + RH + '" fill="#f6f8fa"/>');
+      s.push('<text x="16" y="' + (mid + 4) + '" fill="' + (row.alt ? '#57606a' : '#1f2328') + '"' + (row.alt ? ' font-style="italic"' : ' font-weight="600"') + '>' + esc(row.label.length > 30 ? row.label.slice(0, 29) + '…' : row.label) + '</text>');
+      // deferral
+      if (c.scan > pt) {
+        s.push('<line x1="' + X(pt).toFixed(1) + '" y1="' + mid + '" x2="' + X(c.scan).toFixed(1) + '" y2="' + mid + '" stroke="#8c959f" stroke-width="2" stroke-dasharray="2 3"/>');
+      }
+      // deadline window
+      s.push('<rect x="' + X(c.scan).toFixed(1) + '" y="' + (mid - 10) + '" width="' + Math.max(2, X(c.dlEnd) - X(c.scan)).toFixed(1) + '" height="9" rx="2" fill="#0078d4"/>');
+      // device off
+      if (row.alt) s.push('<rect x="' + X(c.scan).toFixed(1) + '" y="' + (mid + 2) + '" width="' + Math.max(1, X(c.pending) - X(c.scan)).toFixed(1) + '" height="8" fill="#d0d7de"/>');
+      // grace
+      if (c.grEnd > c.pending) s.push('<rect x="' + X(c.pending).toFixed(1) + '" y="' + (mid + 2) + '" width="' + (X(c.grEnd) - X(c.pending)).toFixed(1) + '" height="8" rx="2" fill="#d4a72c"/>');
+      // scan and pending marks
+      s.push('<circle cx="' + X(c.scan).toFixed(1) + '" cy="' + (mid - 5.5) + '" r="4" fill="#ffffff" stroke="#0078d4" stroke-width="2"/>');
+      s.push('<line x1="' + X(c.pending).toFixed(1) + '" y1="' + (mid + 1) + '" x2="' + X(c.pending).toFixed(1) + '" y2="' + (mid + 11) + '" stroke="#57606a" stroke-width="2"/>');
+      // forced restart
+      var ex = X(c.eff);
+      s.push('<path d="M ' + ex.toFixed(1) + ' ' + (mid - 8) + ' l 7 7 l -7 7 l -7 -7 z" fill="#cf222e"/>');
+      var lbl = fmtShort(c.eff), anchorRight = ex + 12 + lbl.length * 6.5 > W - 4;
+      s.push('<text x="' + (anchorRight ? ex - 12 : ex + 12).toFixed(1) + '" y="' + (mid + 4) + '" text-anchor="' + (anchorRight ? 'end' : 'start') + '" fill="#cf222e" font-weight="600">' + esc(lbl) + '</text>');
+    });
+    // legend
+    var ly = T + rows.length * RH + 56, lx = 16;
+    function leg(svgMark, text) { s.push('<g transform="translate(' + lx + ',' + ly + ')">' + svgMark + '<text x="22" y="4" fill="#1f2328">' + esc(text) + '</text></g>'); lx += 34 + text.length * 6.6; }
+    leg('<line x1="0" y1="0" x2="16" y2="0" stroke="#8c959f" stroke-width="2" stroke-dasharray="2 3"/>', 'Deferral');
+    leg('<circle cx="8" cy="0" r="4" fill="#fff" stroke="#0078d4" stroke-width="2"/>', 'Scan finds update');
+    leg('<rect x="0" y="-5" width="16" height="9" rx="2" fill="#0078d4"/>', 'Deadline (from scan)');
+    leg('<line x1="8" y1="-6" x2="8" y2="6" stroke="#57606a" stroke-width="2"/>', 'Restart pending');
+    leg('<rect x="0" y="-4" width="16" height="8" rx="2" fill="#d4a72c"/>', 'Grace (from pending restart)');
+    leg('<path d="M 8 -7 l 7 7 l -7 7 l -7 -7 z" fill="#cf222e"/>', 'Forced restart at the latest');
+    if (off) leg('<rect x="0" y="-4" width="16" height="8" fill="#d0d7de"/>', 'Device off');
+    s.push('<text x="16" y="' + (ly + 26) + '" fill="#8c959f" font-size="11">Weekends shaded. Assumes the scan at the set time on the offer day. Built with the MDDMI update ring planner.</text>');
+    s.push('</svg>');
+    return s.join('');
+  }
+
+  // ---------- table ----------
+  function tableRows() {
+    var off = Math.max(0, parseInt($('off').value, 10) || 0);
+    return state.rings.map(function (r) {
+      var c = calc(r, 0), sum = +r.qd + +r.dl + +r.gr, o = off ? calc(r, off) : null;
+      return {
+        Ring: r.name, 'Quality deferral': r.qd, 'Quality deadline': r.dl, 'Grace period': r.gr, 'Feature deferral': r.fd, 'Feature deadline': r.fdl,
+        'Auto reboot before deadline': r.ar ? 'Yes' : 'No', 'Offered and installed': fmt(c.scan),
+        'Forced restart at the latest': fmt(c.eff) + (c.byGrace ? ' (grace)' : ''),
+        'Device off': o ? fmt(o.eff) + (o.byGrace ? ' (grace)' : '') : '',
+        '7-day check': sum <= 7 ? 'OK (' + sum + ')' : 'Over (' + sum + ')'
+      };
+    });
+  }
+  function renderTable() {
+    var rows = tableRows(), off = parseInt($('off').value, 10) > 0;
+    var cols = Object.keys(rows[0] || {}).filter(function (k) { return off || k !== 'Device off'; });
+    $('result').innerHTML = '<thead><tr>' + cols.map(function (k) { return '<th>' + esc(k === 'Device off' ? 'Forced restart, device off ' + $('off').value + ' d' : k) + '</th>'; }).join('') + '</tr></thead><tbody>' +
+      rows.map(function (r) { return '<tr>' + cols.map(function (k) {
+        var v = r[k], cls = k === '7-day check' ? (String(v).indexOf('OK') === 0 ? ' class="pass"' : ' class="fail"') : '';
+        return '<td' + cls + '>' + esc(v) + '</td>'; }).join('') + '</tr>'; }).join('') + '</tbody>';
+    return { rows: rows, cols: cols };
+  }
+  function markdown() {
+    var t = renderTable();
+    var L = ['| ' + t.cols.join(' | ') + ' |', '|' + t.cols.map(function () { return '---'; }).join('|') + '|'];
+    t.rows.forEach(function (r) { L.push('| ' + t.cols.map(function (k) { return String(r[k]).replace(/\|/g, '/'); }).join(' | ') + ' |'); });
+    return L.join('\n');
+  }
+
+  function update() {
+    var v = validate();
+    $('errors').innerHTML = v.errs.map(function (e) { return '<li>' + esc(e) + '</li>'; }).join('');
+    $('warns').innerHTML = v.warns.map(function (e) { return '<li>' + esc(e) + '</li>'; }).join('');
+    var pt = patchTuesday();
+    $('ptInfo').textContent = 'Patch Tuesday: ' + fmt(pt).slice(0, 14) + '. Day 0 of the timeline.';
+    var ok = !v.errs.length;
+    $('chart').innerHTML = ok ? buildSvg() : '';
+    if (ok) renderTable(); else $('result').innerHTML = '';
+    ['dlPng', 'dlSvg', 'cpMd'].forEach(function (id) { $(id).disabled = !ok; });
+    state.month = $('month').value; state.scan = $('scan').value; state.inst = $('inst').value; state.off = $('off').value;
+    save();
+  }
+
+  function fileBase() { return 'update-rings-' + ($('month').value || 'month'); }
+  function download(blob, file) {
+    var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = file;
+    document.body.appendChild(a); a.click(); a.remove();
+  }
+
+  $('rings').addEventListener('input', function (e) {
+    var t = e.target, i = t.dataset.i, k = t.dataset.k; if (i === undefined || !k) return;
+    state.rings[+i][k] = k === 'ar' ? t.value === '1' : t.value;
+    update();
+  });
+  $('rings').addEventListener('change', function (e) {
+    var t = e.target; if (t.dataset.k === 'ar') { state.rings[+t.dataset.i].ar = t.value === '1'; update(); }
+  });
+  $('rings').addEventListener('click', function (e) {
+    if (e.target.dataset.del === undefined) return;
+    state.rings.splice(+e.target.dataset.del, 1); renderRings(); update();
+  });
+  $('addRing').addEventListener('click', function () {
+    state.rings.push({ name: 'Ring ' + (state.rings.length + 1), qd: 0, dl: 1, gr: 2, fd: 0, fdl: 2, ar: true }); renderRings(); update();
+  });
+  $('resetRings').addEventListener('click', function () { state.rings = JSON.parse(JSON.stringify(COURSE)); renderRings(); update(); });
+  ['month', 'scan', 'inst', 'off'].forEach(function (id) { $(id).addEventListener('input', update); $(id).addEventListener('change', update); });
+  $('dlSvg').addEventListener('click', function () { download(new Blob([buildSvg()], { type: 'image/svg+xml' }), fileBase() + '.svg'); });
+  $('dlPng').addEventListener('click', function () {
+    var svg = buildSvg(), m = svg.match(/width="(\d+)" height="(\d+)"/), w = +m[1], h = +m[2], scale = 2;
+    var img = new Image();
+    img.onload = function () {
+      var cv = document.createElement('canvas'); cv.width = w * scale; cv.height = h * scale;
+      var ctx = cv.getContext('2d'); ctx.scale(scale, scale); ctx.drawImage(img, 0, 0, w, h);
+      cv.toBlob(function (b) { download(b, fileBase() + '.png'); }, 'image/png');
+    };
+    img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+  });
+  $('cpMd').addEventListener('click', function () {
+    var b = $('cpMd'), label = b.textContent;
+    navigator.clipboard.writeText(markdown()).then(function () { b.textContent = 'Copied'; setTimeout(function () { b.textContent = label; }, 1500); });
+  });
+
+  renderRings(); update();
+})();
+</script>
+{% endraw %}

@@ -9,6 +9,8 @@ Lab instructions for the five-day MDDMI workshop: three days Windows, one day An
 
 **Toolbox:** three read-only PowerShell scripts for what the Intune admin center can't show you – policy documentation, Intune vs. Entra device comparison, assignments per group – [open the Toolbox](https://github.com/happelm/MDDMI/tree/main/Toolbox)
 
+**Builders** (draft) – web pages that write the rule or plan for you, no sign-in: [Dynamic group rule builder](Toolbox/Builders/dynamic-group-builder.html) · [Assignment filter builder](Toolbox/Builders/filter-builder.html) · [Update ring planner](Toolbox/Builders/update-ring-planner.html)
+
 > **Before the course:** Create a new Google account (@gmail.com) at home and keep its sign-in at hand. You need it on Day 4 to connect your tenant to Managed Google Play. Don't use your work account or your main private account.
 
 ## Labs

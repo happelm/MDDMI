@@ -1,0 +1,366 @@
+---
+layout: default
+title: 'Dynamic group rule builder'
+---
+
+{% raw %}
+<style>
+  .dgb fieldset { border: 1px solid #d0d7de; border-radius: 6px; padding: 12px 16px 16px; margin: 0 0 20px; min-width: 0; }
+  .dgb legend { font-weight: 600; padding: 0 6px; }
+  .dgb label { display: block; font-weight: 600; font-size: 14px; margin: 10px 0 4px; }
+  .dgb .hint { font-weight: 400; color: #57606a; font-size: 13px; }
+  .dgb input[type=text], .dgb input[type=number], .dgb input[type=month], .dgb input[type=time], .dgb select, .dgb textarea { width: 100%; box-sizing: border-box; font: inherit; font-size: 14px;
+    padding: 5px 8px; border: 1px solid #d0d7de; border-radius: 6px; background: #fff; }
+  .dgb input.bad, .dgb select.bad { border-color: #cf222e; background: #fff5f5; }
+  .dgb .row { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 0 16px; }
+  .dgb .inline label { display: inline-flex; align-items: center; gap: 6px; font-weight: 400; margin: 4px 16px 4px 0; }
+  .dgb .item { border: 1px solid #e1e4e8; border-left: 4px solid #0078d4; border-radius: 6px; padding: 8px 12px 12px; margin: 12px 0; }
+  .dgb .item h3 { font-size: 15px; margin: 4px 0; display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .dgb .item .desc { color: #57606a; font-size: 13px; margin: 4px 0; }
+  .dgb button { font: inherit; font-size: 14px; padding: 5px 14px; border: 1px solid #d0d7de; border-radius: 6px; background: #f6f8fa; cursor: pointer; }
+  .dgb button.primary { background: #0078d4; border-color: #0078d4; color: #fff; }
+  .dgb button.small { font-size: 12px; padding: 2px 10px; }
+  .dgb button:hover { filter: brightness(0.96); }
+  .dgb button:disabled { opacity: .5; cursor: default; }
+  .dgb .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; align-items: center; }
+  .dgb .errors { color: #cf222e; font-size: 14px; margin: 8px 0; padding-left: 20px; }
+  .dgb .warns { color: #9a6700; font-size: 14px; margin: 8px 0; padding-left: 20px; }
+  .dgb .ok { color: #1a7f37; font-size: 14px; margin: 8px 0; }
+  .dgb textarea.out { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: 12px; min-height: 120px; }
+  .dgb .add { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .dgb .add select { flex: 1; min-width: 0; }
+  .dgb table { font-size: 13px; }
+  .dgb td, .dgb th { overflow-wrap: anywhere; }
+  .dgb .cond { display: grid; grid-template-columns: 76px 64px minmax(0, 1.3fr) minmax(0, 1fr) minmax(0, 1.6fr) auto; gap: 8px; align-items: center;
+    padding: 8px 0; border-bottom: 1px solid #eaeef2; }
+  .dgb .cond .first { font-size: 13px; color: #57606a; font-weight: 600; }
+  .dgb .cond label { margin: 0; font-weight: 400; font-size: 13px; display: inline-flex; align-items: center; gap: 4px; }
+  .dgb .cond .val { display: flex; gap: 6px; align-items: center; min-width: 0; }
+  .dgb .cond .val input[type=text] { flex: 1; min-width: 0; }
+  .dgb .cond .note { grid-column: 3 / -1; color: #57606a; font-size: 12px; margin-top: -4px; }
+  .dgb .rule { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: 13px; background: #f6f8fa; border: 1px solid #d0d7de;
+    border-radius: 6px; padding: 10px 12px; white-space: pre-wrap; overflow-wrap: anywhere; min-height: 20px; }
+  .dgb .len { font-size: 13px; color: #57606a; }
+  @media (max-width: 700px) {
+    .dgb .cond { grid-template-columns: 1fr 1fr; }
+    .dgb .cond .note { grid-column: 1 / -1; }
+  }
+</style>
+
+<h1>Dynamic group rule builder</h1>
+
+<blockquote><p><strong>Draft:</strong> This tool is new and has not been tested in class yet.</p></blockquote>
+
+<p>Click together the membership rule for a <strong>dynamic device group</strong> in Microsoft Entra ID. The Entra rule builder only
+works for user groups – device rules go into the text box. This page writes that text for you, checks the syntax rules from
+Microsoft Learn and can build a PowerShell script that creates the group. The page signs in nowhere and sends nothing: everything stays in your browser.</p>
+
+<div class="dgb" id="dgb">
+
+<fieldset>
+  <legend>1. Start from an example</legend>
+  <div class="add">
+    <select id="tplSel" aria-label="Example rule"></select>
+    <button type="button" id="tplBtn" class="primary">Load example</button>
+  </div>
+  <p class="hint" id="tplNote"></p>
+</fieldset>
+
+<fieldset>
+  <legend>2. Conditions</legend>
+  <p class="hint"><strong>and</strong> binds stronger than <strong>or</strong>: the page puts brackets around every <strong>and</strong> block, so the rule
+    reads exactly as the list. Values aren't case sensitive, property names are written as Learn shows them.</p>
+  <div id="conds"></div>
+  <div class="actions"><button type="button" id="addBtn">Add condition</button></div>
+</fieldset>
+
+<fieldset>
+  <legend>3. Rule</legend>
+  <ul class="errors" id="errors"></ul>
+  <ul class="warns" id="warns"></ul>
+  <div class="rule" id="rule"></div>
+  <p class="len" id="len"></p>
+  <div class="actions">
+    <button type="button" class="primary" id="cpRule">Copy rule</button>
+  </div>
+  <p class="hint">Entra admin center → Groups → All groups → <strong>New group</strong>: Group type <strong>Security</strong>, Membership type
+    <strong>Dynamic Device</strong> → <strong>Add dynamic query</strong> → <strong>Edit</strong> next to the rule syntax → paste → OK.
+    The <strong>Validate Rules</strong> tab tests the rule against devices you pick before you save.</p>
+</fieldset>
+
+<fieldset>
+  <legend>4. Optional: create the group with PowerShell</legend>
+  <div class="row">
+    <div><label for="gName">Group name</label><input type="text" id="gName" value="All Windows 11 Devices"></div>
+    <div><label for="gDesc">Description</label><input type="text" id="gDesc" value="Dynamic device group"></div>
+  </div>
+  <p class="hint">The script <strong>creates</strong> a security group with dynamic membership (Graph <code>POST /groups</code>, permission
+    <code>Group.ReadWrite.All</code>). Windows PowerShell 5.1 or PowerShell 7, module <code>Microsoft.Graph.Authentication</code>.</p>
+  <textarea class="out" id="outPs" readonly spellcheck="false" aria-label="PowerShell script"></textarea>
+  <div class="actions">
+    <button type="button" class="primary" id="dlPs">Download script</button>
+    <button type="button" id="cpPs">Copy script</button>
+  </div>
+</fieldset>
+
+<fieldset>
+  <legend>Good to know</legend>
+  <ul>
+    <li><strong>Filter or dynamic group?</strong> For Intune policies and apps, Microsoft recommends
+      <a href="filter-builder.html">assignment filters</a> when they meet the need: they evaluate at check-in and don't wait for group processing.
+      Use dynamic device groups for Conditional Access, licensing, Autopilot profiles and other workloads outside Intune.</li>
+    <li>Dynamic groups aren't real time. A new device can take minutes to show up in the group.</li>
+    <li><code>deviceOwnership</code> uses <code>Company</code> in Entra ID; Intune shows the same thing as <code>Corporate</code>.
+      <code>deviceTrustType</code>: <code>AzureAD</code> = Entra joined, <code>ServerAD</code> = hybrid joined, <code>Workplace</code> = registered.</li>
+    <li>Device rules can only use device properties – no properties of the device owner. One group holds users or devices, never both.</li>
+    <li>Use <code>-match</code> and <code>-contains</code> sparingly – they slow down group processing. A whole rule can have up to 3,072 characters.</li>
+    <li>Dynamic device groups need no license for the devices. Dynamic user groups need Entra ID P1 for each member.</li>
+  </ul>
+  <p class="hint">Sources: Microsoft Learn – <a href="https://learn.microsoft.com/entra/identity/users/groups-dynamic-membership">Rules for dynamic membership groups</a>,
+    <a href="https://learn.microsoft.com/intune/fundamentals/filters/overview">Assignment filters</a>.</p>
+</fieldset>
+
+</div>
+
+<script>
+(function () {
+  function $(id) { return document.getElementById(id); }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function psq(s) { return "'" + String(s).replace(/['‘’‚‛]/g, "''") + "'"; }
+
+  // Device properties from Microsoft Learn (Rules for devices). t: str | bool | coll
+  var STR_OPS = ['-eq', '-ne', '-startsWith', '-notStartsWith', '-endsWith', '-notEndsWith', '-contains', '-notContains', '-match', '-notMatch', '-in', '-notIn'];
+  var PROPS = {
+    deviceOSType: { t: 'str', vals: ['Windows', 'iPhone', 'iPad', 'AndroidForWork', 'AndroidEnterprise'], note: 'Android Enterprise devices: -startsWith "AndroidEnterprise" or "Android".' },
+    deviceOSVersion: { t: 'str', vals: ['10.0.2', '10.0.1'], note: 'Windows 11 builds start with 10.0.2, Windows 10 builds with 10.0.1.' },
+    deviceOwnership: { t: 'str', vals: ['Company', 'Personal', 'Unknown'], note: 'Entra ID uses Company, not Corporate.' },
+    deviceTrustType: { t: 'str', vals: ['AzureAD', 'ServerAD', 'Workplace'], note: 'AzureAD = Entra joined, ServerAD = hybrid joined, Workplace = registered.' },
+    devicePhysicalIds: { t: 'coll', vals: ['[ZTDId]', '[OrderID]:', '[PurchaseOrderId]:'], note: 'Autopilot IDs. [ZTDId] = every Autopilot device; [OrderID]:<group tag> = one group tag.' },
+    enrollmentProfileName: { t: 'str', vals: [], note: 'Name of the Autopilot, Apple ADE or Android dedicated device profile. Renaming the profile breaks the rule.' },
+    deviceManagementAppId: { t: 'str', vals: ['0000000a-0000-0000-c000-000000000000', '54b943f8-d761-4f8d-951e-9cea1846db5a'],
+      note: '0000000a-… = managed by Intune, 54b943f8-… = co-managed with Configuration Manager.' },
+    managementType: { t: 'str', vals: ['MDM'], note: '' },
+    deviceCategory: { t: 'str', vals: [], note: 'Category name exactly as in Intune.' },
+    deviceManufacturer: { t: 'str', vals: ['Microsoft Corporation', 'Samsung', 'Apple'], note: '' },
+    deviceModel: { t: 'str', vals: [], note: '' },
+    displayName: { t: 'str', vals: [], note: 'Device name in Entra ID.' },
+    profileType: { t: 'str', vals: ['RegisteredDevice', 'SecureVM', 'Printer', 'Shared', 'IoT'], note: '' },
+    systemLabels: { t: 'str', vals: ['M365Managed'], note: 'Read-only, Intune can\'t set it.' },
+    accountEnabled: { t: 'bool', note: '' },
+    isRooted: { t: 'bool', note: '' },
+    objectId: { t: 'str', vals: [], note: 'Entra object ID. -ne null matches every device.' },
+    deviceId: { t: 'str', vals: [], note: 'Entra device ID.' }
+  };
+  for (var i = 1; i <= 15; i++) PROPS['extensionAttribute' + i] = { t: 'str', vals: [], note: 'Set with Graph (PATCH /devices/{id}) or synced. Not editable in the portal.' };
+
+  var TEMPLATES = [
+    { label: 'All devices', note: 'Every device object in Entra ID, also registered BYOD devices.',
+      conds: [{ prop: 'objectId', op: '-ne', isNull: true }] },
+    { label: 'All Windows 11 devices (Lab 1.4)', note: 'The group from Lab 1.4.',
+      conds: [{ prop: 'deviceOSType', op: '-eq', val: 'Windows' }, { join: 'and', prop: 'deviceOSVersion', op: '-startsWith', val: '10.0.2' }] },
+    { label: 'All Android devices (Lab 1.4)', note: 'The group from Lab 1.4.',
+      conds: [{ prop: 'deviceOSType', op: '-startsWith', val: 'Android' }] },
+    { label: 'All Autopilot devices', note: 'Every device imported to Windows Autopilot (Lab 3.4).',
+      conds: [{ prop: 'devicePhysicalIds', op: '-startsWith', val: '[ZTDId]' }] },
+    { label: 'Autopilot devices with one group tag', note: 'The group tag is stored as [OrderID]:<tag>.',
+      conds: [{ prop: 'devicePhysicalIds', op: '-eq', val: '[OrderID]:Kiosk' }] },
+    { label: 'Entra joined corporate Windows devices', note: '',
+      conds: [{ prop: 'deviceOSType', op: '-eq', val: 'Windows' }, { join: 'and', prop: 'deviceTrustType', op: '-eq', val: 'AzureAD' },
+              { join: 'and', prop: 'deviceOwnership', op: '-eq', val: 'Company' }] },
+    { label: 'Hybrid joined Windows devices', note: '',
+      conds: [{ prop: 'deviceOSType', op: '-eq', val: 'Windows' }, { join: 'and', prop: 'deviceTrustType', op: '-eq', val: 'ServerAD' }] },
+    { label: 'Co-managed devices (Configuration Manager)', note: 'Lab 2.5.',
+      conds: [{ prop: 'deviceManagementAppId', op: '-eq', val: '54b943f8-d761-4f8d-951e-9cea1846db5a' }] },
+    { label: 'iPhones and iPads', note: '',
+      conds: [{ prop: 'deviceOSType', op: '-eq', val: 'iPhone' }, { join: 'or', prop: 'deviceOSType', op: '-eq', val: 'iPad' }] },
+    { label: 'Devices from one enrollment profile (ADE, Autopilot, Android dedicated)', note: 'Use the profile name exactly as in Intune.',
+      conds: [{ prop: 'enrollmentProfileName', op: '-eq', val: 'DEP iPhones' }] },
+    { label: 'Windows devices except Autopilot devices', note: 'Shows -not.',
+      conds: [{ prop: 'deviceOSType', op: '-eq', val: 'Windows' }, { join: 'and', not: true, prop: 'devicePhysicalIds', op: '-startsWith', val: '[ZTDId]' }] }
+  ];
+
+  var state = { conds: [], seq: 0 };
+  try { var saved = JSON.parse(localStorage.getItem('mddmi.dgb') || 'null'); if (saved && saved.conds) state = saved; } catch (e) { /* no storage */ }
+  function save() { try { localStorage.setItem('mddmi.dgb', JSON.stringify(state)); } catch (e) { /* no storage */ } }
+
+  TEMPLATES.forEach(function (t, i) { var o = document.createElement('option'); o.value = i; o.textContent = t.label; $('tplSel').appendChild(o); });
+
+  function opsFor(p) {
+    var t = PROPS[p].t;
+    if (t === 'bool') return ['-eq', '-ne'];
+    if (t === 'coll') return ['-startsWith', '-eq', '-endsWith', '-contains'];
+    return STR_OPS;
+  }
+  function newCond(c) {
+    c = c || {};
+    return { uid: ++state.seq, join: c.join || 'and', not: !!c.not, prop: c.prop || 'deviceOSType', op: c.op || '-eq',
+      val: c.val === undefined ? '' : c.val, isNull: !!c.isNull };
+  }
+  function loadTemplate(i) {
+    var t = TEMPLATES[i];
+    state.conds = t.conds.map(newCond);
+    $('tplNote').textContent = t.note;
+    render(); update();
+  }
+
+  function render() {
+    $('conds').innerHTML = state.conds.map(function (c, i) {
+      var p = PROPS[c.prop], ops = opsFor(c.prop), dl = 'dl' + c.uid;
+      var h = '<div class="cond" data-uid="' + c.uid + '">';
+      h += i === 0 ? '<span class="first">Device</span>'
+        : '<select data-k="join" aria-label="Connector"><option' + (c.join === 'and' ? ' selected' : '') + '>and</option><option' + (c.join === 'or' ? ' selected' : '') + '>or</option></select>';
+      h += '<label><input type="checkbox" data-k="not"' + (c.not ? ' checked' : '') + '> not</label>';
+      h += '<select data-k="prop" aria-label="Property">' + Object.keys(PROPS).map(function (k) {
+        return '<option' + (k === c.prop ? ' selected' : '') + '>' + k + '</option>'; }).join('') + '</select>';
+      h += '<select data-k="op" aria-label="Operator">' + ops.map(function (o) {
+        return '<option' + (o === c.op ? ' selected' : '') + '>' + o + '</option>'; }).join('') + '</select>';
+      if (p.t === 'bool') {
+        h += '<div class="val"><select data-k="val" aria-label="Value"><option' + (c.val !== 'false' ? ' selected' : '') + '>true</option><option' + (c.val === 'false' ? ' selected' : '') + '>false</option></select></div>';
+      } else {
+        h += '<div class="val"><input type="text" data-k="val" list="' + dl + '" value="' + esc(c.val) + '"' + (c.isNull ? ' disabled' : '') +
+          ' placeholder="' + (c.op === '-in' || c.op === '-notIn' ? 'value1, value2' : 'value') + '" aria-label="Value">' +
+          '<datalist id="' + dl + '">' + (p.vals || []).map(function (v) { return '<option value="' + esc(v) + '">'; }).join('') + '</datalist>' +
+          (p.t === 'str' && (c.op === '-eq' || c.op === '-ne') ? '<label><input type="checkbox" data-k="isNull"' + (c.isNull ? ' checked' : '') + '> null</label>' : '') + '</div>';
+      }
+      h += '<button type="button" class="small" data-remove="1">Remove</button>';
+      if (p.note) h += '<div class="note">' + esc(p.note) + '</div>';
+      return h + '</div>';
+    }).join('');
+  }
+
+  function find(uid) { return state.conds.filter(function (c) { return c.uid === uid; })[0]; }
+  function onChange(e) {
+    var t = e.target, row = t.closest('.cond'); if (!row || !t.dataset.k) return;
+    var c = find(+row.dataset.uid), k = t.dataset.k;
+    c[k] = t.type === 'checkbox' ? t.checked : t.value;
+    if (k === 'prop') {
+      var ops = opsFor(c.prop); if (ops.indexOf(c.op) < 0) c.op = ops[0];
+      if (PROPS[c.prop].t === 'bool') c.val = 'true'; else if (c.val === 'true' || c.val === 'false') c.val = '';
+      c.isNull = false;
+    }
+    if (k === 'op' && c.op !== '-eq' && c.op !== '-ne') c.isNull = false;
+    if (k !== 'val' || e.type === 'change') render();
+    update();
+  }
+
+  // Learn: escape a double quote inside a value with a backtick, a single quote by doubling it
+  function quote(v) { return '"' + String(v).replace(/"/g, '`"').replace(/'/g, "''") + '"'; }
+  function splitList(v) { return String(v).split(',').map(function (x) { return x.trim(); }).filter(function (x) { return x; }); }
+
+  function expr(c) {
+    var p = PROPS[c.prop], e;
+    if (p.t === 'coll') e = '(device.' + c.prop + ' -any (_ ' + c.op + ' ' + quote(c.val.trim()) + '))';
+    else if (p.t === 'bool') e = '(device.' + c.prop + ' ' + c.op + ' ' + (c.val === 'false' ? 'false' : 'true') + ')';
+    else if (c.isNull) e = '(device.' + c.prop + ' ' + c.op + ' null)';
+    else if (c.op === '-in' || c.op === '-notIn') e = '(device.' + c.prop + ' ' + c.op + ' [' + splitList(c.val).map(quote).join(',') + '])';
+    else e = '(device.' + c.prop + ' ' + c.op + ' ' + quote(c.val.trim()) + ')';
+    return c.not ? '-not ' + e : e;
+  }
+
+  function buildRule() {
+    if (!state.conds.length) return '';
+    var blocks = [[]];
+    state.conds.forEach(function (c, i) {
+      if (i > 0 && c.join === 'or') blocks.push([]);
+      blocks[blocks.length - 1].push(expr(c));
+    });
+    if (blocks.length === 1) return blocks[0].join(' -and ');
+    return blocks.map(function (b) { return b.length > 1 ? '(' + b.join(' -and ') + ')' : b[0]; }).join(' -or ');
+  }
+
+  function validate() {
+    var errs = [], warns = [];
+    if (!state.conds.length) errs.push('Add at least one condition.');
+    state.conds.forEach(function (c, i) {
+      var n = '#' + (i + 1) + ' ' + c.prop + ': ', p = PROPS[c.prop], v = String(c.val).trim(), bad = false;
+      if (p.t !== 'bool' && !c.isNull && !v) { errs.push(n + 'value is empty.'); bad = true; }
+      if ((c.op === '-in' || c.op === '-notIn') && v && !splitList(v).length) { errs.push(n + 'list is empty.'); bad = true; }
+      if ((c.op === '-match' || c.op === '-notMatch') && v) {
+        try { new RegExp(v); } catch (x) { errs.push(n + 'not a valid regular expression.'); bad = true; }
+      }
+      if (c.op === '-match' || c.op === '-notMatch' || c.op === '-contains' || c.op === '-notContains') warns.push(n + c.op + ' slows down group processing – use -eq, -startsWith or -in where you can.');
+      if (c.prop === 'deviceOwnership' && /^corporate$/i.test(v)) { errs.push(n + 'Entra ID uses Company, not Corporate.'); bad = true; }
+      if (c.prop === 'deviceTrustType' && v && ['azuread', 'serverad', 'workplace'].indexOf(v.toLowerCase()) < 0 && c.op !== '-in' && c.op !== '-notIn')
+        warns.push(n + 'Entra ID knows AzureAD, ServerAD and Workplace. "' + v + '" is an Intune filter value.');
+      if (c.prop === 'devicePhysicalIds' && v && v.charAt(0) !== '[') warns.push(n + 'Autopilot IDs start with a tag in brackets, for example [ZTDId] or [OrderID]:.');
+      if (c.prop === 'deviceOSVersion' && /^1[01]$/.test(v)) warns.push(n + 'deviceOSVersion holds the full version, for example 10.0.26100.1 – use -startsWith "10.0.2" for Windows 11.');
+      if (/^null$/i.test(v) && !c.isNull) warns.push(n + '"null" in quotes is the text null. Tick the null box for an empty value.');
+      var row = document.querySelector('.cond[data-uid="' + c.uid + '"] [data-k="val"]'); if (row) row.classList.toggle('bad', bad);
+    });
+    return { errs: errs, warns: warns };
+  }
+
+  function buildPs(rule) {
+    var name = $('gName').value.trim(), nick = name.replace(/[^A-Za-z0-9]/g, '') || 'dyngroup';
+    var L = [];
+    L.push('# Creates a security group with dynamic device membership.');
+    L.push('# Built with the MDDMI dynamic group rule builder on ' + new Date().toISOString().slice(0, 10) + '.');
+    L.push('# Changes the tenant: one POST /groups. Permission: Group.ReadWrite.All (delegated).');
+    L.push('');
+    L.push("$ErrorActionPreference = 'Stop'");
+    L.push('if (-not (Get-Module -ListAvailable -Name Microsoft.Graph.Authentication)) {');
+    L.push('    Install-Module Microsoft.Graph.Authentication -Scope CurrentUser -Force');
+    L.push('}');
+    L.push("Connect-MgGraph -Scopes 'Group.ReadWrite.All' -NoWelcome");
+    L.push('');
+    L.push('$body = @{');
+    L.push('    displayName                   = ' + psq(name));
+    L.push('    description                   = ' + psq($('gDesc').value.trim() || name));
+    L.push('    mailEnabled                   = $false');
+    L.push('    mailNickname                  = ' + psq(nick.slice(0, 60)));
+    L.push('    securityEnabled               = $true');
+    L.push("    groupTypes                    = @('DynamicMembership')");
+    L.push('    membershipRule                = ' + psq(rule));
+    L.push("    membershipRuleProcessingState = 'On'");
+    L.push('}');
+    L.push("$group = Invoke-MgGraphRequest -Method POST -Uri 'https://graph.microsoft.com/v1.0/groups' -Body ($body | ConvertTo-Json) -ContentType 'application/json; charset=utf-8'");
+    L.push('Write-Host "Created group $($group.displayName) ($($group.id))"');
+    return L.join('\r\n');
+  }
+
+  function update() {
+    var v = validate(), rule = v.errs.length ? '' : buildRule();
+    if (rule.length > 3072) v.errs.push('The rule has ' + rule.length + ' characters – the limit is 3,072.');
+    $('errors').innerHTML = v.errs.map(function (e) { return '<li>' + esc(e) + '</li>'; }).join('');
+    $('warns').innerHTML = v.warns.map(function (e) { return '<li>' + esc(e) + '</li>'; }).join('');
+    var ok = !v.errs.length;
+    $('rule').textContent = ok ? rule : '';
+    $('len').textContent = ok ? rule.length + ' of 3,072 characters' : '';
+    if (ok && !$('gName').value.trim()) { $('outPs').value = ''; ok = false; }
+    else $('outPs').value = ok ? buildPs(rule) : '';
+    $('cpRule').disabled = !!v.errs.length;
+    ['dlPs', 'cpPs'].forEach(function (id) { $(id).disabled = !ok; });
+    save();
+  }
+
+  function download(text, file) {
+    var blob = new Blob([text + '\r\n'], { type: 'text/plain' });
+    var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = file;
+    document.body.appendChild(a); a.click(); a.remove();
+  }
+  function copy(btn, text) {
+    var label = btn.textContent;
+    navigator.clipboard.writeText(text).then(function () { btn.textContent = 'Copied'; setTimeout(function () { btn.textContent = label; }, 1500); });
+  }
+
+  $('conds').addEventListener('input', onChange);
+  $('conds').addEventListener('change', onChange);
+  $('conds').addEventListener('click', function (e) {
+    if (!e.target.dataset || !e.target.dataset.remove) return;
+    var uid = +e.target.closest('.cond').dataset.uid;
+    state.conds = state.conds.filter(function (c) { return c.uid !== uid; });
+    render(); update();
+  });
+  $('addBtn').addEventListener('click', function () { state.conds.push(newCond({ join: 'and' })); render(); update(); });
+  $('tplBtn').addEventListener('click', function () { loadTemplate(+$('tplSel').value); });
+  ['gName', 'gDesc'].forEach(function (id) { $(id).addEventListener('input', update); });
+  $('cpRule').addEventListener('click', function () { copy($('cpRule'), $('rule').textContent); });
+  $('cpPs').addEventListener('click', function () { copy($('cpPs'), $('outPs').value); });
+  $('dlPs').addEventListener('click', function () {
+    download($('outPs').value, 'New-DynamicGroup-' + ($('gName').value.trim().replace(/[^A-Za-z0-9-]/g, '') || 'Group') + '.ps1');
+  });
+
+  if (state.conds.length) { render(); update(); } else loadTemplate(1);
+})();
+</script>
+{% endraw %}
