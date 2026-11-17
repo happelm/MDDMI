@@ -32,6 +32,9 @@ title: 'Update ring planner'
   .urp table { font-size: 13px; }
   .urp td, .urp th { overflow-wrap: anywhere; }
   .urp table.rings { width: 100%; border-collapse: collapse; display: table; }
+  .urp button { white-space: nowrap; }
+  .urp .row > div { display: flex; flex-direction: column; }
+  .urp .row > div > label { flex: 1; display: flex; align-items: flex-end; flex-wrap: wrap; gap: 0 4px; }
   .urp table.rings th, .urp table.rings td { padding: 4px 6px; border-bottom: 1px solid #eaeef2; text-align: left; vertical-align: middle; }
   .urp table.rings input[type=text] { min-width: 120px; }
   .urp table.rings input[type=number] { width: 70px; }
@@ -66,10 +69,11 @@ The page signs in nowhere and sends nothing: everything stays in your browser.</
   <legend>1. Month and assumptions</legend>
   <div class="row">
     <div><label for="month">Update month</label><input type="month" id="month"></div>
-    <div><label for="scan">Device scans at <span class="hint">on the day the update is offered</span></label><input type="time" id="scan" value="10:00"></div>
+    <div><label for="scan">Device scans at</label><input type="time" id="scan" value="10:00"></div>
     <div><label for="inst">Install takes (hours)</label><input type="number" id="inst" min="0" max="24" step="0.5" value="1"></div>
-    <div><label for="off">Device off after the scan (days) <span class="hint">0 = no extra row</span></label><input type="number" id="off" min="0" max="30" value="0"></div>
+    <div><label for="off">Device off after the scan (days)</label><input type="number" id="off" min="0" max="30" value="0"></div>
   </div>
+  <p class="hint">The device scans at that time on the day its ring offers the update. "Device off" adds a row per ring for a device that was switched off after the scan (0 = no extra row).</p>
   <p class="hint" id="ptInfo"></p>
 </fieldset>
 
