@@ -21,7 +21,7 @@ lab:
    | Name | `AE COBO` |
    | Token type | Corporate-owned, fully managed (default) |
    | Apply device name template | Yes |
-   | Device name template | `{{DEVICETYPE}}-{{SERIALLAST4DIGITS}}` |
+   | Device name template | `{% raw %}{{DEVICETYPE}}-{{SERIALLAST4DIGITS}}{% endraw %}` |
    | Device group | `All Android COBO Devices` |
 
 3. Open the profile → **Token**: you see the token and the QR code. Keep this page open.
