@@ -67,7 +67,7 @@ lab:
 ## Apps and contacts
 
 12. Apps → Android → Create → **Line-of-business app**: upload `C:\Scripts\intunepro.apk`. Assign it as **Required** to `Cloud Users`.
-13. Apps → Android → Create → **Android Enterprise system app**:
+13. Apps → Android → Create → **Referenced app** → **Android Enterprise system app**:
 
     | Setting | Value |
     |---|---|
