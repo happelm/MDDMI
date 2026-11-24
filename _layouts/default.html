@@ -62,22 +62,35 @@
       {% for g in groups %}
       <h4>{{ g.name | split: ' – ' | first }}</h4>
       <ul>
+        {% assign daynum = g.name | split: ' – ' | first | remove: 'Day ' | plus: 0 %}
+        {% assign prevday = daynum | minus: 1 %}
+        {% assign rvpath = 'Instructions/Review/day-' | append: prevday | append: '-review.md' %}
+        {% assign rv = site.pages | where: "path", rvpath | first %}
+        {% if rv %}<li><a href="{{ rv.url | relative_url }}"{% if rv.url == page.url %} class="active"{% endif %}><span class="num">↺</span>Review of Day {{ prevday }}</a></li>{% endif %}
         {% for p in g.items %}
         {% assign parts = p.title | remove_first: 'Lab ' | split: ' – ' %}
         <li><a href="{{ p.url | relative_url }}"{% if p.url == page.url %} class="active"{% endif %}><span class="num">{{ parts[0] }}</span>{{ parts[1] }}</a></li>
         {% endfor %}
+        {% if forloop.last %}
+        {% assign rvpath = 'Instructions/Review/day-' | append: daynum | append: '-review.md' %}
+        {% assign rv = site.pages | where: "path", rvpath | first %}
+        {% if rv %}<li><a href="{{ rv.url | relative_url }}"{% if rv.url == page.url %} class="active"{% endif %}><span class="num">↺</span>Review of Day {{ daynum }}</a></li>{% endif %}
+        {% endif %}
       </ul>
       {% endfor %}
-      <h4>Reference</h4>
+      <h4>Builders</h4>
       <ul>
-        {% if appendix %}<li><a href="{{ appendix.url | relative_url }}"{% if appendix.url == page.url %} class="active"{% endif %}>Appendix</a></li>{% endif %}
-        {% for n in notes %}<li><a href="{{ n.url | relative_url }}"{% if n.url == page.url %} class="active"{% endif %}>{{ n.title }}</a></li>{% endfor %}
         {% assign dgb = site.pages | where_exp: "p", "p.path == 'Toolbox/Builders/dynamic-group-builder.html'" | first %}
         {% if dgb %}<li><a href="{{ dgb.url | relative_url }}"{% if dgb.url == page.url %} class="active"{% endif %}>Dynamic group rule builder</a></li>{% endif %}
         {% assign afb = site.pages | where_exp: "p", "p.path == 'Toolbox/Builders/filter-builder.html'" | first %}
         {% if afb %}<li><a href="{{ afb.url | relative_url }}"{% if afb.url == page.url %} class="active"{% endif %}>Assignment filter builder</a></li>{% endif %}
         {% assign urp = site.pages | where_exp: "p", "p.path == 'Toolbox/Builders/update-ring-planner.html'" | first %}
         {% if urp %}<li><a href="{{ urp.url | relative_url }}"{% if urp.url == page.url %} class="active"{% endif %}>Update ring planner</a></li>{% endif %}
+      </ul>
+      <h4>Reference</h4>
+      <ul>
+        {% if appendix %}<li><a href="{{ appendix.url | relative_url }}"{% if appendix.url == page.url %} class="active"{% endif %}>Appendix</a></li>{% endif %}
+        {% for n in notes %}<li><a href="{{ n.url | relative_url }}"{% if n.url == page.url %} class="active"{% endif %}>{{ n.title }}</a></li>{% endfor %}
         <li><a href="https://github.com/happelm/Intune-Resources/blob/main/Intune1Links.md" target="_blank" rel="noopener">Resources ↗</a></li>
       </ul>
     </nav>
