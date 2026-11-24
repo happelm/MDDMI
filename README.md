@@ -94,6 +94,20 @@ Summary of each day with sources, for after the course.
 | 4 | [Android](Instructions/Notes/DAY_04_notes.md) |
 | 5 | [iOS/iPadOS](Instructions/Notes/DAY_05_notes.md) |
 
+### Review questions
+
+Understanding questions with hidden answers – for the start of the next day and for after the course.
+
+[Day 1 review](Instructions/Review/day-1-review.md) – for the morning of Day 2
+
+[Day 2 review](Instructions/Review/day-2-review.md) – for the morning of Day 3
+
+[Day 3 review](Instructions/Review/day-3-review.md) – for the morning of Day 4
+
+[Day 4 review](Instructions/Review/day-4-review.md) – for the morning of Day 5
+
+[Day 5 review](Instructions/Review/day-5-review.md) – for the end of the course and later
+
 ### Appendix
 
 [Log map, join types, collecting logs](Instructions/Appendix.md)
