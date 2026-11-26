@@ -82,10 +82,10 @@
       <ul>
         {% assign dgb = site.pages | where_exp: "p", "p.path == 'Toolbox/Builders/dynamic-group-builder.html'" | first %}
         {% if dgb %}<li><a href="{{ dgb.url | relative_url }}"{% if dgb.url == page.url %} class="active"{% endif %}>Dynamic group rule builder</a></li>{% endif %}
-        {% assign afb = site.pages | where_exp: "p", "p.path == 'Toolbox/Builders/filter-builder.html'" | first %}
-        {% if afb %}<li><a href="{{ afb.url | relative_url }}"{% if afb.url == page.url %} class="active"{% endif %}>Assignment filter builder</a></li>{% endif %}
         {% assign urp = site.pages | where_exp: "p", "p.path == 'Toolbox/Builders/update-ring-planner.html'" | first %}
         {% if urp %}<li><a href="{{ urp.url | relative_url }}"{% if urp.url == page.url %} class="active"{% endif %}>Update ring planner</a></li>{% endif %}
+        {% assign scb = site.pages | where_exp: "p", "p.path == 'Toolbox/Builders/shortcut-builder.html'" | first %}
+        {% if scb %}<li><a href="{{ scb.url | relative_url }}"{% if scb.url == page.url %} class="active"{% endif %}>Shortcut builder</a></li>{% endif %}
       </ul>
       <h4>Reference</h4>
       <ul>

@@ -17,8 +17,8 @@ Web pages that write a rule or a plan for you. They sign in nowhere and send not
 | Page | Purpose | Lab |
 |---|---|---|
 | [Dynamic group rule builder](https://happelm.github.io/MDDMI/Toolbox/Builders/dynamic-group-builder.html) | Click together the membership rule for a dynamic device group, including what the Entra rule builder can't do (Autopilot IDs with `-any`, `-not`, brackets, more than five expressions). Optional PowerShell script that creates the group. | 1.4, 3.4 |
-| [Assignment filter builder](https://happelm.github.io/MDDMI/Toolbox/Builders/filter-builder.html) | Click together an assignment filter rule with the properties, operators and values valid for the platform; says in plain words who gets the assignment. | 2.6, 4.5 |
 | [Update ring planner](https://happelm.github.io/MDDMI/Toolbox/Builders/update-ring-planner.html) | Plan update rings and see on a timeline when each ring gets the monthly update and when the restart is forced. Download the timeline as PNG or SVG. | 3.3 |
+| [Shortcut builder](https://happelm.github.io/MDDMI/Toolbox/Builders/shortcut-builder.html) | Desktop and Start menu shortcuts (web links, Edge app windows, programs, network shares) with embedded icons, as a remediation that puts them back or as a Win32 app with install, uninstall and detection scripts. | 3.1, 3.2 |
 
 ## Run a script
 

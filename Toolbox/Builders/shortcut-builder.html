@@ -1,0 +1,528 @@
+---
+layout: default
+title: 'Shortcut builder'
+---
+
+{% raw %}
+<style>
+  .scb fieldset { border: 1px solid #d0d7de; border-radius: 6px; padding: 12px 16px 16px; margin: 0 0 20px; min-width: 0; }
+  .scb legend { font-weight: 600; padding: 0 6px; }
+  .scb label { display: block; font-weight: 600; font-size: 14px; margin: 10px 0 4px; }
+  .scb .hint { font-weight: 400; color: #57606a; font-size: 13px; }
+  .scb input[type=text], .scb select { width: 100%; box-sizing: border-box; font: inherit; font-size: 14px;
+    padding: 5px 8px; border: 1px solid #d0d7de; border-radius: 6px; background: #fff; }
+  .scb input.bad, .scb select.bad { border-color: #cf222e; background: #fff5f5; }
+  .scb .row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0 16px; }
+  .scb .inline label { display: inline-flex; align-items: center; gap: 6px; font-weight: 400; margin: 4px 16px 4px 0; }
+  .scb .item { border: 1px solid #e1e4e8; border-left: 4px solid #0078d4; border-radius: 6px; padding: 8px 12px 12px; margin: 12px 0; }
+  .scb .item h3 { font-size: 15px; margin: 4px 0; display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .scb .item .desc { color: #57606a; font-size: 13px; margin: 4px 0; }
+  .scb button { font: inherit; font-size: 14px; padding: 5px 14px; border: 1px solid #d0d7de; border-radius: 6px; background: #f6f8fa; cursor: pointer; }
+  .scb button.primary { background: #0078d4; border-color: #0078d4; color: #fff; }
+  .scb button.small { font-size: 12px; padding: 2px 10px; }
+  .scb button:hover { filter: brightness(0.96); }
+  .scb button:disabled { opacity: .5; cursor: default; }
+  .scb .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; align-items: center; }
+  .scb .errors { color: #cf222e; font-size: 14px; margin: 8px 0; padding-left: 20px; }
+  .scb .warns { color: #9a6700; font-size: 14px; margin: 8px 0; padding-left: 20px; }
+  .scb textarea.out { width: 100%; box-sizing: border-box; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: 12px; min-height: 240px;
+    padding: 6px 8px; border: 1px solid #d0d7de; border-radius: 6px; background: #f6f8fa; }
+  .scb .add { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .scb .add select { flex: 1; min-width: 0; }
+  .scb .settings { width: 100%; border-collapse: collapse; display: table; font-size: 14px; }
+  .scb .settings td { padding: 5px 8px; border-bottom: 1px solid #eaeef2; overflow-wrap: anywhere; }
+  .scb .settings td:first-child { width: 40%; }
+  .scb .desk { background: linear-gradient(135deg, #0a4d8c, #0078d4 60%, #50a5e6); border-radius: 8px; padding: 18px; min-height: 120px;
+    display: grid; grid-template-columns: repeat(auto-fill, 92px); gap: 14px 10px; }
+  .scb .desk.start { background: #f3f3f3; border: 1px solid #d0d7de; }
+  .scb .tile { text-align: center; color: #fff; font-size: 12px; line-height: 1.25; text-shadow: 0 1px 2px rgba(0,0,0,.6); overflow-wrap: anywhere; }
+  .scb .desk.start .tile { color: #1f2328; text-shadow: none; }
+  .scb .tile .ic { width: 44px; height: 44px; margin: 0 auto 6px; position: relative; }
+  .scb .tile .ic img { width: 44px; height: 44px; object-fit: contain; }
+  .scb .tile .ic .arrow { position: absolute; left: -2px; bottom: -2px; width: 14px; height: 14px; background: #fff; border: 1px solid #8c959f; border-radius: 2px;
+    color: #0078d4; font-size: 11px; line-height: 12px; text-align: center; text-shadow: none; }
+  .scb .tile .ic .glyph { width: 44px; height: 44px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 600; color: #fff; text-shadow: none; }
+  .scb .file { font-size: 13px; }
+</style>
+
+<h1>Shortcut builder</h1>
+
+<p>Put shortcuts on the Windows desktop or in the Start menu with Intune. Pick where they go, add web links, Edge app windows, programs or network shares,
+and choose how Intune delivers them: as a <strong>remediation</strong> that puts deleted or changed shortcuts back, or as a <strong>Win32 app</strong>
+with install, uninstall and detection scripts. Icons you upload are embedded in the script, so the device needs no download.
+The page signs in nowhere and sends nothing: everything stays in your browser.</p>
+
+<div class="scb" id="scb">
+
+<fieldset>
+  <legend>1. Where and how</legend>
+  <div class="row">
+    <div><label for="pName">Package name <span class="hint">for file and folder names</span></label><input type="text" id="pName" value="Company-Shortcuts"></div>
+    <div><label for="pLoc">Location</label>
+      <select id="pLoc">
+        <option value="pubDesk">Desktop of all users (Public Desktop) – runs as SYSTEM</option>
+        <option value="pubStart">Start menu of all users – runs as SYSTEM</option>
+        <option value="userDesk">Desktop of the signed-in user – runs as the user</option>
+        <option value="userStart">Start menu of the signed-in user – runs as the user</option>
+      </select></div>
+    <div id="subWrap"><label for="pSub">Start menu folder <span class="hint">empty = top level</span></label><input type="text" id="pSub" value="Company"></div>
+  </div>
+  <div class="inline" style="margin-top:8px">
+    <label><input type="radio" name="mode" value="rem" checked> Remediation (puts shortcuts back, needs Windows Enterprise E3/E5)</label>
+    <label><input type="radio" name="mode" value="win32"> Win32 app (install once, uninstall from Intune)</label>
+  </div>
+  <p class="hint" id="locHint"></p>
+</fieldset>
+
+<fieldset>
+  <legend>2. Shortcuts</legend>
+  <div class="add">
+    <select id="addSel" aria-label="Shortcut type">
+      <option value="url">Web link – opens in the default browser (.url)</option>
+      <option value="edge">Edge app window – website in its own window (.lnk)</option>
+      <option value="exe">Program – EXE with arguments (.lnk)</option>
+      <option value="folder">Folder or network share (.lnk)</option>
+    </select>
+    <button type="button" id="addBtn" class="primary">Add shortcut</button>
+  </div>
+  <div id="items"></div>
+</fieldset>
+
+<fieldset>
+  <legend>3. Preview</legend>
+  <div class="desk" id="desk"></div>
+  <p class="hint">Rough preview. Windows shows the real icon, and for a web link without icon the icon of the default browser.</p>
+</fieldset>
+
+<fieldset>
+  <legend>4. Scripts</legend>
+  <ul class="errors" id="errors"></ul>
+  <ul class="warns" id="warns"></ul>
+  <div id="outs"></div>
+  <p class="hint">The scripts contain only ASCII characters: umlauts in names and paths are written as <code>[char]</code> codes, so Windows PowerShell 5.1 reads them right
+    with or without BOM. Downloads are UTF-8 without BOM.</p>
+</fieldset>
+
+<fieldset>
+  <legend>5. In Intune</legend>
+  <table class="settings" id="settings"></table>
+  <ol id="steps"></ol>
+  <p class="hint" id="rules"></p>
+</fieldset>
+
+</div>
+
+<script>
+(function () {
+  function $(id) { return document.getElementById(id); }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  // PowerShell string literal, ASCII only: non-ASCII characters become [char] codes.
+  function ps(s) {
+    s = String(s); var parts = [], run = '';
+    for (var i = 0; i < s.length; i++) {
+      var c = s.charCodeAt(i);
+      if (c < 128) { run += s[i] === "'" ? "''" : s[i]; }
+      else { if (run) { parts.push("'" + run + "'"); run = ''; } parts.push('[char]0x' + ('000' + c.toString(16).toUpperCase()).slice(-4)); }
+    }
+    if (run || !parts.length) parts.push("'" + run + "'");
+    return parts.length === 1 ? parts[0] : '(' + parts.join(' + ') + ')';
+  }
+
+  var TYPES = {
+    url:    { label: 'Web link', desc: 'A .url file. Opens in the default browser.', target: 'URL', tDef: 'https://www.microsoft.com', glyph: '🌐', color: '#0078d4' },
+    edge:   { label: 'Edge app window', desc: 'Starts Microsoft Edge with --app=<URL>: the site opens in its own window without address bar. The script finds msedge.exe on the device.', target: 'URL', tDef: 'https://outlook.office.com', glyph: 'e', color: '#0c8a72' },
+    exe:    { label: 'Program', desc: 'Environment variables like %ProgramFiles% are allowed and are expanded on the device.', target: 'Program path', tDef: '%SystemRoot%\\System32\\notepad.exe', glyph: '▶', color: '#243a5e' },
+    folder: { label: 'Folder or network share', desc: 'Opens the folder in File Explorer (explorer.exe with the path), so the shortcut works even when the share is not reachable at creation time.', target: 'Folder or UNC path', tDef: '\\\\server\\share', glyph: '📁', color: '#c19c00' }
+  };
+  var LOC = {
+    pubDesk:   { sys: true,  start: false, expr: "[Environment]::GetFolderPath('CommonDesktopDirectory')", text: 'C:\\Users\\Public\\Desktop – every user sees the shortcuts.' },
+    pubStart:  { sys: true,  start: true,  expr: "[Environment]::GetFolderPath('CommonPrograms')", text: '%ProgramData%\\Microsoft\\Windows\\Start Menu\\Programs – every user sees them under All apps.' },
+    userDesk:  { sys: false, start: false, expr: "[Environment]::GetFolderPath('Desktop')", text: 'The user\'s own desktop. The script asks Windows for the folder, so it also finds OneDrive\\Desktop when Known Folder Move is on.' },
+    userStart: { sys: false, start: true,  expr: "[Environment]::GetFolderPath('Programs')", text: '%AppData%\\Microsoft\\Windows\\Start Menu\\Programs of the signed-in user.' }
+  };
+
+  var DEF = { name: 'Company-Shortcuts', loc: 'pubDesk', sub: 'Company', mode: 'rem', items: [], seq: 0 };
+  var state;
+  try { state = JSON.parse(localStorage.getItem('mddmi.scb') || 'null'); } catch (e) { state = null; }
+  if (!state || !state.items) state = JSON.parse(JSON.stringify(DEF));
+  function save() { try { localStorage.setItem('mddmi.scb', JSON.stringify(state)); } catch (e) { /* no storage or icons too big */ } }
+
+  function addItem(type) {
+    var t = TYPES[type];
+    var names = { url: 'Intranet', edge: 'Outlook', exe: 'Notepad', folder: 'Team share' };
+    state.items.push({ uid: ++state.seq, type: type, name: names[type], target: t.tDef, args: '', wd: '', desc: '', iconMode: 'none', iconPath: '', iconB64: '', iconFile: '' });
+    render(); update();
+  }
+
+  function field(s, k, l, v, hint, full) {
+    var id = 'f' + s.uid + k;
+    return '<div' + (full ? ' style="grid-column: 1 / -1"' : '') + '><label for="' + id + '">' + esc(l) + (hint ? ' <span class="hint">' + esc(hint) + '</span>' : '') + '</label>' +
+      '<input type="text" id="' + id + '" data-uid="' + s.uid + '" data-k="' + k + '" value="' + esc(v) + '" spellcheck="false"></div>';
+  }
+
+  function render() {
+    $('items').innerHTML = state.items.map(function (s, i) {
+      var t = TYPES[s.type];
+      var h = '<div class="item"><h3><span>' + (i + 1) + '. ' + esc(t.label) + '</span><button type="button" class="small" data-remove="' + s.uid + '">Remove</button></h3>' +
+        '<p class="desc">' + esc(t.desc) + '</p><div class="row">';
+      h += field(s, 'name', 'Name', s.name, 'as shown under the icon');
+      h += field(s, 'target', t.target, s.target, '', true);
+      if (s.type === 'exe') { h += field(s, 'args', 'Arguments', s.args, 'optional'); h += field(s, 'wd', 'Start in', s.wd, 'optional'); }
+      if (s.type !== 'url') h += field(s, 'desc', 'Tooltip', s.desc, 'optional');
+      var im = 'f' + s.uid + 'iconMode';
+      h += '<div><label for="' + im + '">Icon</label><select id="' + im + '" data-uid="' + s.uid + '" data-k="iconMode">' +
+        [['none', 'Default icon'], ['path', 'File on the device'], ['file', 'Upload .ico (embedded)']].map(function (o) {
+          return '<option value="' + o[0] + '"' + (o[0] === s.iconMode ? ' selected' : '') + '>' + o[1] + '</option>'; }).join('') + '</select></div>';
+      if (s.iconMode === 'path') h += field(s, 'iconPath', 'Icon file and index', s.iconPath || '%SystemRoot%\\System32\\shell32.dll,13', 'path,index – .ico, .exe or .dll', true);
+      if (s.iconMode === 'file') h += '<div style="grid-column: 1 / -1"><label for="f' + s.uid + 'up">Icon file <span class="hint">.ico, keep it small</span></label>' +
+        '<input type="file" class="file" id="f' + s.uid + 'up" data-uid="' + s.uid + '" accept=".ico">' +
+        (s.iconB64 ? ' <span class="hint">' + esc(s.iconFile) + ' (' + Math.round(s.iconB64.length * 3 / 4 / 1024 * 10) / 10 + ' KB)</span>' : '') + '</div>';
+      return h + '</div></div>';
+    }).join('');
+  }
+
+  function find(uid) { return state.items.filter(function (c) { return c.uid === uid; })[0]; }
+  function onInput(e) {
+    var t = e.target, uid = +t.dataset.uid, k = t.dataset.k; if (!uid || !k) return;
+    var s = find(uid); s[k] = t.value;
+    if (k === 'iconMode') { if (t.value === 'path' && !s.iconPath) s.iconPath = '%SystemRoot%\\System32\\shell32.dll,13'; render(); }
+    update();
+  }
+  function onFile(e) {
+    var t = e.target; if (t.type !== 'file' || !t.files || !t.files[0]) return;
+    var s = find(+t.dataset.uid), f = t.files[0], r = new FileReader();
+    r.onload = function () {
+      var b = String(r.result); s.iconB64 = b.slice(b.indexOf(',') + 1);
+      s.iconFile = f.name.replace(/[^A-Za-z0-9._-]/g, '') || 'icon.ico';
+      render(); update();
+    };
+    r.readAsDataURL(f);
+  }
+
+  function fileOf(s) { return s.name.trim() + (s.type === 'url' ? '.url' : '.lnk'); }
+  function iconKey(s) { return 's' + s.uid + '-' + (s.iconFile || 'icon.ico').replace(/[^A-Za-z0-9._-]/g, ''); }
+
+  function validate() {
+    var errs = [], warns = [], seen = {}, size = 0;
+    if (!pkg()) errs.push('Package name is empty.');
+    if (!state.items.length) errs.push('Add at least one shortcut.');
+    state.items.forEach(function (s, i) {
+      var n = '#' + (i + 1) + ' ' + (s.name || TYPES[s.type].label) + ': ';
+      function bad(k, cond, msg) { var el = $('f' + s.uid + k); if (el) el.classList.toggle('bad', !!cond); if (cond) errs.push(n + msg); }
+      bad('name', !s.name.trim(), 'name is empty.');
+      bad('name', /[\\\/:*?"<>|]/.test(s.name), 'the name can\'t contain \\ / : * ? " < > |.');
+      bad('target', !s.target.trim(), TYPES[s.type].target + ' is empty.');
+      if ((s.type === 'url' || s.type === 'edge') && s.target.trim()) bad('target', !/^https?:\/\/\S+$/i.test(s.target.trim()), 'the URL must start with https:// or http:// and contain no spaces.');
+      if (s.type === 'url' && /[^\x00-\x7F]/.test(s.target)) errs.push(n + 'write non-ASCII characters in the URL percent-encoded (for example %C3%BC for ü).');
+      if (s.type === 'exe' && s.target.trim() && !/^(%[A-Za-z0-9_()]+%|[A-Za-z]:\\|\\\\)/.test(s.target.trim())) warns.push(n + 'use a full path (C:\\… or %ProgramFiles%\\…). A bare program name is not searched in PATH by the shortcut.');
+      if (s.type === 'folder' && s.target.trim() && !/^(%[A-Za-z0-9_()]+%|[A-Za-z]:\\|\\\\[^\\]+\\[^\\]+)/.test(s.target.trim())) errs.push(n + 'use a local path (C:\\…) or a UNC path (\\\\server\\share).');
+      if (s.iconMode === 'path') bad('iconPath', !s.iconPath.trim(), 'icon path is empty.');
+      if (s.iconMode === 'file' && !s.iconB64) errs.push(n + 'choose an .ico file or switch the icon to Default.');
+      if (s.iconMode === 'file') size += s.iconB64.length;
+      var key = fileOf(s).toLowerCase();
+      if (s.name.trim() && seen[key]) errs.push(n + 'another shortcut has the same name.');
+      seen[key] = true;
+    });
+    if (size > 150 * 1024) warns.push('The embedded icons make the scripts larger than 150 KB. Intune accepts platform scripts up to 200 KB; for remediation and Win32 detection scripts Learn names no limit – VERIFY, or use smaller icons.');
+    var L = LOC[state.loc];
+    if (state.mode === 'win32' && !L.sys) warns.push('Win32 app with install behavior User: the detection script has to find the shortcut in the user\'s folders. Test detection on a device before you assign widely (VERIFY: the context of detection scripts for user apps).');
+    return { errs: errs, warns: warns };
+  }
+
+  function pkg() { return state.name.trim().replace(/[^A-Za-z0-9._-]/g, ''); }
+
+  function header(kind) {
+    var L = LOC[state.loc];
+    return ['# ' + kind + ': ' + pkg(),
+      '# Built with the MDDMI shortcut builder on ' + new Date().toISOString().slice(0, 10) + '.',
+      '# Runs as ' + (L.sys ? 'SYSTEM' : 'the signed-in user') + ', 64-bit Windows PowerShell 5.1.'];
+  }
+
+  function dataBlock(withIcons) {
+    var L = LOC[state.loc], out = [];
+    var folder = L.start && state.sub.trim() ? 'Join-Path (' + L.expr + ') ' + ps(state.sub.trim()) : L.expr;
+    out.push('$folder  = ' + folder);
+    out.push('$iconDir = Join-Path ' + (L.sys ? '$env:ProgramData' : '$env:LOCALAPPDATA') + ' ' + ps('ShortcutIcons\\' + pkg()));
+    out.push('');
+    out.push('$shortcuts = @(');
+    out.push(state.items.map(function (s) {
+      var f = ['Name = ' + ps(s.name.trim()), "Kind = '" + s.type + "'", 'Target = ' + ps(s.target.trim())];
+      if (s.type === 'exe') { f.push('Arguments = ' + ps(s.args.trim())); f.push('WorkDir = ' + ps(s.wd.trim())); }
+      if (s.type !== 'url') f.push('Tooltip = ' + ps(s.desc.trim()));
+      if (s.iconMode === 'path') f.push('Icon = ' + ps(s.iconPath.trim()));
+      if (s.iconMode === 'file') f.push("IconFile = '" + iconKey(s) + "'");
+      return '    @{ ' + f.join('; ') + ' }';
+    }).join('\r\n'));
+    out.push(')');
+    if (withIcons) {
+      var ic = state.items.filter(function (s) { return s.iconMode === 'file' && s.iconB64; });
+      out.push('');
+      out.push('# Embedded icons (Base64)');
+      out.push('$icons = @{');
+      ic.forEach(function (s) { out.push("    '" + iconKey(s) + "' = '" + s.iconB64 + "'"); });
+      out.push('}');
+    }
+    return out.join('\r\n');
+  }
+
+  var FUNCS = [
+    'function Get-EdgePath {',
+    "    foreach ($key in 'HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\App Paths\\msedge.exe', 'HKLM:\\SOFTWARE\\WOW6432Node\\Microsoft\\Windows\\CurrentVersion\\App Paths\\msedge.exe') {",
+    "        $p = (Get-ItemProperty -LiteralPath $key -ErrorAction SilentlyContinue).'(default)'",
+    '        if ($p -and (Test-Path -LiteralPath $p)) { return $p }',
+    '    }',
+    "    foreach ($p in (Join-Path ${env:ProgramFiles(x86)} 'Microsoft\\Edge\\Application\\msedge.exe'), (Join-Path $env:ProgramFiles 'Microsoft\\Edge\\Application\\msedge.exe')) {",
+    '        if (Test-Path -LiteralPath $p) { return $p }',
+    '    }',
+    "    throw 'msedge.exe not found'",
+    '}',
+    '',
+    '# What the shortcut must look like on this device',
+    'function Get-ShortcutSpec ($s) {',
+    "    $ext = if ($s.Kind -eq 'url') { '.url' } else { '.lnk' }",
+    '    $spec = @{ Kind = $s.Kind; File = (Join-Path $folder ($s.Name + $ext)); Target = $s.Target; Arguments = \'\'; WorkDir = \'\'; Tooltip = [string]$s.Tooltip; Icon = \'\'; IconFile = \'\' }',
+    '    switch ($s.Kind) {',
+    "        'edge'   { $spec.Target = Get-EdgePath; $spec.Arguments = '--app=' + $s.Target; $spec.WorkDir = Split-Path -Parent $spec.Target }",
+    "        'exe'    { $spec.Target = [Environment]::ExpandEnvironmentVariables($s.Target); $spec.Arguments = [string]$s.Arguments; $spec.WorkDir = [Environment]::ExpandEnvironmentVariables([string]$s.WorkDir) }",
+    "        'folder' { $spec.Target = Join-Path $env:SystemRoot 'explorer.exe'; $spec.Arguments = '\"' + [Environment]::ExpandEnvironmentVariables($s.Target) + '\"' }",
+    '    }',
+    "    if ($s.Icon)     { $spec.Icon = [Environment]::ExpandEnvironmentVariables($s.Icon) }",
+    "    if ($s.IconFile) { $spec.IconFile = Join-Path $iconDir $s.IconFile; $spec.Icon = $spec.IconFile + ',0' }",
+    "    if (-not $spec.Icon -and $s.Kind -eq 'folder') { $spec.Icon = (Join-Path $env:SystemRoot 'System32\\shell32.dll') + ',3' }",
+    '    $spec',
+    '}',
+    '',
+    '# Returns $null when the shortcut is as wanted, else the reason',
+    'function Test-ShortcutSpec ($spec) {',
+    "    if (-not (Test-Path -LiteralPath $spec.File)) { return 'missing' }",
+    "    if ($spec.IconFile -and -not (Test-Path -LiteralPath $spec.IconFile)) { return 'icon missing' }",
+    "    if ($spec.Kind -eq 'url') {",
+    '        $lines = @(Get-Content -LiteralPath $spec.File -ErrorAction SilentlyContinue)',
+    "        if ($lines -notcontains ('URL=' + $spec.Target)) { return 'other URL' }",
+    '        return $null',
+    '    }',
+    '    $lnk = (New-Object -ComObject WScript.Shell).CreateShortcut($spec.File)',
+    "    if ($lnk.TargetPath -ne $spec.Target) { return 'other target' }",
+    "    if ([string]$lnk.Arguments -ne [string]$spec.Arguments) { return 'other arguments' }",
+    '    $null',
+    '}'
+  ].join('\r\n');
+
+  var SETFUNC = [
+    'function Set-ShortcutSpec ($spec, $s) {',
+    '    if (-not (Test-Path -LiteralPath $folder)) { New-Item -Path $folder -ItemType Directory -Force | Out-Null }',
+    '    if ($spec.IconFile) {',
+    '        if (-not (Test-Path -LiteralPath $iconDir)) { New-Item -Path $iconDir -ItemType Directory -Force | Out-Null }',
+    '        [IO.File]::WriteAllBytes($spec.IconFile, [Convert]::FromBase64String($icons[$s.IconFile]))',
+    '    }',
+    "    if ($spec.Kind -eq 'url') {",
+    "        $content = @('[InternetShortcut]', ('URL=' + $spec.Target))",
+    '        if ($spec.Icon) {',
+    "            $i = $spec.Icon.LastIndexOf(',')",
+    "            if ($i -gt 0) { $content += 'IconFile=' + $spec.Icon.Substring(0, $i); $content += 'IconIndex=' + $spec.Icon.Substring($i + 1) }",
+    "            else { $content += 'IconFile=' + $spec.Icon; $content += 'IconIndex=0' }",
+    '        }',
+    '        Set-Content -LiteralPath $spec.File -Value $content -Encoding ASCII -Force',
+    '        return',
+    '    }',
+    '    $lnk = (New-Object -ComObject WScript.Shell).CreateShortcut($spec.File)',
+    '    $lnk.TargetPath = $spec.Target',
+    '    $lnk.Arguments = $spec.Arguments',
+    '    if ($spec.WorkDir) { $lnk.WorkingDirectory = $spec.WorkDir }',
+    '    if ($spec.Tooltip) { $lnk.Description = $spec.Tooltip }',
+    '    if ($spec.Icon)    { $lnk.IconLocation = $spec.Icon }',
+    '    $lnk.Save()',
+    '}'
+  ].join('\r\n');
+
+  function trimOut(v) { return ['if ($text.Length -gt 2000) { $text = $text.Substring(0, 2000) }', 'Write-Output $text'].join('\r\n'); }
+
+  function buildRemDetect() {
+    return header('Detection script').concat([
+      '# exit 1 = a shortcut is missing or changed (the remediation runs), exit 0 = all OK.', '',
+      dataBlock(false), '', FUNCS, '',
+      '$issues = @()',
+      'foreach ($s in $shortcuts) {',
+      '    try { $r = Test-ShortcutSpec (Get-ShortcutSpec $s) } catch { $r = \'error: \' + $_.Exception.Message }',
+      "    if ($r) { $issues += $s.Name + ' (' + $r + ')' }",
+      '}',
+      'if ($issues.Count) {',
+      "    $text = 'Issue: ' + ($issues -join '; ')", trimOut(), '    exit 1', '}',
+      "Write-Output ('OK: ' + $shortcuts.Count + ' shortcut(s) in place')",
+      'exit 0'
+    ]).join('\r\n');
+  }
+
+  function buildRemFix() {
+    return header('Remediation script').concat([
+      '# Creates or repairs every shortcut that is missing or changed. exit 1 = at least one failed.', '',
+      dataBlock(true), '', FUNCS, '', SETFUNC, '',
+      '$fixed = @(); $failed = @()',
+      'foreach ($s in $shortcuts) {',
+      '    try {',
+      '        $spec = Get-ShortcutSpec $s',
+      '        $r = Test-ShortcutSpec $spec',
+      '        if ($r) { Set-ShortcutSpec $spec $s; $fixed += $s.Name + \' (\' + $r + \')\' }',
+      "    } catch { $failed += $s.Name + ' (error: ' + $_.Exception.Message + ')' }",
+      '}',
+      '$parts = @()',
+      "if ($fixed.Count)  { $parts += 'Fixed: ' + ($fixed -join '; ') }",
+      "if ($failed.Count) { $parts += 'Failed: ' + ($failed -join '; ') }",
+      "if (-not $parts)   { $parts += 'Nothing to fix' }",
+      "$text = $parts -join ' | '", trimOut(),
+      'if ($failed.Count) { exit 1 }',
+      'exit 0'
+    ]).join('\r\n');
+  }
+
+  function buildInstall() {
+    return header('Install script').concat([
+      '# Creates all shortcuts. exit 1 = at least one failed (Intune reports the install as failed).', '',
+      dataBlock(true), '', FUNCS, '', SETFUNC, '',
+      '$failed = 0',
+      'foreach ($s in $shortcuts) {',
+      '    try { Set-ShortcutSpec (Get-ShortcutSpec $s) $s }',
+      "    catch { $failed++; Write-Output ($s.Name + ': ' + $_.Exception.Message) }",
+      '}',
+      'if ($failed) { exit 1 }',
+      'exit 0'
+    ]).join('\r\n');
+  }
+
+  function buildUninstall() {
+    var L = LOC[state.loc];
+    var lines = header('Uninstall script').concat([
+      '# Removes the shortcuts and the icon folder of this package.', '',
+      dataBlock(false), '',
+      'foreach ($s in $shortcuts) {',
+      "    $ext = if ($s.Kind -eq 'url') { '.url' } else { '.lnk' }",
+      '    Remove-Item -LiteralPath (Join-Path $folder ($s.Name + $ext)) -Force -ErrorAction SilentlyContinue',
+      '}',
+      'Remove-Item -LiteralPath $iconDir -Recurse -Force -ErrorAction SilentlyContinue'
+    ]);
+    if (L.start && state.sub.trim()) lines.push('# Remove the Start menu folder only when it is empty now',
+      'if ((Test-Path -LiteralPath $folder) -and -not (Get-ChildItem -LiteralPath $folder -Force)) { Remove-Item -LiteralPath $folder -Force }');
+    lines.push('exit 0');
+    return lines.join('\r\n');
+  }
+
+  function buildW32Detect() {
+    return header('Win32 detection script').concat([
+      '# Installed = exit 0 AND text on STDOUT. Not installed = exit 1 without output. Nothing may go to STDERR.', '',
+      dataBlock(false), '', FUNCS, '',
+      'foreach ($s in $shortcuts) {',
+      '    try { $r = Test-ShortcutSpec (Get-ShortcutSpec $s) } catch { $r = \'error\' }',
+      '    if ($r) { exit 1 }',
+      '}',
+      "Write-Output 'Detected'",
+      'exit 0'
+    ]).join('\r\n');
+  }
+
+  function outputs() {
+    var p = pkg();
+    if (state.mode === 'rem') return [
+      { id: 'o1', label: 'Detection script', file: 'Detect-' + p + '.ps1', text: buildRemDetect() },
+      { id: 'o2', label: 'Remediation script', file: 'Remediate-' + p + '.ps1', text: buildRemFix() }];
+    return [
+      { id: 'o1', label: 'Install script (goes into the .intunewin)', file: 'Install-' + p + '.ps1', text: buildInstall() },
+      { id: 'o2', label: 'Uninstall script (goes into the .intunewin)', file: 'Uninstall-' + p + '.ps1', text: buildUninstall() },
+      { id: 'o3', label: 'Detection script (upload in the app, not in the package)', file: 'Detect-' + p + '.ps1', text: buildW32Detect() }];
+  }
+
+  function preview() {
+    var L = LOC[state.loc];
+    $('desk').className = 'desk' + (L.start ? ' start' : '');
+    $('desk').innerHTML = state.items.map(function (s) {
+      var t = TYPES[s.type], ic;
+      if (s.iconMode === 'file' && s.iconB64) ic = '<img alt="" src="data:image/x-icon;base64,' + s.iconB64 + '">';
+      else ic = '<div class="glyph" style="background:' + t.color + '">' + esc(t.glyph) + '</div>';
+      return '<div class="tile"><div class="ic">' + ic + (L.start ? '' : '<span class="arrow">↗</span>') + '</div>' + esc(s.name || '(no name)') + '</div>';
+    }).join('') || '<span class="hint" style="color:#fff">No shortcuts yet.</span>';
+  }
+
+  function update() {
+    var L = LOC[state.loc], v = validate(), ok = !v.errs.length, p = pkg();
+    $('subWrap').style.display = L.start ? '' : 'none';
+    $('locHint').textContent = L.text;
+    $('errors').innerHTML = v.errs.map(function (e) { return '<li>' + esc(e) + '</li>'; }).join('');
+    $('warns').innerHTML = v.warns.map(function (e) { return '<li>' + esc(e) + '</li>'; }).join('');
+    preview();
+    var outs = ok ? outputs() : [];
+    $('outs').innerHTML = outs.map(function (o) {
+      return '<label for="' + o.id + '">' + esc(o.label) + ' <span class="hint">' + esc(o.file) + '</span></label>' +
+        '<textarea class="out" id="' + o.id + '" readonly spellcheck="false"></textarea>' +
+        '<div class="actions"><button type="button" class="primary" data-dl="' + o.id + '" data-file="' + esc(o.file) + '">Download</button>' +
+        '<button type="button" data-cp="' + o.id + '">Copy</button></div>';
+    }).join('');
+    outs.forEach(function (o) { $(o.id).value = o.text; });
+
+    var rows, steps, rules;
+    if (state.mode === 'rem') {
+      rows = [
+        ['Run this script using the logged-on credentials', L.sys ? '<strong>No</strong> – runs as SYSTEM, needed for the folders of all users.' : '<strong>Yes</strong> – the shortcuts go into the user\'s own folders.'],
+        ['Enforce script signature check', '<strong>No</strong> – unless you sign the scripts.'],
+        ['Run script in 64-bit PowerShell', '<strong>Yes</strong>'],
+        ['Schedule', 'Daily, or hourly if users often delete the shortcuts.']];
+      steps = [
+        'Test on a client: ' + (L.sys ? 'in an elevated Windows PowerShell' : 'in a normal Windows PowerShell as the user') + ' run the detection script (<code>$LASTEXITCODE</code> = 1), the remediation script, then the detection script again (0).',
+        'Intune admin center → Devices → Scripts and remediations → <strong>Remediations</strong> → <strong>Create</strong>: upload both files, choose the settings from the table, assign a ' + (L.sys ? 'device' : 'user or device') + ' group and a schedule.',
+        'Quick test: Devices → device → <strong>Run remediation</strong>. Delete a shortcut and run it again: it comes back.'];
+      rules = 'Learn: a remediation runs only when the detection script ends with <code>exit 1</code>; output up to 2,048 characters; up to 200 script packages; users need Windows Enterprise E3/E5, Education A3/A5 or VDA. ' +
+        'Source: <a href="https://learn.microsoft.com/intune/device-management/tools/deploy-remediations">Remediations</a>.';
+    } else {
+      var psx = '%SystemRoot%\\Sysnative\\WindowsPowerShell\\v1.0\\powershell.exe -ExecutionPolicy Bypass -NoProfile -File ';
+      rows = [
+        ['Install command', '<code>' + esc(psx + '.\\Install-' + p + '.ps1') + '</code>'],
+        ['Uninstall command', '<code>' + esc(psx + '.\\Uninstall-' + p + '.ps1') + '</code>'],
+        ['Install behavior', L.sys ? '<strong>System</strong>' : '<strong>User</strong>'],
+        ['Device restart behavior', '<strong>No specific action</strong>'],
+        ['Detection rules', '<strong>Use a custom detection script</strong>: <code>Detect-' + esc(p) + '.ps1</code>, run as 32-bit process <strong>No</strong>, signature check <strong>No</strong>.']];
+      steps = [
+        'Put <code>Install-' + esc(p) + '.ps1</code> and <code>Uninstall-' + esc(p) + '.ps1</code> into one folder and package it with the Win32 Content Prep Tool, setup file <code>Install-' + esc(p) + '.ps1</code>.',
+        'Intune admin center → Apps → Windows → <strong>Add</strong> → <strong>Windows app (Win32)</strong>: upload the <code>.intunewin</code>, use the values from the table, assign as <strong>Required</strong>.',
+        'Test: after the install, check the shortcuts; uninstall from Intune removes them again. A user who deletes a shortcut gets it back only when the app is installed again – for self-healing use the remediation.'];
+      rules = 'Learn: <code>powershell.exe</code> in the install command starts 32-bit PowerShell, <code>Sysnative</code> forces 64-bit; the uninstall command expands no environment variables except in a wrapper script like this one; ' +
+        'a detection script counts as installed with exit code 0 and output on STDOUT, any output on STDERR counts as not installed. ' +
+        'Source: <a href="https://learn.microsoft.com/intune/app-management/deployment/add-win32">Add, assign, and monitor a Win32 app</a>.';
+    }
+    $('settings').innerHTML = '<tbody>' + rows.map(function (r) { return '<tr><td>' + r[0] + '</td><td>' + r[1] + '</td></tr>'; }).join('') + '</tbody>';
+    $('steps').innerHTML = steps.map(function (s) { return '<li>' + s + '</li>'; }).join('');
+    $('rules').innerHTML = rules;
+    save();
+  }
+
+  function download(text, file) {
+    var blob = new Blob([text + '\r\n'], { type: 'text/plain;charset=utf-8' });
+    var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = file;
+    document.body.appendChild(a); a.click(); a.remove();
+  }
+
+  // initial values into the form
+  $('pName').value = state.name; $('pLoc').value = state.loc; $('pSub').value = state.sub;
+  Array.prototype.forEach.call(document.querySelectorAll('input[name=mode]'), function (r) { r.checked = r.value === state.mode; });
+
+  $('pName').addEventListener('input', function () { state.name = this.value; update(); });
+  $('pLoc').addEventListener('change', function () { state.loc = this.value; update(); });
+  $('pSub').addEventListener('input', function () { state.sub = this.value; update(); });
+  Array.prototype.forEach.call(document.querySelectorAll('input[name=mode]'), function (r) {
+    r.addEventListener('change', function () { if (this.checked) { state.mode = this.value; update(); } });
+  });
+  $('items').addEventListener('input', onInput);
+  $('items').addEventListener('change', function (e) { if (e.target.type === 'file') onFile(e); else onInput(e); });
+  $('items').addEventListener('click', function (e) {
+    var uid = e.target.dataset && e.target.dataset.remove; if (!uid) return;
+    state.items = state.items.filter(function (c) { return c.uid !== +uid; });
+    render(); update();
+  });
+  $('outs').addEventListener('click', function (e) {
+    var d = e.target.dataset || {};
+    if (d.dl) download($(d.dl).value, d.file);
+    if (d.cp) { var b = e.target, l = b.textContent; navigator.clipboard.writeText($(d.cp).value).then(function () { b.textContent = 'Copied'; setTimeout(function () { b.textContent = l; }, 1500); }); }
+  });
+  $('addBtn').addEventListener('click', function () { addItem($('addSel').value); });
+
+  if (state.items.length) { render(); update(); } else { addItem('url'); addItem('folder'); }
+})();
+</script>
+{% endraw %}
