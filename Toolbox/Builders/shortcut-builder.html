@@ -129,7 +129,7 @@ The page signs in nowhere and sends nothing: everything stays in your browser.</
   }
 
   var TYPES = {
-    url:    { label: 'Web link', desc: 'A .url file. Opens in the default browser.', target: 'URL', tDef: 'https://www.microsoft.com', glyph: '🌐', color: '#0078d4' },
+    url:    { label: 'Web link', desc: 'A .url file. Opens in the default browser.', target: 'URL', tDef: 'https://www.etc.at', glyph: '🌐', color: '#0078d4' },
     edge:   { label: 'Edge app window', desc: 'Starts Microsoft Edge with --app=<URL>: the site opens in its own window without address bar. The script finds msedge.exe on the device.', target: 'URL', tDef: 'https://outlook.office.com', glyph: 'e', color: '#0c8a72' },
     exe:    { label: 'Program', desc: 'Environment variables like %ProgramFiles% are allowed and are expanded on the device.', target: 'Program path', tDef: '%SystemRoot%\\System32\\notepad.exe', glyph: '▶', color: '#243a5e' },
     folder: { label: 'Folder or network share', desc: 'Opens the folder in File Explorer (explorer.exe with the path), so the shortcut works even when the share is not reachable at creation time.', target: 'Folder or UNC path', tDef: '\\\\server\\share', glyph: '📁', color: '#c19c00' }
